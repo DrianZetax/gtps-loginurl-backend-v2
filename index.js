@@ -1,95 +1,80 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const compression = require("compression");
-const fs = require("fs");
-const path = require("path");
-
+const express = require('express');
 const app = express();
+const bodyParser = require('body-parser');
+const rateLimiter = require('express-rate-limit');
+const compression = require('compression');
 
-app.use(compression());
+app.use(compression({
+    level: 5,
+    threshold: 0,
+    filter: (req, res) => {
+        if (req.headers['x-no-compression']) {
+            return false;
+        }
+        return compression.filter(req, res);
+    }
+}));
+
+app.set('view engine', 'ejs');
+
+app.set('trust proxy', 1);
+
+app.use(function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header(
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept',
+    );
+    console.log(`[${new Date().toLocaleString()}] ${req.method} ${req.url} - ${res.statusCode}`);
+    next();
+});
+
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.set("view engine", "ejs");
-app.use(express.static(path.join(__dirname, "public")));
 
-// === Helper ===
-function savePlayer(growId, password, serverName) {
-  const dir = path.join(__dirname, "database", "players");
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  const filePath = path.join(dir, `${growId}.json`);
-  const data = {
-    growId,
-    password,
-    server_name: serverName,
-    created_at: new Date().toISOString(),
-  };
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
-}
+app.use(express.json());
 
-// === ROUTES ===
-app.get("/", (req, res) => {
-  res.render(path.join(__dirname, "public", "html", "dashboard.ejs"));
+app.use(rateLimiter({ windowMs: 15 * 60 * 1000, max: 10000, headers: true }));
+
+app.all("/player/validate/close", function (req, res) {
+  res.send("<script>window.close();</script>");
 });
 
-// LOGIN
-app.post("/player/growid/login/validate", (req, res) => {
-  const { _token, growId, password } = req.body;
-  if (!_token || !growId || !password)
-    return res.status(400).json({ status: "error", message: "Missing data." });
+app.all('/player/login/dashboard', function (req, res) {
+    const tData = {};
+    try {
+        const uData = JSON.stringify(req.body).split('"')[1].split('\\n'); const uName = uData[0].split('|'); const uPass = uData[1].split('|');
+        for (let i = 0; i < uData.length - 1; i++) { const d = uData[i].split('|'); tData[d[0]] = d[1]; }
+        if (uName[1] && uPass[1]) { res.redirect('/player/growid/login/validate'); }
+    } catch (why) { console.log(`Warning: ${why}`); }
 
-  const filePath = path.join(__dirname, "database", "players", `${growId}.json`);
-  if (!fs.existsSync(filePath))
-    return res
-      .status(404)
-      .json({ status: "error", message: "Account not found. Please register." });
-
-  const user = JSON.parse(fs.readFileSync(filePath));
-  if (user.password !== password)
-    return res.status(403).json({ status: "error", message: "Wrong password." });
-
-  const tokenData = {
-    server_name: _token,
-    growId,
-    password,
-    isRegister: false,
-  };
-
-  const token = Buffer.from(JSON.stringify(tokenData)).toString("base64");
-  res.json({
-    status: "success",
-    message: "Login successful.",
-    token,
-  });
+    res.render(__dirname + '/public/html/dashboard.ejs', {data: tData});
 });
 
-// REGISTER
-app.post("/player/growid/register", (req, res) => {
-  const { _token, growId, password } = req.body;
-  if (!_token || !growId || !password)
-    return res.status(400).json({ status: "error", message: "Missing data." });
-
-  const filePath = path.join(__dirname, "database", "players", `${growId}.json`);
-  if (fs.existsSync(filePath))
-    return res
-      .status(400)
-      .json({ status: "error", message: "GrowID already exists!" });
-
-  savePlayer(growId, password, _token);
-
-  const tokenData = {
-    server_name: _token,
-    growId,
-    password,
-    isRegister: true,
-  };
-
-  const token = Buffer.from(JSON.stringify(tokenData)).toString("base64");
-  res.json({
-    status: "success",
-    message: "Registered successfully.",
-    token,
-  });
+app.all('/player/growid/login/validate', (req, res) => {
+    const { _token, growId, password, action } = req.body;
+    const token = (action.toLowerCase() === 'login' ? JSON.stringify({ server_name: _token.toUpperCase(), growId: growId, password: password }) : JSON.stringify({ server_name: _token.toUpperCase(), growId: "", password: "" }));
+    const tokens = Buffer.from(token).toString('base64');
+    res.send(
+        `{"status":"success","message":"Account Validated.","token":"${tokens}","url":"","accountType":"growtopia", "accountAge": 2}`,
+    );
 });
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
+app.all('/player/growid/checktoken', (req, res) => {
+    const { refreshToken } = req.body;
+    res.json({
+        status: 'success',
+        message: 'Account Validated.',
+        token: refreshToken,
+        url: '',
+        accountType: 'growtopia',
+        accountAge: 2
+    });
+});
+
+app.get('/', function (req, res) {
+   res.send('Hello Memek');
+});
+
+app.listen(5000, function () {
+    console.log('Listening on port 5000');
+});

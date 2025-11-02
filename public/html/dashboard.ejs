@@ -4,24 +4,15 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GTPSID Login</title>
+  <title>GTPSID Dashboard</title>
   <link rel="icon" href="https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/assets/images/growtopia.ico" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" />
   <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      background: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    body {
       background-color: #f8f9fa;
+      padding: 40px;
     }
-    .login-container {
-      max-width: 400px;
-      margin: 80px auto;
-      padding: 30px;
-      background: white;
+    .card {
       border-radius: 10px;
       box-shadow: 0 0 15px rgba(0,0,0,0.1);
     }
@@ -34,53 +25,65 @@
       color: #007bff;
       user-select: none;
     }
-    .position-relative {
-      position: relative;
-    }
   </style>
 </head>
 <body>
 
-<div class="login-container">
-  <h3 class="text-center mb-4">Log Into Your GTPSID</h3>
-  <form method="POST" action="/player/growid/login/validate" accept-charset="UTF-8" role="form" autocomplete="off">
-    <div class="form-group">
-      <input type="text" name="_token" class="form-control" placeholder="Server Name *" required>
+<div class="container">
+  <% if (!user) { %>
+    <div class="card mx-auto" style="max-width: 400px;">
+      <div class="card-body">
+        <h4 class="text-center mb-4">Login to GTPSID</h4>
+        <form method="POST" action="/player/growid/login/validate" autocomplete="off">
+          <div class="form-group">
+            <input type="text" name="server_name" class="form-control" placeholder="Server Name *" required />
+          </div>
+          <div class="form-group">
+            <input type="text" name="growId" id="loginGrowId" class="form-control" placeholder="Your GrowID *" required />
+          </div>
+          <div class="form-group position-relative">
+            <input type="password" name="password" id="loginPassword" class="form-control" placeholder="Password *" required />
+            <span id="toggleLogPassword" class="password-toggle">SHOW</span>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Login</button>
+          <button type="button" id="registerBtn" class="btn btn-secondary btn-block">Register</button>
+        </form>
+      </div>
     </div>
-
-    <div class="form-group">
-      <input type="text" name="growId" id="loginGrowId" class="form-control" placeholder="Your GrowID Name *" required />
+  <% } else { %>
+    <div class="card mx-auto" style="max-width: 600px;">
+      <div class="card-body">
+        <h3 class="text-center mb-4">Welcome, <%= user.growId %>!</h3>
+        <ul class="list-group mb-4">
+          <li class="list-group-item"><strong>Server:</strong> <%= user.server_name %></li>
+          <li class="list-group-item"><strong>GrowID:</strong> <%= user.growId %></li>
+          <li class="list-group-item"><strong>Token:</strong> <code><%= user.token %></code></li>
+        </ul>
+        <div class="text-center">
+          <a href="/player/logout" class="btn btn-danger">Logout</a>
+        </div>
+      </div>
     </div>
-
-    <div class="form-group position-relative">
-      <input type="password" name="password" id="loginPassword" class="form-control" placeholder="Your GrowID Password *" required />
-      <span id="toggleLogPassword" class="password-toggle">SHOW</span>
-    </div>
-
-    <button type="submit" name="action" value="Login" id="loginBtn" class="btn btn-primary btn-block">Login</button>
-    <button type="button" id="registerBtn" class="btn btn-secondary btn-block">Register</button>
-  </form>
+  <% } %>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
-    // Isi otomatis GrowID dari localStorage
     const stored = localStorage.getItem("growId");
-    if (stored) document.getElementById("loginGrowId").value = stored;
+    if (stored) document.getElementById("loginGrowId")?.value = stored;
 
-    // Tombol Register redirect
-    document.getElementById("registerBtn").addEventListener("click", function (e) {
+    // redirect register
+    document.getElementById("registerBtn")?.addEventListener("click", e => {
       e.preventDefault();
       window.location.href = "/player/growid/register";
     });
 
-    // Toggle password visibility
-    document.getElementById("toggleLogPassword").addEventListener("click", function () {
-      const pwdField = document.getElementById("loginPassword");
-      const isHidden = pwdField.type === "password";
-      pwdField.type = isHidden ? "text" : "password";
+    // toggle password
+    document.getElementById("toggleLogPassword")?.addEventListener("click", function () {
+      const pwd = document.getElementById("loginPassword");
+      const isHidden = pwd.type === "password";
+      pwd.type = isHidden ? "text" : "password";
       this.textContent = isHidden ? "HIDE" : "SHOW";
     });
   });

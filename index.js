@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const rateLimiter = require('express-rate-limit');
 const compression = require('compression');
+const fs = require('fs');
 const path = require('path');
 
 // === Middleware dasar ===
@@ -10,9 +11,7 @@ app.use(compression({
     level: 5,
     threshold: 0,
     filter: (req, res) => {
-        if (req.headers['x-no-compression']) {
-            return false;
-        }
+        if (req.headers['x-no-compression']) return false;
         return compression.filter(req, res);
     }
 }));
@@ -31,14 +30,33 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(rateLimiter({ windowMs: 15 * 60 * 1000, max: 10000, headers: true }));
 
+// === Fungsi bantu ===
+function savePlayer(growId, password, serverName) {
+    const dir = path.join(__dirname, 'database', 'players');
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    const filePath = path.join(dir, `${growId}.json`);
+
+    const data = {
+        growId,
+        password,
+        server_name: serverName,
+        created_at: new Date().toISOString(),
+        gems: 100,
+        items: [18, 32, 6336], // starter items (Fist, Wrench, SpaceBook)
+    };
+
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+    return true;
+}
+
 // === ROUTES ===
 
 // Tutup jendela validasi
 app.all("/player/validate/close", (req, res) => {
-  res.send("<script>window.close();</script>");
+    res.send("<script>window.close();</script>");
 });
 
-// Dashboard (dummy)
+// Dashboard dummy
 app.all('/player/login/dashboard', (req, res) => {
     const tData = {};
     try {
@@ -55,7 +73,6 @@ app.all('/player/login/dashboard', (req, res) => {
     } catch (why) {
         console.log(`Warning: ${why}`);
     }
-
     res.render(__dirname + '/public/html/dashboard.ejs', { data: tData });
 });
 
@@ -63,9 +80,13 @@ app.all('/player/login/dashboard', (req, res) => {
 app.all('/player/growid/login/validate', (req, res) => {
     const { _token, growId, password, action } = req.body;
 
-    // jika klik Register → arahkan ke halaman register
     if (action && action.toLowerCase() === 'register') {
         return res.redirect('/player/growid/register');
+    }
+
+    const filePath = path.join(__dirname, 'database', 'players', `${growId}.json`);
+    if (!fs.existsSync(filePath)) {
+        return res.status(404).send({ status: "error", message: "Account not found. Please register first." });
     }
 
     const token = JSON.stringify({
@@ -77,7 +98,7 @@ app.all('/player/growid/login/validate', (req, res) => {
     const tokens = Buffer.from(token).toString('base64');
     res.send({
         status: "success",
-        message: "Account Validated.",
+        message: "Account validated.",
         token: tokens,
         url: "",
         accountType: "growtopia",
@@ -87,7 +108,6 @@ app.all('/player/growid/login/validate', (req, res) => {
 
 // === REGISTER PAGE ===
 app.get('/player/growid/register', (req, res) => {
-    // Kamu bisa ganti ke file HTML/EJS sendiri, sementara tampilkan form sederhana:
     res.send(`
       <!DOCTYPE html>
       <html lang="en">
@@ -127,7 +147,15 @@ app.post('/player/growid/register/submit', (req, res) => {
         return res.status(400).send({ status: "error", message: "All fields are required." });
     }
 
-    // Simulasikan pendaftaran sukses
+    const playerFile = path.join(__dirname, 'database', 'players', `${growId}.json`);
+    if (fs.existsSync(playerFile)) {
+        return res.status(400).send({ status: "error", message: "GrowID already exists!" });
+    }
+
+    // Simpan akun baru
+    savePlayer(growId, password, _token);
+
+    // Buat token base64 untuk dikirim ke C++
     const token = Buffer.from(JSON.stringify({
         server_name: _token.toUpperCase(),
         growId,
@@ -158,7 +186,7 @@ app.all('/player/growid/checktoken', (req, res) => {
 
 // === ROOT ===
 app.get('/', (req, res) => {
-    res.send('Hello Memek');
+    res.send('GrowID Handler Active ✅');
 });
 
 // === LISTEN ===

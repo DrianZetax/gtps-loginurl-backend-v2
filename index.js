@@ -84,7 +84,7 @@ app.all('/player/growid/login/validate', (req, res) => {
         return res.redirect('/player/growid/register');
     }
 
-    const filePath = path.join(__dirname, 'database', 'players', `${growId}.json`);
+    const filePath = path.join(__dirname, 'database', 'players', `${growId}_.json`);
     if (!fs.existsSync(filePath)) {
         return res.status(404).send({ status: "error", message: "Account not found. Please register first." });
     }

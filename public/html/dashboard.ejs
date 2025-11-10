@@ -23,28 +23,22 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
+      overflow: auto; /* Diubah dari hidden ke auto untuk mobile */
+      padding: 20px; /* Tambahkan padding untuk mobile */
     }
 
-    /* HAPUS background pattern */
-    /* Background pattern dihilangkan */
-
-    /* Container utama yang memanjang ke samping - TANPA SHADOW */
+    /* Container utama yang memanjang ke samping */
     .main-container {
       display: flex;
-      width: 90%;
+      width: 100%;
       max-width: 950px;
-      height: 520px;
+      min-height: 520px;
       background: linear-gradient(135deg, #3c2a21 0%, #1a1208 100%);
       border-radius: 16px;
-      /* Shadow dihapus */
       overflow: hidden;
       border: 1px solid #5d4037;
       position: relative;
     }
-
-    /* HAPUS efek dekoratif tambahan */
-    /* .main-container::before dihapus */
 
     /* Bagian kiri untuk konten visual */
     .visual-section {
@@ -61,14 +55,10 @@
       overflow: hidden;
     }
 
-    /* HAPUS pattern dekoratif pada bagian visual */
-    /* .visual-section::before dihapus */
-
     .visual-section h1 {
       font-size: 42px;
       margin-bottom: 10px;
       font-weight: 300;
-      text-shadow: none; /* Hapus text shadow */
       position: relative;
     }
 
@@ -76,7 +66,6 @@
       font-size: 48px;
       margin-bottom: 30px;
       font-weight: 700;
-      text-shadow: none; /* Hapus text shadow */
       position: relative;
     }
 
@@ -126,7 +115,6 @@
       color: #d7ccc8;
       margin-bottom: 5px;
       text-align: center;
-      text-shadow: none; /* Hapus text shadow */
     }
 
     .login-title h2 {
@@ -135,7 +123,23 @@
       color: #d7ccc8;
       margin-bottom: 30px;
       text-align: center;
-      text-shadow: none; /* Hapus text shadow */
+    }
+
+    /* Status server */
+    .server-status {
+      background: rgba(139, 69, 19, 0.3);
+      border: 1px solid #8d6e63;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      text-align: center;
+      color: #d7ccc8;
+      font-size: 14px;
+    }
+
+    .server-status::before {
+      content: "🟡 ";
+      margin-right: 8px;
     }
 
     /* Form Styling */
@@ -157,11 +161,10 @@
       transition: all 0.3s ease;
     }
 
-    /* Efek fokus dengan warna coklat - TANPA SHADOW */
+    /* Efek fokus */
     input:focus {
       outline: none;
       border-color: #a1887f;
-      box-shadow: none; /* Hapus box shadow */
       background: rgba(60, 40, 30, 0.9);
     }
 
@@ -170,9 +173,16 @@
       color: #bcaaa4;
     }
 
+    /* Container tombol */
+    .button-container {
+      display: flex;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
     /* Tombol Umum */
     button {
-      width: 100%;
+      flex: 1;
       padding: 15px;
       border: none;
       border-radius: 10px;
@@ -180,32 +190,29 @@
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
-      margin-top: 8px;
     }
 
     button:active {
       transform: scale(0.98);
     }
 
-    /* Tombol Primer (Login) - Gradasi coklat emas - TANPA SHADOW */
+    /* Tombol Primer (Login) */
     .btn-primary {
       background: linear-gradient(45deg, #d7a461, #b08c5a);
       color: #3e2723;
-      /* Shadow dihapus */
     }
     .btn-primary:hover {
       background: linear-gradient(45deg, #e0b879, #c19a64);
-      /* Shadow dihapus */
     }
 
-    /* Tombol Sekunder (Register) - Outline coklat */
-    .btn-secondary {
+    /* Tombol Cancel */
+    .btn-cancel {
       background: transparent;
-      color: #d7a461;
-      border: 2px solid #d7a461;
+      color: #a1887f;
+      border: 2px solid #a1887f;
     }
-    .btn-secondary:hover {
-      background: rgba(215, 164, 97, 0.1);
+    .btn-cancel:hover {
+      background: rgba(161, 136, 127, 0.1);
     }
 
     /* Link "Show Password" */
@@ -230,37 +237,130 @@
       font-size: 12px;
     }
 
-    /* Responsif untuk layar kecil */
+    /* ========== RESPONSIVE UNTUK MOBILE ========== */
     @media (max-width: 768px) {
+      html, body {
+        padding: 10px;
+        overflow: auto;
+        height: auto;
+        min-height: 100vh;
+        display: block;
+      }
+
       .main-container {
         flex-direction: column;
         height: auto;
-        max-width: 420px;
-        margin: 20px;
+        min-height: auto;
+        margin: 0 auto;
+        max-width: 100%;
       }
       
       .visual-section {
         padding: 30px 20px;
+        order: 2; /* Pindah ke bawah */
       }
       
       .visual-section h1 {
-        font-size: 32px;
-      }
-      
-      .visual-section h2 {
-        font-size: 36px;
-      }
-      
-      .login-container {
-        padding: 35px 25px;
-      }
-      
-      .login-title h1 {
         font-size: 28px;
       }
       
-      .login-title h2 {
+      .visual-section h2 {
         font-size: 32px;
+        margin-bottom: 15px;
+      }
+      
+      .visual-section p {
+        font-size: 14px;
+        max-width: 100%;
+      }
+      
+      .login-container {
+        padding: 30px 20px;
+        order: 1; /* Pindah ke atas */
+      }
+      
+      .login-title h1 {
+        font-size: 24px;
+      }
+      
+      .login-title h2 {
+        font-size: 28px;
+        margin-bottom: 20px;
+      }
+
+      .server-status {
+        font-size: 13px;
+        padding: 10px 12px;
+        margin-bottom: 15px;
+      }
+
+      input[type="text"], input[type="password"] {
+        padding: 12px 15px;
+        font-size: 16px; /* Tetap 16px untuk hindari zoom di iOS */
+      }
+
+      .button-container {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      button {
+        padding: 14px;
+        font-size: 16px;
+      }
+
+      .icon-container {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 15px;
+      }
+
+      .icon-container::before {
+        font-size: 28px;
+      }
+    }
+
+    /* Untuk layar sangat kecil (iPhone SE dll) */
+    @media (max-width: 375px) {
+      .visual-section {
+        padding: 25px 15px;
+      }
+      
+      .login-container {
+        padding: 25px 15px;
+      }
+      
+      .visual-section h1 {
+        font-size: 24px;
+      }
+      
+      .visual-section h2 {
+        font-size: 28px;
+      }
+      
+      .login-title h1 {
+        font-size: 22px;
+      }
+      
+      .login-title h2 {
+        font-size: 26px;
+      }
+    }
+
+    /* Landscape mode untuk mobile */
+    @media (max-height: 500px) and (orientation: landscape) {
+      html, body {
+        padding: 10px;
+      }
+      
+      .main-container {
+        height: auto;
+        min-height: auto;
+      }
+      
+      .visual-section,
+      .login-container {
+        padding: 20px;
       }
     }
 
@@ -269,20 +369,15 @@
 <body>
 
   <div class="main-container">
-    <!-- Bagian visual di sebelah kiri -->
-    <div class="visual-section">
-      <div class="icon-container"></div>
-      <h1>Welcome to</h1>
-      <h2>GTPSID</h2>
-      <p>Connect with thousands of players worldwide. Join the adventure in the world of Growtopia and explore endless possibilities!</p>
-    </div>
-    
-    <!-- Bagian form login di sebelah kanan -->
+    <!-- Bagian form login di sebelah kanan (atas di mobile) -->
     <div class="login-container">
       <div class="login-title">
         <h1>Log Into Your</h1>
         <h2>GTPSID</h2>
       </div>
+      
+      <div class="server-status">Getting server address...</div>
+      
       <form method="POST" action="/player/growid/login/validate" autocomplete="off">
         <input type="text" name="_token" placeholder="Server Name *" required />
         <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID Name *" required />
@@ -290,10 +385,20 @@
         
         <div class="toggle-password" id="togglePassword">Show Password</div>
         
-        <button type="submit" name="action" value="Login" class="btn-primary">Login</button>
-        <button type="submit" name="action" value="Register" class="btn-secondary">Register</button>
+        <div class="button-container">
+          <button type="submit" name="action" value="Login" class="btn-primary">Login</button>
+          <button type="button" class="btn-cancel">Cancel</button>
+        </div>
       </form>
       <div class="footer">© 2025 GTPSID. All rights reserved.</div>
+    </div>
+
+    <!-- Bagian visual di sebelah kiri (bawah di mobile) -->
+    <div class="visual-section">
+      <div class="icon-container"></div>
+      <h1>Welcome to</h1>
+      <h2>GTPSID</h2>
+      <p>Connect with thousands of players worldwide. Join the adventure in the world of Growtopia and explore endless possibilities!</p>
     </div>
   </div>
 
@@ -318,6 +423,13 @@
     document.querySelector("form").addEventListener("submit", () => {
       const growId = document.getElementById("loginGrowId").value;
       if (growId) localStorage.setItem("growId", growId);
+    });
+
+    // Tombol Cancel
+    document.querySelector('.btn-cancel').addEventListener('click', function() {
+      if (confirm('Are you sure you want to cancel?')) {
+        window.history.back();
+      }
     });
   </script>
 

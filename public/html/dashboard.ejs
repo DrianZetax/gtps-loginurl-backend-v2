@@ -16,11 +16,8 @@
 
     html, body {
       height: 100%;
-      /* DIUBAH: Latar belakang halaman menjadi terang (abu-abu muda), 
-        sesuai permintaan Anda untuk menghilangkan background hitam di luar kartu.
-      */
-      background: #f2f4f800; 
-      color: #333; /* Warna teks default diubah menjadi gelap */
+      background: #f2f4f8; 
+      color: #333;
       font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       
       display: flex;
@@ -28,24 +25,56 @@
       justify-content: center;
     }
 
-    /* TETAP SAMA: Ini adalah "persegi panjang" gelap Anda 
-    */
-    .login-container {
-      width: 100%;
-      max-width: 400px;
-      padding: 30px 35px;
-      /* Warna 'kartu' yang gelap */
-      background: #1e1e1e; 
+    /* Container utama yang memanjang ke samping */
+    .main-container {
+      display: flex;
+      width: 90%;
+      max-width: 900px;
+      height: 500px;
+      background: #1e1e1e;
       border-radius: 12px;
-      border: 1px solid #333; /* Border halus untuk definisi */
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Shadow agar 'mengambang' */
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
     }
 
-    /* Judul (tetap putih agar kontras dengan kartu gelap) */
+    /* Bagian kiri untuk konten visual */
+    .visual-section {
+      flex: 1;
+      background: linear-gradient(135deg, #007bff, #0056b3);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+      color: white;
+      text-align: center;
+    }
+
+    .visual-section h2 {
+      font-size: 32px;
+      margin-bottom: 20px;
+    }
+
+    .visual-section p {
+      font-size: 16px;
+      line-height: 1.6;
+      max-width: 300px;
+    }
+
+    /* Bagian kanan untuk form login */
+    .login-container {
+      flex: 1;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Judul */
     h3 {
       font-size: 28px;
       font-weight: 600;
-      color: #ffffff; /* Putih terang untuk judul */
+      color: #ffffff;
       margin-bottom: 30px;
       text-align: center;
     }
@@ -54,17 +83,17 @@
     form {
       display: flex;
       flex-direction: column;
-      gap: 16px; /* Jarak antar elemen form */
+      gap: 16px;
     }
 
-    /* Input Fields (tetap gelap) */
+    /* Input Fields */
     input[type="text"], input[type="password"] {
       width: 100%;
       padding: 14px 16px;
       font-size: 16px;
-      background: #2a2a2a; /* Background input lebih gelap */
+      background: #2a2a2a;
       color: #e0e0e0;
-      border: 1px solid #444; /* Border abu-abu */
+      border: 1px solid #444;
       border-radius: 8px;
       transition: border-color 0.2s, box-shadow 0.2s;
     }
@@ -72,8 +101,8 @@
     /* Efek fokus modern dengan 'Blue Glow' */
     input:focus {
       outline: none;
-      border-color: #007aff; /* Warna primer biru */
-      box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.2); /* Efek glow biru */
+      border-color: #007aff;
+      box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.2);
     }
 
     /* Placeholder style */
@@ -111,17 +140,17 @@
     /* Tombol Sekunder (Register) - 'outline' */
     .btn-secondary {
       background: transparent;
-      color: #00aaff; /* Warna biru muda elektrik */
+      color: #00aaff;
       border: 1px solid #00aaff;
     }
     .btn-secondary:hover {
-      background: rgba(0, 170, 255, 0.1); /* Efek fill saat di-hover */
+      background: rgba(0, 170, 255, 0.1);
     }
 
     /* Link "Show Password" */
     .toggle-password {
       cursor: pointer;
-      color: #888; /* Abu-abu netral */
+      color: #888;
       font-size: 14px;
       text-align: right;
       margin-top: -5px;
@@ -129,30 +158,54 @@
       transition: color 0.2s;
     }
     .toggle-password:hover {
-      color: #00aaff; /* Biru muda saat hover */
+      color: #00aaff;
+    }
+
+    /* Responsif untuk layar kecil */
+    @media (max-width: 768px) {
+      .main-container {
+        flex-direction: column;
+        height: auto;
+        max-width: 400px;
+      }
+      
+      .visual-section {
+        padding: 20px;
+      }
+      
+      .visual-section h2 {
+        font-size: 24px;
+      }
     }
 
   </style>
 </head>
 <body>
 
-  <div class="login-container">
-    <h3>Log Into Your GTPSID</h3>
-    <form method="POST" action="/player/growid/login/validate" autocomplete="off">
-      <input type="text" name="_token" placeholder="Server Name *" required />
-      <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID Name *" required />
-      <input type="password" name="password" id="loginPassword" placeholder="Your GrowID Password *" required />
-      
-      <div class="toggle-password" id="togglePassword">Show Password</div>
-      
-      <button type="submit" name="action" value="Login" class="btn-primary">Login</button>
-      <button type="submit" name="action" value="Register" class="btn-secondary">Register</button>
-    </form>
+  <div class="main-container">
+    <!-- Bagian visual di sebelah kiri -->
+    <div class="visual-section">
+      <h2>Welcome to GTPSID</h2>
+      <p>Connect with thousands of players worldwide. Join the adventure in the world of Growtopia!</p>
+    </div>
+    
+    <!-- Bagian form login di sebelah kanan -->
+    <div class="login-container">
+      <h3>Log Into Your GTPSID</h3>
+      <form method="POST" action="/player/growid/login/validate" autocomplete="off">
+        <input type="text" name="_token" placeholder="Server Name *" required />
+        <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID Name *" required />
+        <input type="password" name="password" id="loginPassword" placeholder="Your GrowID Password *" required />
+        
+        <div class="toggle-password" id="togglePassword">Show Password</div>
+        
+        <button type="submit" name="action" value="Login" class="btn-primary">Login</button>
+        <button type="submit" name="action" value="Register" class="btn-secondary">Register</button>
+      </form>
+    </div>
   </div>
 
   <script>
-    // Script Anda tidak perlu diubah, sudah berfungsi dengan baik.
-    
     document.addEventListener("DOMContentLoaded", () => {
       const growId = localStorage.getItem("growId");
       if (growId) document.getElementById("loginGrowId").value = growId;

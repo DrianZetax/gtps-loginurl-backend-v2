@@ -132,6 +132,49 @@
       gap: 18px;
     }
 
+    /* Select Server Styling */
+    .server-select-container {
+      position: relative;
+    }
+
+    .server-select {
+      width: 100%;
+      padding: 15px 18px;
+      font-size: 16px;
+      background: rgba(50, 35, 25, 0.8);
+      color: #efebe9;
+      border: 1px solid #6d4c41;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      appearance: none;
+      cursor: pointer;
+    }
+
+    .server-select:focus {
+      outline: none;
+      border-color: #a1887f;
+      background: rgba(60, 40, 30, 0.9);
+    }
+
+    /* Custom dropdown arrow */
+    .server-select-container::after {
+      content: '▼';
+      position: absolute;
+      top: 50%;
+      right: 18px;
+      transform: translateY(-50%);
+      color: #bcaaa4;
+      pointer-events: none;
+      font-size: 12px;
+    }
+
+    /* Style untuk option */
+    .server-select option {
+      background: #3c2a21;
+      color: #efebe9;
+      padding: 10px;
+    }
+
     /* Input Fields */
     input[type="text"], input[type="password"] {
       width: 100%;
@@ -281,7 +324,9 @@
         margin-bottom: 20px;
       }
 
-      input[type="text"], input[type="password"] {
+      .server-select,
+      input[type="text"], 
+      input[type="password"] {
         padding: 12px 15px;
         font-size: 16px;
       }
@@ -369,7 +414,13 @@
       </div>
       
       <form method="POST" action="/player/growid/login/validate" autocomplete="off">
-        <input type="text" name="_token" placeholder="Server Name *" required />
+        <div class="server-select-container">
+          <select name="_token" class="server-select" required>
+            <option value="" disabled selected>Select Server *</option>
+            <!-- Options akan diisi oleh JavaScript -->
+          </select>
+        </div>
+        
         <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID Name *" required />
         <input type="password" name="password" id="loginPassword" placeholder="Your GrowID Password *" required />
         
@@ -393,7 +444,40 @@
   </div>
 
   <script>
+    // Data server (bisa diganti dengan fetch ke server.json)
+    const servers = [
+      "Fynxx",
+      "ShadowRealm",
+      "DragonValley", 
+      "PhoenixRise",
+      "CrystalCove",
+      "MysticGarden",
+      "ThunderPeak",
+      "OceanDepths"
+    ];
+
+    // Fungsi untuk memuat server ke dropdown
+    function loadServers() {
+      const selectElement = document.querySelector('.server-select');
+      
+      // Kosongkan options kecuali placeholder
+      while (selectElement.children.length > 1) {
+        selectElement.removeChild(selectElement.lastChild);
+      }
+      
+      // Tambahkan server ke dropdown
+      servers.forEach(server => {
+        const option = document.createElement('option');
+        option.value = server;
+        option.textContent = server;
+        selectElement.appendChild(option);
+      });
+    }
+
     document.addEventListener("DOMContentLoaded", () => {
+      // Load servers ke dropdown
+      loadServers();
+      
       const growId = localStorage.getItem("growId");
       if (growId) document.getElementById("loginGrowId").value = growId;
     });
@@ -410,9 +494,16 @@
       }
     });
 
-    document.querySelector("form").addEventListener("submit", () => {
+    document.querySelector("form").addEventListener("submit", (e) => {
+      e.preventDefault();
       const growId = document.getElementById("loginGrowId").value;
+      const server = document.querySelector('.server-select').value;
+      
       if (growId) localStorage.setItem("growId", growId);
+      if (server) localStorage.setItem("lastServer", server);
+      
+      // Submit form (simulasi)
+      alert(`Login attempted for server: ${server}\nGrowID: ${growId}`);
     });
 
     // Tombol Cancel
@@ -441,6 +532,19 @@
         e.preventDefault();
       }
     }, { passive: false });
+
+    // Fungsi untuk load dari server.json (jika diperlukan)
+    async function loadServersFromJSON() {
+      try {
+        const response = await fetch('server.json');
+        const serverData = await response.json();
+        servers.length = 0; // Clear existing servers
+        servers.push(...serverData);
+        loadServers();
+      } catch (error) {
+        console.log('Using default servers, cannot load server.json:', error);
+      }
+    }
   </script>
 
 </body>

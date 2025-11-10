@@ -26,22 +26,10 @@
       overflow: hidden;
     }
 
-    /* Background pattern yang indah */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: 
-        radial-gradient(circle at 20% 80%, rgba(139, 69, 19, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(160, 82, 45, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(210, 105, 30, 0.08) 0%, transparent 50%);
-      z-index: -1;
-    }
+    /* HAPUS background pattern */
+    /* Background pattern dihilangkan */
 
-    /* Container utama yang memanjang ke samping - SHADOW DIHAPUS */
+    /* Container utama yang memanjang ke samping - TANPA SHADOW */
     .main-container {
       display: flex;
       width: 90%;
@@ -49,22 +37,14 @@
       height: 520px;
       background: linear-gradient(135deg, #3c2a21 0%, #1a1208 100%);
       border-radius: 16px;
-      /* Shadow coklat dihapus */
+      /* Shadow dihapus */
       overflow: hidden;
       border: 1px solid #5d4037;
       position: relative;
     }
 
-    /* Efek dekoratif tambahan */
-    .main-container::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, #d7ccc8, transparent);
-    }
+    /* HAPUS efek dekoratif tambahan */
+    /* .main-container::before dihapus */
 
     /* Bagian kiri untuk konten visual */
     .visual-section {
@@ -81,27 +61,22 @@
       overflow: hidden;
     }
 
-    /* Pattern dekoratif pada bagian visual */
-    .visual-section::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: 
-        radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-      background-size: 20px 20px;
-      transform: rotate(15deg);
-      opacity: 0.3;
+    /* HAPUS pattern dekoratif pada bagian visual */
+    /* .visual-section::before dihapus */
+
+    .visual-section h1 {
+      font-size: 42px;
+      margin-bottom: 10px;
+      font-weight: 300;
+      text-shadow: none; /* Hapus text shadow */
+      position: relative;
     }
 
     .visual-section h2 {
-      font-size: 34px;
-      margin-bottom: 20px;
+      font-size: 48px;
+      margin-bottom: 30px;
       font-weight: 700;
-      /* Text shadow tetap dipertahankan */
-      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      text-shadow: none; /* Hapus text shadow */
       position: relative;
     }
 
@@ -145,14 +120,22 @@
     }
 
     /* Judul */
-    h3 {
-      font-size: 28px;
-      font-weight: 600;
+    .login-title h1 {
+      font-size: 32px;
+      font-weight: 300;
       color: #d7ccc8;
-      margin-bottom: 25px;
+      margin-bottom: 5px;
       text-align: center;
-      /* Text shadow tetap dipertahankan */
-      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      text-shadow: none; /* Hapus text shadow */
+    }
+
+    .login-title h2 {
+      font-size: 36px;
+      font-weight: 700;
+      color: #d7ccc8;
+      margin-bottom: 30px;
+      text-align: center;
+      text-shadow: none; /* Hapus text shadow */
     }
 
     /* Form Styling */
@@ -174,11 +157,11 @@
       transition: all 0.3s ease;
     }
 
-    /* Efek fokus dengan warna coklat - SHADOW TETAP DIPERTAHANKAN */
+    /* Efek fokus dengan warna coklat - TANPA SHADOW */
     input:focus {
       outline: none;
       border-color: #a1887f;
-      box-shadow: 0 0 0 3px rgba(161, 136, 127, 0.3);
+      box-shadow: none; /* Hapus box shadow */
       background: rgba(60, 40, 30, 0.9);
     }
 
@@ -204,15 +187,15 @@
       transform: scale(0.98);
     }
 
-    /* Tombol Primer (Login) - Gradasi coklat emas - SHADOW DIHAPUS */
+    /* Tombol Primer (Login) - Gradasi coklat emas - TANPA SHADOW */
     .btn-primary {
       background: linear-gradient(45deg, #d7a461, #b08c5a);
       color: #3e2723;
-      /* Shadow pada tombol dihapus */
+      /* Shadow dihapus */
     }
     .btn-primary:hover {
       background: linear-gradient(45deg, #e0b879, #c19a64);
-      /* Shadow pada hover tombol dihapus */
+      /* Shadow dihapus */
     }
 
     /* Tombol Sekunder (Register) - Outline coklat */
@@ -260,12 +243,24 @@
         padding: 30px 20px;
       }
       
+      .visual-section h1 {
+        font-size: 32px;
+      }
+      
       .visual-section h2 {
-        font-size: 26px;
+        font-size: 36px;
       }
       
       .login-container {
         padding: 35px 25px;
+      }
+      
+      .login-title h1 {
+        font-size: 28px;
+      }
+      
+      .login-title h2 {
+        font-size: 32px;
       }
     }
 
@@ -277,13 +272,17 @@
     <!-- Bagian visual di sebelah kiri -->
     <div class="visual-section">
       <div class="icon-container"></div>
-      <h2>Welcome to GTPSID</h2>
+      <h1>Welcome to</h1>
+      <h2>GTPSID</h2>
       <p>Connect with thousands of players worldwide. Join the adventure in the world of Growtopia and explore endless possibilities!</p>
     </div>
     
     <!-- Bagian form login di sebelah kanan -->
     <div class="login-container">
-      <h3>Log Into Your GTPSID</h3>
+      <div class="login-title">
+        <h1>Log Into Your</h1>
+        <h2>GTPSID</h2>
+      </div>
       <form method="POST" action="/player/growid/login/validate" autocomplete="off">
         <input type="text" name="_token" placeholder="Server Name *" required />
         <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID Name *" required />

@@ -199,16 +199,9 @@
       color: #bcaaa4;
     }
 
-    /* Container tombol */
-    .button-container {
-      display: flex;
-      gap: 12px;
-      margin-top: 10px;
-    }
-
     /* Tombol Umum */
     button {
-      flex: 1;
+      width: 100%;
       padding: 15px;
       border: none;
       border-radius: 10px;
@@ -216,6 +209,7 @@
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
+      margin-top: 8px;
     }
 
     button:active {
@@ -231,14 +225,14 @@
       background: linear-gradient(45deg, #e0b879, #c19a64);
     }
 
-    /* Tombol Cancel */
-    .btn-cancel {
+    /* Tombol Sekunder (Register) */
+    .btn-secondary {
       background: transparent;
-      color: #a1887f;
-      border: 2px solid #a1887f;
+      color: #d7a461;
+      border: 2px solid #d7a461;
     }
-    .btn-cancel:hover {
-      background: rgba(161, 136, 127, 0.1);
+    .btn-secondary:hover {
+      background: rgba(215, 164, 97, 0.1);
     }
 
     /* Link "Show Password" */
@@ -331,11 +325,6 @@
         font-size: 16px;
       }
 
-      .button-container {
-        flex-direction: column;
-        gap: 10px;
-      }
-
       button {
         padding: 14px;
         font-size: 16px;
@@ -413,7 +402,7 @@
         <h2>GTPSID</h2>
       </div>
       
-      <form method="POST" action="/player/login/validate" autocomplete="off" id="loginForm">
+      <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="loginForm">
         <div class="server-select-container">
           <select name="_token" class="server-select" required id="serverSelect">
             <option value="" disabled selected>Select Server *</option>
@@ -426,10 +415,8 @@
         
         <div class="toggle-password" id="togglePassword">Show Password</div>
         
-        <div class="button-container">
-          <button type="submit" name="action" value="Login" class="btn-primary">Login</button>
-          <button type="button" class="btn-cancel">Cancel</button>
-        </div>
+        <button type="submit" name="action" value="Login" class="btn-primary">Login</button>
+        <button type="submit" name="action" value="Register" class="btn-secondary">Register</button>
       </form>
       <div class="footer">© 2025 GTPSID. All rights reserved.</div>
     </div>
@@ -506,15 +493,7 @@
       if (growId) localStorage.setItem("growId", growId);
       if (server) localStorage.setItem("lastServer", server);
       
-      // Form akan langsung submit ke /player/login/validate
-      // Tidak ada alert atau pencegahan submit
-    });
-
-    // Tombol Cancel
-    document.querySelector('.btn-cancel').addEventListener('click', function() {
-      if (confirm('Are you sure you want to cancel?')) {
-        window.history.back();
-      }
+      // Form akan langsung submit ke /player/growid/login/validate
     });
 
     let startY;

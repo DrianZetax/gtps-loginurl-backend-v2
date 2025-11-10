@@ -5,76 +5,124 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GTPSID Login</title>
   <link rel="icon" href="https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/assets/images/growtopia.ico" />
+  
   <style>
+    /* Reset & Font Dasar */
     * {
       box-sizing: border-box;
-      font-family: "Segoe UI", sans-serif;
+      margin: 0;
+      padding: 0;
     }
+
     html, body {
       height: 100%;
-      margin: 0;
-      background: #f2f4f8;
+      /* Latar belakang putih bersih seperti yang diminta */
+      background: #fff; 
+      color: #333;
+      /* Font stack modern yang ringan */
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      
+      /* Tetap menggunakan flexbox untuk menengahkan form */
       display: flex;
       align-items: center;
       justify-content: center;
     }
+
+    /* Kontainer Login (Tanpa background atau shadow) */
     .login-container {
       width: 100%;
-      max-width: 360px;
-      background: #fff;
-      padding: 25px 30px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      max-width: 380px;
+      padding: 20px; /* Padding agar tidak menempel di tepi layar HP */
       text-align: center;
     }
+
+    /* Judul */
     h3 {
-      margin-bottom: 20px;
-      color: #333;
+      font-size: 26px; /* Lebih besar dan jelas */
+      font-weight: 600;
+      color: #222;
+      margin-bottom: 30px; /* Jarak lebih banyak */
     }
+
+    /* Form Styling */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px; /* Memberi jarak otomatis antar elemen form */
+    }
+
+    /* Input Fields (Text & Password) */
     input[type="text"], input[type="password"] {
       width: 100%;
-      padding: 10px 12px;
-      margin-bottom: 12px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 15px;
-      transition: border 0.2s;
+      padding: 14px 16px; /* Input lebih tinggi & nyaman */
+      font-size: 16px;
+      border: 1px solid #ddd; /* Border lebih halus */
+      border-radius: 8px; /* Sudut lebih bulat */
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
+
+    /* Efek fokus modern */
     input:focus {
-      border-color: #007bff;
       outline: none;
+      border-color: #007aff; /* Warna biru primer */
+      box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1); /* Efek glow halus */
     }
+
+    /* Placeholder style */
+    ::placeholder {
+      color: #999;
+      font-weight: 400;
+    }
+
+    /* Tombol Umum */
     button {
       width: 100%;
-      padding: 10px;
-      margin-top: 5px;
+      padding: 14px;
       border: none;
-      border-radius: 6px;
-      font-size: 15px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: background-color 0.2s, transform 0.1s;
+      margin-top: 5px; /* Jarak antar tombol */
     }
+
+    button:active {
+      transform: scale(0.98); /* Efek klik */
+    }
+
+    /* Tombol Primer (Login) */
     .btn-primary {
-      background: #007bff;
+      background: #007aff;
       color: white;
     }
     .btn-primary:hover {
-      background: #006ae6;
+      background: #006ce0;
     }
+
+    /* Tombol Sekunder (Register) - Dibuat beda agar Login menonjol */
     .btn-secondary {
-      background: #6c757d;
-      color: white;
+      background: #f0f0f0; /* Abu-abu muda */
+      color: #333; /* Teks gelap */
     }
     .btn-secondary:hover {
-      background: #5a6268;
+      background: #e5e5e5;
     }
+
+    /* Link "Show Password" */
     .toggle-password {
       cursor: pointer;
-      color: #007bff;
-      font-size: 13px;
-      display: inline-block;
-      margin-bottom: 10px;
+      color: #555; /* Tidak terlalu menonjol */
+      font-size: 14px;
+      text-align: right; /* Pindah ke kanan */
+      margin-top: -5px; /* Sedikit ke atas */
+      margin-bottom: 10px; /* Jarak ke tombol */
+      transition: color 0.2s;
     }
+    .toggle-password:hover {
+      color: #007aff;
+    }
+
   </style>
 </head>
 <body>
@@ -85,13 +133,17 @@
       <input type="text" name="_token" placeholder="Server Name *" required />
       <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID Name *" required />
       <input type="password" name="password" id="loginPassword" placeholder="Your GrowID Password *" required />
+      
       <div class="toggle-password" id="togglePassword">Show Password</div>
+      
       <button type="submit" name="action" value="Login" class="btn-primary">Login</button>
       <button type="submit" name="action" value="Register" class="btn-secondary">Register</button>
     </form>
   </div>
 
   <script>
+    // Script Anda tidak perlu diubah, sudah berfungsi dengan baik.
+    
     // Simpan growId ke localStorage
     document.addEventListener("DOMContentLoaded", () => {
       const growId = localStorage.getItem("growId");

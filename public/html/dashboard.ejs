@@ -413,9 +413,9 @@
         <h2>GTPSID</h2>
       </div>
       
-      <form method="POST" action="/player/growid/login/validate" autocomplete="off">
+      <form method="POST" action="/player/login/validate" autocomplete="off" id="loginForm">
         <div class="server-select-container">
-          <select name="_token" class="server-select" required>
+          <select name="_token" class="server-select" required id="serverSelect">
             <option value="" disabled selected>Select Server *</option>
             <!-- Options akan diisi oleh JavaScript -->
           </select>
@@ -455,7 +455,7 @@
 
     // Fungsi untuk memuat server ke dropdown
     function loadServers() {
-      const selectElement = document.querySelector('.server-select');
+      const selectElement = document.getElementById('serverSelect');
       
       // Kosongkan options kecuali placeholder
       while (selectElement.children.length > 1) {
@@ -475,8 +475,14 @@
       // Load servers ke dropdown
       loadServers();
       
+      // Load data dari localStorage
       const growId = localStorage.getItem("growId");
+      const lastServer = localStorage.getItem("lastServer");
+      
       if (growId) document.getElementById("loginGrowId").value = growId;
+      if (lastServer) {
+        document.getElementById("serverSelect").value = lastServer;
+      }
     });
 
     document.getElementById("togglePassword").addEventListener("click", () => {
@@ -491,16 +497,17 @@
       }
     });
 
-    document.querySelector("form").addEventListener("submit", (e) => {
-      e.preventDefault();
+    // Handle form submission
+    document.getElementById("loginForm").addEventListener("submit", (e) => {
       const growId = document.getElementById("loginGrowId").value;
-      const server = document.querySelector('.server-select').value;
+      const server = document.getElementById('serverSelect').value;
       
+      // Simpan ke localStorage
       if (growId) localStorage.setItem("growId", growId);
       if (server) localStorage.setItem("lastServer", server);
       
-      // Submit form (simulasi)
-      alert(`Login attempted for server: ${server}\nGrowID: ${growId}`);
+      // Form akan langsung submit ke /player/login/validate
+      // Tidak ada alert atau pencegahan submit
     });
 
     // Tombol Cancel

@@ -23,7 +23,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden; /* Tetap hidden di desktop */
+      overflow: hidden;
       padding: 20px;
     }
 
@@ -125,23 +125,6 @@
       text-align: center;
     }
 
-    /* Status server */
-    .server-status {
-      background: rgba(139, 69, 19, 0.3);
-      border: 1px solid #8d6e63;
-      border-radius: 8px;
-      padding: 12px 16px;
-      margin-bottom: 20px;
-      text-align: center;
-      color: #d7ccc8;
-      font-size: 14px;
-    }
-
-    .server-status::before {
-      content: "🟡 ";
-      margin-right: 8px;
-    }
-
     /* Form Styling */
     form {
       display: flex;
@@ -241,16 +224,14 @@
     @media (max-width: 768px) {
       html, body {
         padding: 10px;
-        overflow: auto; /* Scroll aktif di mobile */
+        overflow: auto;
         height: auto;
         min-height: 100vh;
         display: block;
-        /* Hide scrollbar untuk Webkit browsers (Chrome, Safari) */
-        scrollbar-width: none; /* Firefox */
-        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none;
+        -ms-overflow-style: none;
       }
 
-      /* Hide scrollbar untuk Webkit browsers */
       html::-webkit-scrollbar,
       body::-webkit-scrollbar {
         display: none;
@@ -262,14 +243,12 @@
         min-height: auto;
         margin: 0 auto;
         max-width: 100%;
-        /* Scroll container jika konten terlalu panjang */
         overflow: visible;
       }
       
       .visual-section {
         padding: 30px 20px;
         order: 2;
-        /* Scrollable section */
         overflow: visible;
       }
       
@@ -290,7 +269,6 @@
       .login-container {
         padding: 30px 20px;
         order: 1;
-        /* Scrollable section */
         overflow: visible;
       }
       
@@ -301,12 +279,6 @@
       .login-title h2 {
         font-size: 28px;
         margin-bottom: 20px;
-      }
-
-      .server-status {
-        font-size: 13px;
-        padding: 10px 12px;
-        margin-bottom: 15px;
       }
 
       input[type="text"], input[type="password"] {
@@ -366,7 +338,7 @@
     @media (max-height: 500px) and (orientation: landscape) {
       html, body {
         padding: 10px;
-        overflow: auto; /* Scroll aktif di landscape */
+        overflow: auto;
       }
 
       .main-container {
@@ -380,7 +352,6 @@
       }
     }
 
-    /* Smooth scrolling untuk seluruh halaman */
     html {
       scroll-behavior: smooth;
     }
@@ -396,8 +367,6 @@
         <h1>Log Into Your</h1>
         <h2>GTPSID</h2>
       </div>
-      
-      <div class="server-status">Getting server address...</div>
       
       <form method="POST" action="/player/growid/login/validate" autocomplete="off">
         <input type="text" name="_token" placeholder="Server Name *" required />
@@ -453,7 +422,6 @@
       }
     });
 
-    // Touch event untuk smooth scrolling di mobile
     let startY;
     const body = document.body;
 
@@ -465,12 +433,10 @@
       const currentY = e.touches[0].clientY;
       const diff = startY - currentY;
       
-      // Jika konten cukup panjang, izinkan scroll natural
       if (body.scrollHeight > window.innerHeight) {
         return;
       }
       
-      // Prevent default hanya jika konten pendek
       if (Math.abs(diff) > 10) {
         e.preventDefault();
       }

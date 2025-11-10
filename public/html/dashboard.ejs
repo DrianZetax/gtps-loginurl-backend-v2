@@ -16,152 +16,235 @@
 
     html, body {
       height: 100%;
-      /* Background transparan */
       background: transparent;
       color: #333;
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       
       display: flex;
       align-items: center;
       justify-content: center;
-      /* Menghilangkan scrollbar */
       overflow: hidden;
+    }
+
+    /* Background pattern yang indah */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(139, 69, 19, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(160, 82, 45, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(210, 105, 30, 0.08) 0%, transparent 50%);
+      z-index: -1;
     }
 
     /* Container utama yang memanjang ke samping */
     .main-container {
       display: flex;
       width: 90%;
-      max-width: 900px;
-      height: 500px;
-      background: #1e1e1e;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      max-width: 950px;
+      height: 520px;
+      background: linear-gradient(135deg, #3c2a21 0%, #1a1208 100%);
+      border-radius: 16px;
+      box-shadow: 
+        0 10px 30px rgba(60, 42, 33, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
       overflow: hidden;
+      border: 1px solid #5d4037;
+      position: relative;
+    }
+
+    /* Efek dekoratif tambahan */
+    .main-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #d7ccc8, transparent);
     }
 
     /* Bagian kiri untuk konten visual */
     .visual-section {
-      flex: 1;
-      background: linear-gradient(135deg, #007bff, #0056b3);
+      flex: 1.2;
+      background: linear-gradient(135deg, #8d6e63 0%, #5d4037 50%, #3e2723 100%);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 30px;
-      color: white;
+      padding: 40px;
+      color: #fff;
       text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Pattern dekoratif pada bagian visual */
+    .visual-section::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: 
+        radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+      background-size: 20px 20px;
+      transform: rotate(15deg);
+      opacity: 0.3;
     }
 
     .visual-section h2 {
-      font-size: 32px;
+      font-size: 34px;
       margin-bottom: 20px;
+      font-weight: 700;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+      position: relative;
     }
 
     .visual-section p {
       font-size: 16px;
-      line-height: 1.6;
-      max-width: 300px;
+      line-height: 1.7;
+      max-width: 320px;
+      opacity: 0.9;
+      position: relative;
+    }
+
+    /* Ikon dekoratif */
+    .icon-container {
+      width: 80px;
+      height: 80px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 25px;
+      position: relative;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .icon-container::before {
+      content: '🌿';
+      font-size: 36px;
     }
 
     /* Bagian kanan untuk form login */
     .login-container {
       flex: 1;
-      padding: 40px;
+      padding: 45px;
       display: flex;
       flex-direction: column;
       justify-content: center;
+      background: rgba(30, 20, 10, 0.7);
+      backdrop-filter: blur(10px);
     }
 
     /* Judul */
     h3 {
       font-size: 28px;
       font-weight: 600;
-      color: #ffffff;
+      color: #d7ccc8;
       margin-bottom: 30px;
       text-align: center;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
     }
 
     /* Form Styling */
     form {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 18px;
     }
 
     /* Input Fields */
     input[type="text"], input[type="password"] {
       width: 100%;
-      padding: 14px 16px;
+      padding: 15px 18px;
       font-size: 16px;
-      background: #2a2a2a;
-      color: #e0e0e0;
-      border: 1px solid #444;
-      border-radius: 8px;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      background: rgba(50, 35, 25, 0.8);
+      color: #efebe9;
+      border: 1px solid #6d4c41;
+      border-radius: 10px;
+      transition: all 0.3s ease;
     }
 
-    /* Efek fokus modern dengan 'Blue Glow' */
+    /* Efek fokus dengan warna coklat */
     input:focus {
       outline: none;
-      border-color: #007aff;
-      box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.2);
+      border-color: #a1887f;
+      box-shadow: 0 0 0 3px rgba(161, 136, 127, 0.3);
+      background: rgba(60, 40, 30, 0.9);
     }
 
     /* Placeholder style */
     ::placeholder {
-      color: #777;
+      color: #bcaaa4;
     }
 
     /* Tombol Umum */
     button {
       width: 100%;
-      padding: 14px;
+      padding: 15px;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       font-size: 16px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s;
-      margin-top: 5px;
+      transition: all 0.3s ease;
+      margin-top: 8px;
     }
 
     button:active {
       transform: scale(0.98);
     }
 
-    /* Tombol Primer (Login) - DENGAN GRADASI BIRU */
+    /* Tombol Primer (Login) - Gradasi coklat emas */
     .btn-primary {
-      background: linear-gradient(45deg, #007bff, #0056b3);
-      color: white;
+      background: linear-gradient(45deg, #d7a461, #b08c5a);
+      color: #3e2723;
+      box-shadow: 0 4px 15px rgba(183, 148, 90, 0.3);
     }
     .btn-primary:hover {
-      opacity: 0.9; 
-      box-shadow: 0 2px 10px rgba(0, 122, 255, 0.3); 
+      background: linear-gradient(45deg, #e0b879, #c19a64);
+      box-shadow: 0 6px 20px rgba(183, 148, 90, 0.4);
     }
 
-    /* Tombol Sekunder (Register) - 'outline' */
+    /* Tombol Sekunder (Register) - Outline coklat */
     .btn-secondary {
       background: transparent;
-      color: #00aaff;
-      border: 1px solid #00aaff;
+      color: #d7a461;
+      border: 2px solid #d7a461;
     }
     .btn-secondary:hover {
-      background: rgba(0, 170, 255, 0.1);
+      background: rgba(215, 164, 97, 0.1);
     }
 
     /* Link "Show Password" */
     .toggle-password {
       cursor: pointer;
-      color: #888;
+      color: #a1887f;
       font-size: 14px;
       text-align: right;
-      margin-top: -5px;
-      margin-bottom: 10px;
-      transition: color 0.2s;
+      margin-top: -8px;
+      margin-bottom: 12px;
+      transition: color 0.3s;
     }
     .toggle-password:hover {
-      color: #00aaff;
+      color: #d7a461;
+    }
+
+    /* Footer kecil */
+    .footer {
+      text-align: center;
+      margin-top: 25px;
+      color: #8d6e63;
+      font-size: 12px;
     }
 
     /* Responsif untuk layar kecil */
@@ -169,16 +252,20 @@
       .main-container {
         flex-direction: column;
         height: auto;
-        max-width: 400px;
+        max-width: 420px;
         margin: 20px;
       }
       
       .visual-section {
-        padding: 20px;
+        padding: 30px 20px;
       }
       
       .visual-section h2 {
-        font-size: 24px;
+        font-size: 26px;
+      }
+      
+      .login-container {
+        padding: 35px 25px;
       }
     }
 
@@ -189,8 +276,9 @@
   <div class="main-container">
     <!-- Bagian visual di sebelah kiri -->
     <div class="visual-section">
+      <div class="icon-container"></div>
       <h2>Welcome to GTPSID</h2>
-      <p>Connect with thousands of players worldwide. Join the adventure in the world of Growtopia!</p>
+      <p>Connect with thousands of players worldwide. Join the adventure in the world of Growtopia and explore endless possibilities!</p>
     </div>
     
     <!-- Bagian form login di sebelah kanan -->
@@ -206,6 +294,7 @@
         <button type="submit" name="action" value="Login" class="btn-primary">Login</button>
         <button type="submit" name="action" value="Register" class="btn-secondary">Register</button>
       </form>
+      <div class="footer">© 2023 GTPSID. All rights reserved.</div>
     </div>
   </div>
 

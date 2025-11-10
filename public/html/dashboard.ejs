@@ -1,92 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Growtopia - Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Faculty+Glyphic&display=swap" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GTPSID Login</title>
+  <link rel="icon" href="https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/assets/images/growtopia.ico" />
+  
+  <style>
+    /* Reset & Font Dasar */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
+      /* DIUBAH: Latar belakang halaman menjadi terang (abu-abu muda), 
+        sesuai permintaan Anda untuk menghilangkan background hitam di luar kartu.
+      */
+      background: #f2f4f8; 
+      color: #333; /* Warna teks default diubah menjadi gelap */
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* TETAP SAMA: Ini adalah "persegi panjang" gelap Anda 
+    */
+    .login-container {
+      width: 100%;
+      max-width: 400px;
+      padding: 30px 35px;
+      /* Warna 'kartu' yang gelap */
+      background: #1e1e1e; 
+      border-radius: 12px;
+      border: 1px solid #333; /* Border halus untuk definisi */
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Shadow agar 'mengambang' */
+    }
+
+    /* Judul (tetap putih agar kontras dengan kartu gelap) */
+    h3 {
+      font-size: 28px;
+      font-weight: 600;
+      color: #ffffff; /* Putih terang untuk judul */
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    /* Form Styling */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px; /* Jarak antar elemen form */
+    }
+
+    /* Input Fields (tetap gelap) */
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 16px;
+      background: #2a2a2a; /* Background input lebih gelap */
+      color: #e0e0e0;
+      border: 1px solid #444; /* Border abu-abu */
+      border-radius: 8px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    /* Efek fokus modern dengan 'Blue Glow' */
+    input:focus {
+      outline: none;
+      border-color: #007aff; /* Warna primer biru */
+      box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.2); /* Efek glow biru */
+    }
+
+    /* Placeholder style */
+    ::placeholder {
+      color: #777;
+    }
+
+    /* Tombol Umum */
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 5px;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    /* Tombol Primer (Login) - DENGAN GRADASI BIRU */
+    .btn-primary {
+      background: linear-gradient(45deg, #007bff, #0056b3);
+      color: white;
+    }
+    .btn-primary:hover {
+      opacity: 0.9; 
+      box-shadow: 0 2px 10px rgba(0, 122, 255, 0.3); 
+    }
+
+    /* Tombol Sekunder (Register) - 'outline' */
+    .btn-secondary {
+      background: transparent;
+      color: #00aaff; /* Warna biru muda elektrik */
+      border: 1px solid #00aaff;
+    }
+    .btn-secondary:hover {
+      background: rgba(0, 170, 255, 0.1); /* Efek fill saat di-hover */
+    }
+
+    /* Link "Show Password" */
+    .toggle-password {
+      cursor: pointer;
+      color: #888; /* Abu-abu netral */
+      font-size: 14px;
+      text-align: right;
+      margin-top: -5px;
+      margin-bottom: 10px;
+      transition: color 0.2s;
+    }
+    .toggle-password:hover {
+      color: #00aaff; /* Biru muda saat hover */
+    }
+
+  </style>
 </head>
+<body>
 
-<body class="flex flex-col items-center justify-center h-screen bg-gray-700 font-serif">
+  <div class="login-container">
+    <h3>Log Into Your GTPSID</h3>
+    <form method="POST" action="/player/growid/login/validate" autocomplete="off">
+      <input type="text" name="_token" placeholder="Server Name *" required />
+      <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID Name *" required />
+      <input type="password" name="password" id="loginPassword" placeholder="Your GrowID Password *" required />
+      
+      <div class="toggle-password" id="togglePassword">Show Password</div>
+      
+      <button type="submit" name="action" value="Login" class="btn-primary">Login</button>
+      <button type="submit" name="action" value="Register" class="btn-secondary">Register</button>
+    </form>
+  </div>
 
-    <div class="fixed inset-0 flex items-center justify-center p-4">
-        
-        <div class="relative shadow-lg w-2/3 rounded-md flex flex-col border border-gray-500 bg-cover bg-center"
-            style="background-image: url('https://placehold.co/1000x600/333333/555555/png?text=Background+Image');">
-            
-            <div class="flex flex-1 bg-white bg-opacity-20 rounded-md">
-                
-                <form method="post" action="/player/growid/login/validate" accept-charset="UTF-8" id="loginForm"
-                    class="w-3/5 flex flex-col items-start justify-center bg-green-700 bg-opacity-40 p-4 animate__animated animate__fadeIn">
-                    
-                    <input name="type" value="log" type="hidden" />
-                    <input name="_token" value="dummy_token" type="hidden" /> <div id="errorDiv" class="hidden flex flex-col mb-2 text-xs text-red-400 rounded">
-                        <a id="errorMessage"></a>
-                    </div>
+  <script>
+    // Script Anda tidak perlu diubah, sudah berfungsi dengan baik.
+    
+    document.addEventListener("DOMContentLoaded", () => {
+      const growId = localStorage.getItem("growId");
+      if (growId) document.getElementById("loginGrowId").value = growId;
+    });
 
-                    <div class="mb-4 w-full">
-                        <div class="flex justify-center">
-                            <img src="https://placehold.co/130x50/004d40/ffffff/png?text=TITLE" class="h-auto">
-                        </div>
-                        
-                        <label for="loginGrowId" class="block text-black text-xs mb-1">Bolang-ID</label>
-                        <div class="flex items-center border-2 border-[#00796b] bg-[#80cbc4] px-2 py-1">
-                            <i class="fas fa-user text-black mr-2 text-xs"></i>
-                            <input type="text" name="growId" id="loginGrowId"
-                                class="w-full bg-[#80cbc4] text-black text-xs placeholder-black focus:outline-none rounded-md"
-                                placeholder="Enter Bolang-ID">
-                        </div>
-                    </div>
+    document.getElementById("togglePassword").addEventListener("click", () => {
+      const pwd = document.getElementById("loginPassword");
+      const toggle = document.getElementById("togglePassword");
+      if (pwd.type === "password") {
+        pwd.type = "text";
+        toggle.textContent = "Hide Password";
+      } else {
+        pwd.type = "password";
+        toggle.textContent = "Show Password";
+      }
+    });
 
-                    <div class="mb-4 w-full">
-                        <label for="loginPassword" class="block text-black text-xs mb-1">Password</label>
-                        <div class="flex items-center border-2 border-[#00796b] bg-[#80cbc4] px-2 py-1">
-                            <i class="fas fa-lock text-black mr-2 text-xs"></i>
-                            <input type="password" name="password" id="loginPassword"
-                                class="w-full bg-[#80cbc4] text-black text-xs placeholder-black focus:outline-none rounded-md"
-                                placeholder="Enter password">
-                            <button type="button" id="toggleLogPassword"
-                                class="text-black ml-2 focus:outline-none text-xs">
-                                <i class="fas fa-eye"></i>
-                            </button>
-                        </div>
-                    </div>
+    document.querySelector("form").addEventListener("submit", () => {
+      const growId = document.getElementById("loginGrowId").value;
+      if (growId) localStorage.setItem("growId", growId);
+    });
+  </script>
 
-                    <div class="flex items-center justify-between w-full">
-                        <div class="text-[10px] text-black">
-                            No Account?&nbsp;<a id="doYouNeedAccount" class="underline text-[#004d40]"
-                                href="#">Register</a>
-                        </div>
-                        <button id="loginButton"
-                            class="px-4 py-2 bg-[#004d40] text-white text-xs hover:bg-[#003d33] transition duration-300 ease-in-out transform hover:scale-105">Login</button>
-                    </div>
-                </form>
-
-                <form method="post" action="/player/growid/login/validate" accept-charset="UTF-8" id="registerForm"
-                    class="hidden mt-3 animate__animated animate__fadeIn">
-                    
-                    <div class="mb-1">
-                        <input name="type" value="reg" type="hidden" />
-                        <input name="_token" value="dummy_token" type="hidden" /> <input name="growId" value="VertionLabsLul" type="hidden" />
-                        <input name="password" value="" type="hidden" />
-                        <label for="regGrowId" class="block text-black text-xs">Eclipse-ID - Registration</label>
-                    </div>
-                </form>
-
-                <div class="w-2/5 flex flex-col items-center space-y-2 rounded-r-md bg-opacity-20 items-center justify-center ">
-                    <div>
-                        <img src="https://placehold.co/150x200/cccccc/333333/png?text=Character" alt="Character Image" class="h-auto">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    </body>
+</body>
 </html>

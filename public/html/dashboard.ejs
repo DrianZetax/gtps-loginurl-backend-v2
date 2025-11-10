@@ -1,69 +1,122 @@
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-      <meta charset="utf-8" />
-      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>GTPSID Login</title>
-      <link rel="icon" href="https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/assets/images/growtopia.ico" />
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" />
-      <style>
-        html, body {
-        height: 100%;
-        margin: 0;
-        background: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GTPSID Login</title>
+  <link rel="icon" href="https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/assets/images/growtopia.ico" />
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", sans-serif;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: #f2f4f8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .login-container {
+      width: 100%;
+      max-width: 360px;
+      background: #fff;
+      padding: 25px 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    h3 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 15px;
+      transition: border 0.2s;
+    }
+    input:focus {
+      border-color: #007bff;
+      outline: none;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: none;
+      border-radius: 6px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-primary {
+      background: #007bff;
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #006ae6;
+    }
+    .btn-secondary {
+      background: #6c757d;
+      color: white;
+    }
+    .btn-secondary:hover {
+      background: #5a6268;
+    }
+    .toggle-password {
+      cursor: pointer;
+      color: #007bff;
+      font-size: 13px;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <h3>Log Into Your GTPSID</h3>
+    <form method="POST" action="/player/growid/login/validate" autocomplete="off">
+      <input type="text" name="_token" placeholder="Server Name *" required />
+      <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID Name *" required />
+      <input type="password" name="password" id="loginPassword" placeholder="Your GrowID Password *" required />
+      <div class="toggle-password" id="togglePassword">Show Password</div>
+      <button type="submit" name="action" value="Login" class="btn-primary">Login</button>
+      <button type="submit" name="action" value="Register" class="btn-secondary">Register</button>
+    </form>
+  </div>
+
+  <script>
+    // Simpan growId ke localStorage
+    document.addEventListener("DOMContentLoaded", () => {
+      const growId = localStorage.getItem("growId");
+      if (growId) document.getElementById("loginGrowId").value = growId;
+    });
+
+    // Toggle password visibility
+    document.getElementById("togglePassword").addEventListener("click", () => {
+      const pwd = document.getElementById("loginPassword");
+      const toggle = document.getElementById("togglePassword");
+      if (pwd.type === "password") {
+        pwd.type = "text";
+        toggle.textContent = "Hide Password";
+      } else {
+        pwd.type = "password";
+        toggle.textContent = "Show Password";
       }
-        .login-container {
-          max-width: 400px;
-          margin: 80px auto;
-          padding: 30px;
-          background: white;
-          border-radius: 10px;
-          box-shadow: 0 0 15px rgba(0,0,0,0.1);
-        }
-      </style>
-    </head>
-    <body>
+    });
 
-    <div class="login-container">
-      <h3 class="text-center mb-4">Log Into Your GTPSID</h3>
-      <form method="POST" action="/player/growid/login/validate" class="" accept-charset="UTF-8" role="form" required="required" autocomplete="off">
-        <div class="form-group">
-          <input type="text" name="_token" class="form-control" placeholder="Server Name *" required>
-        </div>
-        <div class="form-group">
-          <input type="text" name="growId" id="loginGrowId" class="form-control" placeholder="Your GrowID Name *" />
-        </div>
+    // Simpan GrowID saat submit
+    document.querySelector("form").addEventListener("submit", () => {
+      const growId = document.getElementById("loginGrowId").value;
+      if (growId) localStorage.setItem("growId", growId);
+    });
+  </script>
 
-        <div class="form-group">
-          <input type="password" name="password" id="loginPassword" class="form-control" placeholder="Your GrowID Password *" />
-        </div>
-
-        <input type="submit" name="action" value="Login" id="loginBtn" class="btn btn-primary btn-block" />
-        <input type="submit" name="action" value="Register" id="registerBtn" class="btn btn-secondary btn-block" />
-
-      </form>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-    document.addEventListener("DOMContentLoaded", function () {
-            const stored = localStorage.getItem("growId");
-            if (stored) document.getElementById("loginGrowId").value = stored;
-          });
-
-          // Toggle password visibility
-          document
-            .getElementById("toggleLogPassword")
-            .addEventListener("click", function () {
-              const pwdField = document.getElementById("loginPassword");
-              const isHidden = pwdField.type === "password";
-              pwdField.type = isHidden ? "text" : "password";
-              this.innerHTML = isHidden ? "CLOSE " : "OPEN ";
-            });
-    </body>
-    </html>
+</body>
+</html>

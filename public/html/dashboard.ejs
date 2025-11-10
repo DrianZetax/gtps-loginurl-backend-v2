@@ -41,7 +41,7 @@
       z-index: -1;
     }
 
-    /* Container utama yang memanjang ke samping */
+    /* Container utama yang memanjang ke samping - SHADOW DIHAPUS */
     .main-container {
       display: flex;
       width: 90%;
@@ -49,9 +49,7 @@
       height: 520px;
       background: linear-gradient(135deg, #3c2a21 0%, #1a1208 100%);
       border-radius: 16px;
-      box-shadow: 
-        0 10px 30px rgba(60, 42, 33, 0.4),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      /* Shadow coklat dihapus */
       overflow: hidden;
       border: 1px solid #5d4037;
       position: relative;
@@ -102,6 +100,7 @@
       font-size: 34px;
       margin-bottom: 20px;
       font-weight: 700;
+      /* Text shadow tetap dipertahankan */
       text-shadow: 0 2px 4px rgba(0,0,0,0.3);
       position: relative;
     }
@@ -152,6 +151,7 @@
       color: #d7ccc8;
       margin-bottom: 25px;
       text-align: center;
+      /* Text shadow tetap dipertahankan */
       text-shadow: 0 1px 2px rgba(0,0,0,0.3);
     }
 
@@ -174,7 +174,7 @@
       transition: all 0.3s ease;
     }
 
-    /* Efek fokus dengan warna coklat */
+    /* Efek fokus dengan warna coklat - SHADOW TETAP DIPERTAHANKAN */
     input:focus {
       outline: none;
       border-color: #a1887f;
@@ -204,15 +204,15 @@
       transform: scale(0.98);
     }
 
-    /* Tombol Primer (Login) - Gradasi coklat emas */
+    /* Tombol Primer (Login) - Gradasi coklat emas - SHADOW DIHAPUS */
     .btn-primary {
       background: linear-gradient(45deg, #d7a461, #b08c5a);
       color: #3e2723;
-      box-shadow: 0 4px 15px rgba(183, 148, 90, 0.3);
+      /* Shadow pada tombol dihapus */
     }
     .btn-primary:hover {
       background: linear-gradient(45deg, #e0b879, #c19a64);
-      box-shadow: 0 6px 20px rgba(183, 148, 90, 0.4);
+      /* Shadow pada hover tombol dihapus */
     }
 
     /* Tombol Sekunder (Register) - Outline coklat */
@@ -294,7 +294,7 @@
         <button type="submit" name="action" value="Login" class="btn-primary">Login</button>
         <button type="submit" name="action" value="Register" class="btn-secondary">Register</button>
       </form>
-      <div class="footer">© 2023 GTPSID. All rights reserved.</div>
+      <div class="footer">© 2025 GTPSID. All rights reserved.</div>
     </div>
   </div>
 

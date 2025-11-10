@@ -23,8 +23,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: auto; /* Diubah dari hidden ke auto untuk mobile */
-      padding: 20px; /* Tambahkan padding untuk mobile */
+      overflow: hidden; /* Tetap hidden di desktop */
+      padding: 20px;
     }
 
     /* Container utama yang memanjang ke samping */
@@ -241,10 +241,19 @@
     @media (max-width: 768px) {
       html, body {
         padding: 10px;
-        overflow: auto;
+        overflow: auto; /* Scroll aktif di mobile */
         height: auto;
         min-height: 100vh;
         display: block;
+        /* Hide scrollbar untuk Webkit browsers (Chrome, Safari) */
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none; /* IE and Edge */
+      }
+
+      /* Hide scrollbar untuk Webkit browsers */
+      html::-webkit-scrollbar,
+      body::-webkit-scrollbar {
+        display: none;
       }
 
       .main-container {
@@ -253,11 +262,15 @@
         min-height: auto;
         margin: 0 auto;
         max-width: 100%;
+        /* Scroll container jika konten terlalu panjang */
+        overflow: visible;
       }
       
       .visual-section {
         padding: 30px 20px;
-        order: 2; /* Pindah ke bawah */
+        order: 2;
+        /* Scrollable section */
+        overflow: visible;
       }
       
       .visual-section h1 {
@@ -276,7 +289,9 @@
       
       .login-container {
         padding: 30px 20px;
-        order: 1; /* Pindah ke atas */
+        order: 1;
+        /* Scrollable section */
+        overflow: visible;
       }
       
       .login-title h1 {
@@ -296,7 +311,7 @@
 
       input[type="text"], input[type="password"] {
         padding: 12px 15px;
-        font-size: 16px; /* Tetap 16px untuk hindari zoom di iOS */
+        font-size: 16px;
       }
 
       .button-container {
@@ -351,8 +366,9 @@
     @media (max-height: 500px) and (orientation: landscape) {
       html, body {
         padding: 10px;
+        overflow: auto; /* Scroll aktif di landscape */
       }
-      
+
       .main-container {
         height: auto;
         min-height: auto;
@@ -362,6 +378,11 @@
       .login-container {
         padding: 20px;
       }
+    }
+
+    /* Smooth scrolling untuk seluruh halaman */
+    html {
+      scroll-behavior: smooth;
     }
 
   </style>
@@ -431,6 +452,29 @@
         window.history.back();
       }
     });
+
+    // Touch event untuk smooth scrolling di mobile
+    let startY;
+    const body = document.body;
+
+    body.addEventListener('touchstart', (e) => {
+      startY = e.touches[0].clientY;
+    });
+
+    body.addEventListener('touchmove', (e) => {
+      const currentY = e.touches[0].clientY;
+      const diff = startY - currentY;
+      
+      // Jika konten cukup panjang, izinkan scroll natural
+      if (body.scrollHeight > window.innerHeight) {
+        return;
+      }
+      
+      // Prevent default hanya jika konten pendek
+      if (Math.abs(diff) > 10) {
+        e.preventDefault();
+      }
+    }, { passive: false });
   </script>
 
 </body>

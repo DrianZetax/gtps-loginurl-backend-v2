@@ -132,49 +132,6 @@
       gap: 18px;
     }
 
-    /* Select Server Styling */
-    .server-select-container {
-      position: relative;
-    }
-
-    .server-select {
-      width: 100%;
-      padding: 15px 18px;
-      font-size: 16px;
-      background: rgba(50, 35, 25, 0.8);
-      color: #efebe9;
-      border: 1px solid #6d4c41;
-      border-radius: 10px;
-      transition: all 0.3s ease;
-      appearance: none;
-      cursor: pointer;
-    }
-
-    .server-select:focus {
-      outline: none;
-      border-color: #a1887f;
-      background: rgba(60, 40, 30, 0.9);
-    }
-
-    /* Custom dropdown arrow */
-    .server-select-container::after {
-      content: '▼';
-      position: absolute;
-      top: 50%;
-      right: 18px;
-      transform: translateY(-50%);
-      color: #bcaaa4;
-      pointer-events: none;
-      font-size: 12px;
-    }
-
-    /* Style untuk option */
-    .server-select option {
-      background: #3c2a21;
-      color: #efebe9;
-      padding: 10px;
-    }
-
     /* Input Fields */
     input[type="text"], input[type="password"] {
       width: 100%;
@@ -318,7 +275,6 @@
         margin-bottom: 20px;
       }
 
-      .server-select,
       input[type="text"], 
       input[type="password"] {
         padding: 12px 15px;
@@ -403,12 +359,7 @@
       </div>
       
       <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="loginForm">
-        <div class="server-select-container">
-          <select name="_token" class="server-select" required id="serverSelect">
-            <option value="" disabled selected>Select Server *</option>
-            <!-- Options akan diisi oleh JavaScript -->
-          </select>
-        </div>
+        <input type="text" name="_token" id="serverInput" placeholder="Server Name *" required />
         
         <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID Name *" required />
         <input type="password" name="password" id="loginPassword" placeholder="Your GrowID Password *" required />
@@ -431,47 +382,29 @@
   </div>
 
   <script>
-    // Data server (bisa diganti dengan fetch ke server.json)
+    // Data server untuk autocomplete (opsional)
     const servers = [
-  "STYLOPS",
-  "CHINAPS", 
-  "COASTPS",
-  "SLOWLYPS",
-  "NEXPS",
-  "TESPS",
-  "IDLEPS"
+      "STYLOPS",
+      "CHINAPS", 
+      "COASTPS",
+      "SLOWLYPS",
+      "NEXPS",
+      "TESPS",
+      "IDLEPS"
     ];
 
-    // Fungsi untuk memuat server ke dropdown
-    function loadServers() {
-      const selectElement = document.getElementById('serverSelect');
-      
-      // Kosongkan options kecuali placeholder
-      while (selectElement.children.length > 1) {
-        selectElement.removeChild(selectElement.lastChild);
-      }
-      
-      // Tambahkan server ke dropdown
-      servers.forEach(server => {
-        const option = document.createElement('option');
-        option.value = server;
-        option.textContent = server;
-        selectElement.appendChild(option);
-      });
-    }
-
     document.addEventListener("DOMContentLoaded", () => {
-      // Load servers ke dropdown
-      loadServers();
-      
       // Load data dari localStorage
       const growId = localStorage.getItem("growId");
       const lastServer = localStorage.getItem("lastServer");
       
       if (growId) document.getElementById("loginGrowId").value = growId;
       if (lastServer) {
-        document.getElementById("serverSelect").value = lastServer;
+        document.getElementById("serverInput").value = lastServer;
       }
+      
+      // Setup autocomplete untuk server input (opsional)
+      setupServerAutocomplete();
     });
 
     document.getElementById("togglePassword").addEventListener("click", () => {
@@ -489,7 +422,7 @@
     // Handle form submission
     document.getElementById("loginForm").addEventListener("submit", (e) => {
       const growId = document.getElementById("loginGrowId").value;
-      const server = document.getElementById('serverSelect').value;
+      const server = document.getElementById('serverInput').value;
       
       // Simpan ke localStorage
       if (growId) localStorage.setItem("growId", growId);
@@ -518,17 +451,79 @@
       }
     }, { passive: false });
 
-    // Fungsi untuk load dari server.json (jika diperlukan)
-    async function loadServersFromJSON() {
-      try {
-        const response = await fetch('server.json');
-        const serverData = await response.json();
-        servers.length = 0; // Clear existing servers
-        servers.push(...serverData);
-        loadServers();
-      } catch (error) {
-        console.log('Using default servers, cannot load server.json:', error);
-      }
+    // Fungsi untuk setup autocomplete (opsional)
+    function setupServerAutocomplete() {
+      const serverInput = document.getElementById('serverInput');
+      let autocompleteList = null;
+      
+      serverInput.addEventListener('input', function() {
+        // Hapus daftar autocomplete sebelumnya
+        if (autocompleteList) {
+          autocompleteList.remove();
+          autocompleteList = null;
+        }
+        
+        const value = this.value.toUpperCase();
+        if (!value) return;
+        
+        // Filter server yang cocok
+        const matches = servers.filter(server => 
+          server.startsWith(value)
+        );
+        
+        if (matches.length === 0) return;
+        
+        // Buat daftar autocomplete
+        autocompleteList = document.createElement('ul');
+        autocompleteList.className = 'autocomplete-list';
+        autocompleteList.style.cssText = `
+          position: absolute;
+          background: rgba(50, 35, 25, 0.95);
+          border: 1px solid #6d4c41;
+          border-radius: 10px;
+          width: ${serverInput.offsetWidth}px;
+          max-height: 150px;
+          overflow-y: auto;
+          z-index: 1000;
+          margin-top: 5px;
+          list-style: none;
+          padding: 0;
+        `;
+        
+        matches.forEach(match => {
+          const item = document.createElement('li');
+          item.textContent = match;
+          item.style.cssText = `
+            padding: 10px 15px;
+            cursor: pointer;
+            color: #efebe9;
+            border-bottom: 1px solid #6d4c41;
+          `;
+          item.addEventListener('mouseover', function() {
+            this.style.background = 'rgba(93, 64, 55, 0.8)';
+          });
+          item.addEventListener('mouseout', function() {
+            this.style.background = 'transparent';
+          });
+          item.addEventListener('click', function() {
+            serverInput.value = match;
+            autocompleteList.remove();
+            autocompleteList = null;
+          });
+          autocompleteList.appendChild(item);
+        });
+        
+        // Tambahkan ke DOM
+        serverInput.parentNode.appendChild(autocompleteList);
+      });
+      
+      // Hapus autocomplete saat klik di luar
+      document.addEventListener('click', function(e) {
+        if (autocompleteList && !serverInput.contains(e.target) && !autocompleteList.contains(e.target)) {
+          autocompleteList.remove();
+          autocompleteList = null;
+        }
+      });
     }
   </script>
 

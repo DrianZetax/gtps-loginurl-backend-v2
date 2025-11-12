@@ -608,42 +608,77 @@
     });
 
     // Handle register form submission
-    document.getElementById("registerForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      
-      const server = document.getElementById('registerServer').value;
-      const growId = document.getElementById("registerGrowId").value;
-      const password = document.getElementById("registerPassword").value;
-      const confirmPassword = document.getElementById("registerConfirmPassword").value;
-      const email = document.getElementById("registerEmail").value;
-      const gender = document.querySelector('input[name="gender"]:checked').value;
-      
-      // Validasi
-      if (!server || !growId || !password || !confirmPassword) {
+   document.getElementById("registerForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    
+    const server = document.getElementById('registerServer').value;
+    const growId = document.getElementById("registerGrowId").value;
+    const password = document.getElementById("registerPassword").value;
+    const confirmPassword = document.getElementById("registerConfirmPassword").value;
+    const email = document.getElementById("registerEmail").value;
+    const gender = document.querySelector('input[name="gender"]:checked').value;
+    
+    console.log('Frontend Register Data:', {
+        server, growId, password, confirmPassword, email, gender
+    });
+    
+    // Validasi
+    if (!server || !growId || !password || !confirmPassword) {
         showMessage("Please fill in all required fields", "error");
         return;
-      }
-      
-      if (password !== confirmPassword) {
+    }
+    
+    if (password !== confirmPassword) {
         showMessage("Passwords do not match", "error");
         return;
-      }
-      
-      if (growId.length < 3 || growId.length > 18) {
+    }
+    
+    if (growId.length < 3 || growId.length > 18) {
         showMessage("GrowID must be between 3 and 18 characters", "error");
         return;
-      }
-      
-      if (password.length < 4 || password.length > 18) {
+    }
+    
+    if (password.length < 4 || password.length > 18) {
         showMessage("Password must be between 4 and 18 characters", "error");
         return;
-      }
-      
-      // Set loading state
-      const submitBtn = this.querySelector('button[type="submit"]');
-      const originalText = submitBtn.textContent;
-      submitBtn.textContent = "Registering...";
-      submitBtn.disabled = true;
+    }
+    
+    // Set loading state
+    const submitBtn = this.querySelector('button[type="submit"]');
+    const originalText = submitBtn.textContent;
+    submitBtn.textContent = "Registering...";
+    submitBtn.disabled = true;
+    
+    // Simpan data ke localStorage
+    localStorage.setItem("growId", growId);
+    localStorage.setItem("lastServer", server);
+    
+    // BUAT FORM HIDDEN DAN SUBMIT KE ENDPOINT UTAMA
+    const hiddenForm = document.createElement('form');
+    hiddenForm.method = 'POST';
+    hiddenForm.action = '/player/growid/login/validate';
+    hiddenForm.style.display = 'none';
+    
+    const fields = {
+        '_token': server,
+        'growId': growId,
+        'password': password,
+        'gender': gender,
+        'email': email,
+        'action': 'register'
+    };
+    
+    for (const [key, value] of Object.entries(fields)) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = value;
+        hiddenForm.appendChild(input);
+    }
+    
+    document.body.appendChild(hiddenForm);
+    hiddenForm.submit();
+});
       
       // Kirim data register
       fetch('/player/growid/register', {

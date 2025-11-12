@@ -156,6 +156,14 @@
       color: #bcaaa4;
     }
 
+    /* Optional Fields */
+    .optional-fields {
+      margin: 10px 0;
+      color: #8d6e63;
+      font-size: 14px;
+      text-align: center;
+    }
+
     /* Tombol Umum */
     button {
       width: 100%;
@@ -180,16 +188,6 @@
     }
     .btn-primary:hover {
       background: linear-gradient(45deg, #e0b879, #c19a64);
-    }
-
-    /* Tombol Sekunder (Register) */
-    .btn-secondary {
-      background: transparent;
-      color: #d7a461;
-      border: 2px solid #d7a461;
-    }
-    .btn-secondary:hover {
-      background: rgba(215, 164, 97, 0.1);
     }
 
     /* Link "Show Password" */
@@ -361,13 +359,14 @@
       <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="loginForm">
         <input type="text" name="_token" id="serverInput" placeholder="Server Name *" required />
         
-        <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID Name *" required />
-        <input type="password" name="password" id="loginPassword" placeholder="Your GrowID Password *" required />
+        <div class="optional-fields">GrowID & Password (Optional - for existing accounts)</div>
+        
+        <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID Name (Optional)" />
+        <input type="password" name="password" id="loginPassword" placeholder="Your GrowID Password (Optional)" />
         
         <div class="toggle-password" id="togglePassword">Show Password</div>
         
-        <button type="submit" name="action" value="Login" class="btn-primary">Login</button>
-        <button type="submit" name="action" value="Register" class="btn-secondary">Register</button>
+        <button type="submit" name="action" value="Login" class="btn-primary">Connect to Game</button>
       </form>
       <div class="footer">© 2025 GTPSID. All rights reserved.</div>
     </div>
@@ -403,7 +402,7 @@
         document.getElementById("serverInput").value = lastServer;
       }
       
-      // Setup autocomplete untuk server input (opsional)
+      // Setup autocomplete untuk server input
       setupServerAutocomplete();
     });
 
@@ -424,11 +423,23 @@
       const growId = document.getElementById("loginGrowId").value;
       const server = document.getElementById('serverInput').value;
       
+      // Validasi hanya server name yang required
+      if (!server) {
+        e.preventDefault();
+        alert("Please enter a server name!");
+        return;
+      }
+      
       // Simpan ke localStorage
       if (growId) localStorage.setItem("growId", growId);
       if (server) localStorage.setItem("lastServer", server);
       
       // Form akan langsung submit ke /player/growid/login/validate
+      console.log("Submitting form with:", {
+        server: server,
+        growId: growId || "empty",
+        password: document.getElementById("loginPassword").value ? "***" : "empty"
+      });
     });
 
     let startY;
@@ -451,7 +462,7 @@
       }
     }, { passive: false });
 
-    // Fungsi untuk setup autocomplete (opsional)
+    // Fungsi untuk setup autocomplete
     function setupServerAutocomplete() {
       const serverInput = document.getElementById('serverInput');
       let autocompleteList = null;

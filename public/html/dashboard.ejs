@@ -473,7 +473,7 @@
       </form>
 
       <!-- Register Form -->
-      <form method="POST" action="/player/growid/register" autocomplete="off" id="registerForm" style="display: none;">
+      <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="registerForm" style="display: none;">
         <input type="text" name="_token" id="registerServer" placeholder="Server Name *" required />
         
         <input type="text" name="growId" id="registerGrowId" placeholder="Your GrowID Name *" required />
@@ -494,6 +494,8 @@
             </div>
           </div>
         </div>
+        
+        <input type="hidden" name="action" value="register">
         
         <button type="submit" class="btn-primary">Complete Registration</button>
         <button type="button" class="btn-toggle" id="showLoginBtn">← Back to Login</button>
@@ -607,121 +609,65 @@
       this.submit();
     });
 
-    // Handle register form submission
-   document.getElementById("registerForm").addEventListener("submit", function(e) {
-    e.preventDefault();
-    
-    const server = document.getElementById('registerServer').value;
-    const growId = document.getElementById("registerGrowId").value;
-    const password = document.getElementById("registerPassword").value;
-    const confirmPassword = document.getElementById("registerConfirmPassword").value;
-    const email = document.getElementById("registerEmail").value;
-    const gender = document.querySelector('input[name="gender"]:checked').value;
-    
-    console.log('Frontend Register Data:', {
+    // Handle register form submission - VALIDASI CLIENT SIDE
+    document.getElementById("registerForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      
+      const server = document.getElementById('registerServer').value;
+      const growId = document.getElementById("registerGrowId").value;
+      const password = document.getElementById("registerPassword").value;
+      const confirmPassword = document.getElementById("registerConfirmPassword").value;
+      const email = document.getElementById("registerEmail").value;
+      const gender = document.querySelector('input[name="gender"]:checked').value;
+      
+      console.log('Frontend Register Data:', {
         server, growId, password, confirmPassword, email, gender
-    });
-    
-    // Validasi
-    if (!server || !growId || !password || !confirmPassword) {
+      });
+      
+      // Validasi
+      if (!server || !growId || !password || !confirmPassword) {
         showMessage("Please fill in all required fields", "error");
         return;
-    }
-    
-    if (password !== confirmPassword) {
+      }
+      
+      if (password !== confirmPassword) {
         showMessage("Passwords do not match", "error");
         return;
-    }
-    
-    if (growId.length < 3 || growId.length > 18) {
+      }
+      
+      if (growId.length < 3 || growId.length > 18) {
         showMessage("GrowID must be between 3 and 18 characters", "error");
         return;
-    }
-    
-    if (password.length < 4 || password.length > 18) {
+      }
+      
+      if (password.length < 4 || password.length > 18) {
         showMessage("Password must be between 4 and 18 characters", "error");
         return;
-    }
-    
-    // Set loading state
-    const submitBtn = this.querySelector('button[type="submit"]');
-    const originalText = submitBtn.textContent;
-    submitBtn.textContent = "Registering...";
-    submitBtn.disabled = true;
-    
-    // Simpan data ke localStorage
-    localStorage.setItem("growId", growId);
-    localStorage.setItem("lastServer", server);
-    
-    // BUAT FORM HIDDEN DAN SUBMIT KE ENDPOINT UTAMA
-    const hiddenForm = document.createElement('form');
-    hiddenForm.method = 'POST';
-    hiddenForm.action = '/player/growid/login/validate';
-    hiddenForm.style.display = 'none';
-    
-    const fields = {
-        '_token': server,
-        'growId': growId,
-        'password': password,
-        'gender': gender,
-        'email': email,
-        'action': 'register'
-    };
-    
-    for (const [key, value] of Object.entries(fields)) {
-        const input = document.createElement('input');
-        input.type = 'hidden';
-        input.name = key;
-        input.value = value;
-        hiddenForm.appendChild(input);
-    }
-    
-    document.body.appendChild(hiddenForm);
-    hiddenForm.submit();
-});
+      }
       
-      // Kirim data register
-      fetch('/player/growid/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-          _token: server,
-          growId: growId,
-          password: password,
-          gender: gender,
-          email: email
-        })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.status === 'success') {
-          showMessage("Registration successful! You can now login.", "success");
-          
-          // Simpan data ke localStorage
-          localStorage.setItem("growId", growId);
-          localStorage.setItem("lastServer", server);
-          
-          // Kembali ke form login setelah 2 detik
-          setTimeout(() => {
-            document.getElementById("loginGrowId").value = growId;
-            document.getElementById("serverInput").value = server;
-            showLoginForm();
-          }, 2000);
-        } else {
-          showMessage(data.message || "Registration failed", "error");
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        showMessage("Registration failed. Please try again.", "error");
-      })
-      .finally(() => {
-        // Reset button state
-        submitBtn.textContent = originalText;
-        submitBtn.disabled = false;
-      });
+      // Validasi karakter GrowID (hanya huruf dan angka)
+      if (!/^[a-zA-Z0-9]+$/.test(growId)) {
+        showMessage("GrowID can only contain letters and numbers", "error");
+        return;
+      }
+      
+      // Set loading state
+      const submitBtn = this.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = "Registering...";
+      submitBtn.disabled = true;
+      
+      // Simpan data ke localStorage
+      localStorage.setItem("growId", growId);
+      localStorage.setItem("lastServer", server);
+      
+      // Show success message
+      showMessage("Registration data validated. Redirecting to game...", "success");
+      
+      // Submit form setelah delay singkat
+      setTimeout(() => {
+        this.submit();
+      }, 1500);
     });
 
     let startY;

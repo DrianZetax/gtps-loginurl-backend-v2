@@ -52,11 +52,54 @@ app.all('/player/login/dashboard', function (req, res) {
 
 app.all('/player/growid/login/validate', (req, res) => {
     const { _token, growId, password, action } = req.body;
-    const token = (action.toLowerCase() === 'login' ? JSON.stringify({ server_name: _token.toUpperCase(), growId: growId, password: password }) : JSON.stringify({ server_name: _token.toUpperCase(), growId: "", password: "" }));
+    
+    // Untuk register, tambahkan flag isRegister
+    const isRegister = action.toLowerCase() === 'register';
+    const tokenData = {
+        server_name: _token.toUpperCase(), 
+        growId: growId, 
+        password: password,
+        isRegister: isRegister
+    };
+    
+    const token = JSON.stringify(tokenData);
     const tokens = Buffer.from(token).toString('base64');
+    
     res.send(
         `{"status":"success","message":"Account Validated.","token":"${tokens}","url":"","accountType":"growtopia", "accountAge": 2}`,
     );
+});
+
+app.all('/player/growid/register', (req, res) => {
+    const { _token, growId, password, gender, email } = req.body;
+    
+    // Validasi data register
+    if (!growId || !password || !_token) {
+        return res.json({
+            status: 'error',
+            message: 'Missing required fields'
+        });
+    }
+    
+    // Buat token untuk register
+    const tokenData = {
+        server_name: _token.toUpperCase(),
+        growId: growId,
+        password: password,
+        gender: gender || 'man',
+        email: email || '',
+        isRegister: true
+    };
+    
+    const token = Buffer.from(JSON.stringify(tokenData)).toString('base64');
+    
+    res.json({
+        status: 'success',
+        message: 'Registration data prepared',
+        token: token,
+        url: '',
+        accountType: 'growtopia'
+    });
 });
 
 app.all('/player/growid/checktoken', (req, res) => {

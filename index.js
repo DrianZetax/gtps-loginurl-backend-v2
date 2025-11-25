@@ -16,7 +16,6 @@ app.use(compression({
 }));
 
 app.set('view engine', 'ejs');
-
 app.set('trust proxy', 1);
 
 app.use(function (req, res, next) {
@@ -30,33 +29,116 @@ app.use(function (req, res, next) {
 });
 
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use(express.json());
-
 app.use(rateLimiter({ windowMs: 15 * 60 * 1000, max: 10000, headers: true }));
 
-app.all("/player/validate/close", function (req, res) {
-  res.send("<script>window.close();</script>");
-});
-
-app.all('/player/login/dashboard', function (req, res) {
-    const tData = {};
+// Tambahkan endpoint untuk registrasi
+app.all('/player/growid/register/validate', (req, res) => {
     try {
-        const uData = JSON.stringify(req.body).split('"')[1].split('\\n'); const uName = uData[0].split('|'); const uPass = uData[1].split('|');
-        for (let i = 0; i < uData.length - 1; i++) { const d = uData[i].split('|'); tData[d[0]] = d[1]; }
-        if (uName[1] && uPass[1]) { res.redirect('/player/growid/login/validate'); }
-    } catch (why) { console.log(`Warning: ${why}`); }
+        const { _token, growId, password, email, gender } = req.body;
+        console.log('Registration attempt:', { growId, email, gender });
+        
+        // Validasi input
+        if (!growId || !password || !email || !gender) {
+            return res.status(400).json({
+                status: "error",
+                message: "All fields are required for registration!"
+            });
+        }
 
-    res.render(__dirname + '/public/html/dashboard.ejs', {data: tData});
+        // Validasi panjang GrowID
+        if (growId.length < 3 || growId.length > 18) {
+            return res.status(400).json({
+                status: "error", 
+                message: "GrowID must be between 3 and 18 characters!"
+            });
+        }
+
+        // Validasi panjang password
+        if (password.length < 4 || password.length > 18) {
+            return res.status(400).json({
+                status: "error",
+                message: "Password must be between 4 and 18 characters!"
+            });
+        }
+
+        // Validasi karakter GrowID
+        if (!/^[a-zA-Z0-9]+$/.test(growId)) {
+            return res.status(400).json({
+                status: "error",
+                message: "GrowID can only contain letters and numbers!"
+            });
+        }
+
+        // Buat token untuk registrasi
+        const tokenData = {
+            server_name: _token.toUpperCase(),
+            growId: growId,
+            password: password,
+            email: email,
+            gender: gender,
+            isRegister: true
+        };
+
+        const token = Buffer.from(JSON.stringify(tokenData)).toString('base64');
+        
+        res.json({
+            status: "success",
+            message: "Registration data validated.",
+            token: token,
+            url: "",
+            accountType: "growtopia",
+            accountAge: 0
+        });
+
+    } catch (error) {
+        console.error('Registration error:', error);
+        res.status(500).json({
+            status: "error",
+            message: "Registration failed due to server error."
+        });
+    }
 });
 
 app.all('/player/growid/login/validate', (req, res) => {
-    const { _token, growId, password, action } = req.body;
-    const token = (action.toLowerCase() === 'login' ? JSON.stringify({ server_name: _token.toUpperCase(), growId: growId, password: password }) : JSON.stringify({ server_name: _token.toUpperCase(), growId: "", password: "" }));
-    const tokens = Buffer.from(token).toString('base64');
-    res.send(
-        `{"status":"success","message":"Account Validated.","token":"${tokens}","url":"","accountType":"growtopia", "accountAge": 2}`,
-    );
+    try {
+        const { _token, growId, password, action } = req.body;
+        
+        let tokenData;
+        if (action && action.toLowerCase() === 'login' && growId && password) {
+            tokenData = { 
+                server_name: _token.toUpperCase(), 
+                growId: growId, 
+                password: password,
+                isRegister: false 
+            };
+        } else {
+            tokenData = { 
+                server_name: _token.toUpperCase(), 
+                growId: "", 
+                password: "",
+                isRegister: false 
+            };
+        }
+
+        const token = Buffer.from(JSON.stringify(tokenData)).toString('base64');
+        
+        res.json({
+            status: "success",
+            message: "Account Validated.",
+            token: token,
+            url: "",
+            accountType: "growtopia", 
+            accountAge: 2
+        });
+
+    } catch (error) {
+        console.error('Login validation error:', error);
+        res.status(500).json({
+            status: "error",
+            message: "Login validation failed."
+        });
+    }
 });
 
 app.all('/player/growid/checktoken', (req, res) => {
@@ -71,10 +153,14 @@ app.all('/player/growid/checktoken', (req, res) => {
     });
 });
 
+app.all("/player/validate/close", function (req, res) {
+    res.send("<script>window.close();</script>");
+});
+
 app.get('/', function (req, res) {
-   res.send('Hello Memek');
+    res.send('Server is running');
 });
 
 app.listen(5000, function () {
-    console.log('Listening on port 5000');
+    console.log('Server listening on port 5000');
 });

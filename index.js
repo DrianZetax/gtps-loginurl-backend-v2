@@ -41,6 +41,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Routes
 
 // Dashboard route - FIXED
+// Dashboard route - FIXED
 app.all('/player/login/dashboard', function (req, res) {
     console.log('Dashboard accessed with method:', req.method);
     console.log('Body:', req.body);
@@ -67,15 +68,12 @@ app.all('/player/login/dashboard', function (req, res) {
         
         console.log('Processed data:', tData);
         
-        // Render dashboard if we have data, otherwise redirect to home
-        if (tData.growId && tData.password) {
-            res.render('dashboard', { data: tData });
-        } else {
-            res.redirect('/');
-        }
+        // Render dashboard dengan data
+        res.render('dashboard', { data: tData });
+        
     } catch (why) { 
         console.log(`Dashboard error: ${why}`);
-        res.redirect('/');
+        res.render('dashboard', { data: {} });
     }
 });
 

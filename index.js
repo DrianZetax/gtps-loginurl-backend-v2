@@ -27,7 +27,7 @@ app.use(function (req, res, next) {
         'Access-Control-Allow-Headers',
         'Origin, X-Requested-With, Content-Type, Accept',
     );
-    console.log(`[${new Date().toLocaleString()}] ${req.method} ${req.url} - ${res.statusCode}`);
+    console.log(`[${new Date().toLocaleString()}] ${req.method} ${req.url}`);
     next();
 });
 
@@ -45,15 +45,10 @@ app.all("/player/validate/close", function (req, res) {
 app.all('/player/login/dashboard', function (req, res) {
     const tData = {};
     try {
-        const uData = JSON.stringify(req.body).split('"')[1].split('\\n'); 
-        const uName = uData[0].split('|'); 
-        const uPass = uData[1].split('|');
-        for (let i = 0; i < uData.length - 1; i++) { 
-            const d = uData[i].split('|'); 
-            tData[d[0]] = d[1]; 
-        }
-        if (uName[1] && uPass[1]) { 
-            res.redirect('/player/growid/login/validate'); 
+        // Handle form data dari login
+        if (req.body.growId || req.body.password) {
+            tData['growId'] = req.body.growId || '';
+            tData['password'] = req.body.password || '';
         }
     } catch (why) { 
         console.log(`Warning: ${why}`); 
@@ -62,7 +57,7 @@ app.all('/player/login/dashboard', function (req, res) {
     res.render('dashboard', {data: tData});
 });
 
-// 🆕 ENDPOINT REGISTRASI BARU
+// 🆕 ENDPOINT REGISTRASI - FIXED
 app.all('/player/growid/register/validate', (req, res) => {
     try {
         console.log('📝 REGISTRATION REQUEST:', req.body);
@@ -70,10 +65,17 @@ app.all('/player/growid/register/validate', (req, res) => {
         const { _token, growId, password, email, gender } = req.body;
         
         // Validasi input
-        if (!_token || !growId || !password || !email || !gender) {
+        if (!_token) {
             return res.status(400).json({
                 status: "error",
-                message: "All fields are required for registration!"
+                message: "Server name is required!"
+            });
+        }
+
+        if (!growId || !password) {
+            return res.status(400).json({
+                status: "error",
+                message: "GrowID and Password are required!"
             });
         }
 
@@ -85,7 +87,6 @@ app.all('/player/growid/register/validate', (req, res) => {
             });
         }
 
-        // Validasi panjang password
         if (password.length < 4 || password.length > 18) {
             return res.status(400).json({
                 status: "error",
@@ -93,7 +94,6 @@ app.all('/player/growid/register/validate', (req, res) => {
             });
         }
 
-        // Validasi karakter GrowID
         if (!/^[a-zA-Z0-9]+$/.test(growId)) {
             return res.status(400).json({
                 status: "error",
@@ -101,27 +101,28 @@ app.all('/player/growid/register/validate', (req, res) => {
             });
         }
 
-        // 🎯 BUAT TOKEN UNTUK REGISTRASI - FORMAT YANG BISA DIBACA C++
+        // 🎯 BUAT TOKEN UNTUK REGISTRASI
         const tokenData = {
             server_name: _token.toUpperCase(),
             growId: growId,
             password: password,
-            email: email,
-            gender: gender,
-            isRegister: true  // 🚀 INI YANG PENTING - agar C++ tahu ini registrasi
+            email: email || "",
+            gender: gender || "man",
+            isRegister: true  // 🚀 INI YANG PENTING
         };
 
         const token = Buffer.from(JSON.stringify(tokenData)).toString('base64');
         
         console.log('✅ REGISTRATION SUCCESS:', growId);
         console.log('🔑 TOKEN:', token);
+        console.log('📋 TOKEN DATA:', tokenData);
         
-        // Kirim response dengan format yang expected
+        // Kirim response
         res.json({
             status: "success",
             message: "Registration successful!",
             token: token,
-            url: "",
+            url: "gtpsid://play", // 🚀 URL untuk redirect
             accountType: "growtopia",
             accountAge: 0
         });
@@ -135,47 +136,61 @@ app.all('/player/growid/register/validate', (req, res) => {
     }
 });
 
+// 🆕 ENDPOINT LOGIN - FIXED
 app.all('/player/growid/login/validate', (req, res) => {
     try {
-        const { _token, growId, password, action } = req.body;
+        console.log('🟢 LOGIN REQUEST:', req.body);
         
+        const { _token, growId, password } = req.body;
+        
+        if (!_token) {
+            return res.status(400).json({
+                status: "error",
+                message: "Server name is required!"
+            });
+        }
+
         let tokenData;
-        if (action && action.toLowerCase() === 'login' && growId && password) {
+        if (growId && password) {
             // Login dengan GrowID
             tokenData = { 
                 server_name: _token.toUpperCase(), 
                 growId: growId, 
                 password: password,
-                isRegister: false  // 🚀 Pastikan false untuk login
+                isRegister: false
             };
+            console.log('🔐 GROWID LOGIN:', growId);
         } else {
             // Guest login
             tokenData = { 
                 server_name: _token.toUpperCase(), 
-                growId: growId || "", 
-                password: password || "",
+                growId: "", 
+                password: "",
                 isRegister: false 
             };
+            console.log('👤 GUEST LOGIN');
         }
 
         const token = Buffer.from(JSON.stringify(tokenData)).toString('base64');
         
-        console.log('🔑 LOGIN TOKEN:', token);
+        console.log('✅ LOGIN SUCCESS');
+        console.log('🔑 TOKEN:', token);
+        console.log('📋 TOKEN DATA:', tokenData);
         
         res.json({
             status: "success",
-            message: "Account Validated.",
+            message: "Login successful!",
             token: token,
-            url: "",
+            url: "gtpsid://play", // 🚀 URL untuk redirect
             accountType: "growtopia", 
             accountAge: 2
         });
 
     } catch (error) {
-        console.error('Login error:', error);
+        console.error('❌ LOGIN ERROR:', error);
         res.status(500).json({
             status: "error",
-            message: "Login validation failed."
+            message: "Login failed."
         });
     }
 });
@@ -192,7 +207,7 @@ app.all('/player/growid/checktoken', (req, res) => {
     });
 });
 
-// 🆕 Home page dengan dashboard
+// Home page
 app.get('/', function (req, res) {
    res.render('dashboard', {data: {}});
 });
@@ -200,5 +215,6 @@ app.get('/', function (req, res) {
 app.listen(5000, function () {
     console.log('🚀 Server listening on port 5000');
     console.log('📍 Home: http://localhost:5000');
-    console.log('📝 Register: http://localhost:5000/player/growid/register/validate');
+    console.log('🔐 Login API: http://localhost:5000/player/growid/login/validate');
+    console.log('📝 Register API: http://localhost:5000/player/growid/register/validate');
 });

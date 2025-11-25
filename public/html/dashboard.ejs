@@ -31,6 +31,7 @@
             border-radius: 16px;
             overflow: hidden;
             border: 1px solid #5d4037;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
         /* Visual Section */
@@ -44,63 +45,79 @@
             padding: 40px;
             color: #fff;
             text-align: center;
-            position: relative;
-            overflow: hidden;
         }
 
         .visual-section h1 {
-            font-size: 42px;
+            font-size: 36px;
             margin-bottom: 10px;
             font-weight: 300;
         }
 
         .visual-section h2 {
-            font-size: 48px;
-            margin-bottom: 30px;
+            font-size: 42px;
+            margin-bottom: 25px;
             font-weight: 700;
         }
 
         .visual-section p {
-            font-size: 16px;
-            line-height: 1.7;
-            max-width: 320px;
+            font-size: 15px;
+            line-height: 1.6;
+            max-width: 300px;
             opacity: 0.9;
         }
 
         .icon-container {
-            width: 80px;
-            height: 80px;
+            width: 70px;
+            height: 70px;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             backdrop-filter: blur(5px);
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .icon-container::before {
             content: '🌿';
-            font-size: 36px;
+            font-size: 32px;
         }
 
         /* Form Container */
         .form-container {
             flex: 1;
-            padding: 35px;
+            padding: 30px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            background: rgba(30, 20, 10, 0.7);
-            backdrop-filter: blur(10px);
+            background: rgba(30, 20, 10, 0.85);
         }
 
-        /* Tab Navigation */
+        /* Header */
+        .form-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .form-header h1 {
+            font-size: 28px;
+            color: #d7a461;
+            margin-bottom: 5px;
+        }
+
+        .form-header h2 {
+            font-size: 32px;
+            color: #d7a461;
+            margin-bottom: 20px;
+        }
+
+        /* Tab Navigation - SIMPLIFIED */
         .tab-navigation {
             display: flex;
-            margin-bottom: 25px;
-            border-bottom: 1px solid #5d4037;
+            background: rgba(50, 35, 25, 0.6);
+            border-radius: 10px;
+            padding: 5px;
+            margin-bottom: 20px;
         }
 
         .tab-btn {
@@ -109,144 +126,156 @@
             background: none;
             border: none;
             color: #8d6e63;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            border-radius: 8px;
+            transition: all 0.2s ease;
         }
 
         .tab-btn.active {
+            background: #d7a461;
+            color: #3e2723;
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: rgba(215, 164, 97, 0.2);
             color: #d7a461;
-            border-bottom: 2px solid #d7a461;
         }
 
         /* Form Sections */
         .form-section {
             display: none;
+            animation: fadeIn 0.3s ease;
         }
 
         .form-section.active {
             display: block;
         }
 
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         form {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
         }
 
-        /* Input Fields */
+        /* Input Fields - SIMPLIFIED */
         input[type="text"], 
         input[type="password"], 
         input[type="email"],
         select {
             width: 100%;
-            padding: 14px 16px;
-            font-size: 15px;
+            padding: 12px 15px;
+            font-size: 14px;
             background: rgba(50, 35, 25, 0.8);
             color: #efebe9;
             border: 1px solid #6d4c41;
-            border-radius: 10px;
-            transition: all 0.3s ease;
+            border-radius: 8px;
+            transition: all 0.2s ease;
         }
 
         input:focus, select:focus {
             outline: none;
-            border-color: #a1887f;
+            border-color: #d7a461;
             background: rgba(60, 40, 30, 0.9);
+            box-shadow: 0 0 0 2px rgba(215, 164, 97, 0.2);
         }
 
         ::placeholder {
             color: #bcaaa4;
+            font-size: 14px;
         }
 
         /* Optional Fields */
         .optional-fields {
-            margin: 8px 0;
+            margin: 5px 0;
             color: #8d6e63;
-            font-size: 13px;
+            font-size: 12px;
             text-align: center;
         }
 
-        /* Buttons */
+        /* Buttons - SIMPLIFIED */
         button[type="submit"] {
             width: 100%;
-            padding: 15px;
+            padding: 14px;
             border: none;
-            border-radius: 10px;
-            font-size: 16px;
+            border-radius: 8px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-        }
-
-        button:active {
-            transform: scale(0.98);
-        }
-
-        .btn-primary {
-            background: linear-gradient(45deg, #d7a461, #b08c5a);
+            transition: all 0.2s ease;
+            margin-top: 8px;
+            background: #d7a461;
             color: #3e2723;
         }
 
-        .btn-primary:hover {
-            background: linear-gradient(45deg, #e0b879, #c19a64);
+        button[type="submit"]:hover {
+            background: #e0b879;
+            transform: translateY(-1px);
         }
 
-        /* Toggle Password */
+        button[type="submit"]:active {
+            transform: translateY(0);
+        }
+
+        /* Toggle Password - SIMPLIFIED */
         .toggle-password {
             cursor: pointer;
             color: #a1887f;
-            font-size: 13px;
+            font-size: 12px;
             text-align: right;
             margin-top: -8px;
-            margin-bottom: 8px;
-            transition: color 0.3s;
+            margin-bottom: 5px;
+            transition: color 0.2s;
+            user-select: none;
         }
 
         .toggle-password:hover {
             color: #d7a461;
         }
 
-        /* Alert Messages */
+        /* Alert Messages - SIMPLIFIED */
         .alert {
-            padding: 12px;
-            border-radius: 8px;
+            padding: 10px 12px;
+            border-radius: 6px;
             margin-bottom: 15px;
-            font-size: 14px;
+            font-size: 13px;
             text-align: center;
             display: none;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .alert-success {
-            background: rgba(76, 175, 80, 0.2);
+            background: rgba(76, 175, 80, 0.15);
             color: #4caf50;
             border: 1px solid #4caf50;
         }
 
         .alert-error {
-            background: rgba(244, 67, 54, 0.2);
+            background: rgba(244, 67, 54, 0.15);
             color: #f44336;
             border: 1px solid #f44336;
         }
 
-        /* Footer */
-        .footer {
-            text-align: center;
-            margin-top: 25px;
-            color: #8d6e63;
-            font-size: 12px;
-        }
-
-        /* User Info Panel */
+        /* User Info Panel - SIMPLIFIED */
         .user-panel {
             background: rgba(50, 35, 25, 0.8);
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
             border: 1px solid #6d4c41;
             display: none;
+            animation: fadeIn 0.3s ease;
         }
 
         .user-panel.active {
@@ -254,45 +283,127 @@
         }
 
         .info-item {
-            margin: 10px 0;
+            margin: 8px 0;
             text-align: left;
+            display: flex;
+            align-items: center;
         }
 
         .info-label {
             color: #bcaaa4;
             font-weight: 600;
+            font-size: 13px;
+            min-width: 80px;
         }
 
         .info-value {
             color: #efebe9;
-            margin-left: 10px;
+            font-size: 13px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #8d6e63;
+            font-size: 11px;
+        }
+
+        /* Switch Text - Easy to click */
+        .switch-text {
+            text-align: center;
+            margin-top: 15px;
+            color: #8d6e63;
+            font-size: 13px;
+        }
+
+        .switch-link {
+            color: #d7a461;
+            cursor: pointer;
+            text-decoration: underline;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .switch-link:hover {
+            color: #e0b879;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
             .main-container {
                 flex-direction: column;
-                height: auto;
                 min-height: auto;
+                margin: 10px;
             }
             
             .visual-section {
-                padding: 30px 20px;
+                padding: 25px 20px;
                 order: 2;
             }
             
             .visual-section h1 {
-                font-size: 28px;
+                font-size: 24px;
             }
             
             .visual-section h2 {
-                font-size: 32px;
+                font-size: 28px;
                 margin-bottom: 15px;
+            }
+            
+            .visual-section p {
+                font-size: 14px;
             }
             
             .form-container {
                 padding: 25px 20px;
                 order: 1;
+            }
+            
+            .form-header h1 {
+                font-size: 24px;
+            }
+            
+            .form-header h2 {
+                font-size: 28px;
+            }
+            
+            .icon-container {
+                width: 60px;
+                height: 60px;
+                margin-bottom: 15px;
+            }
+            
+            .icon-container::before {
+                font-size: 28px;
+            }
+        }
+
+        /* Very small screens */
+        @media (max-width: 375px) {
+            .main-container {
+                margin: 5px;
+            }
+            
+            .visual-section {
+                padding: 20px 15px;
+            }
+            
+            .form-container {
+                padding: 20px 15px;
+            }
+            
+            input[type="text"], 
+            input[type="password"], 
+            input[type="email"],
+            select {
+                padding: 10px 12px;
+                font-size: 13px;
+            }
+            
+            button[type="submit"] {
+                padding: 12px;
+                font-size: 14px;
             }
         }
     </style>
@@ -301,7 +412,7 @@
     <div class="main-container">
         <!-- Form Container -->
         <div class="form-container">
-            <div class="login-title">
+            <div class="form-header">
                 <h1>Welcome to</h1>
                 <h2>GTPSID</h2>
             </div>
@@ -309,7 +420,7 @@
             <!-- Alert Messages -->
             <div id="alertMessage" class="alert"></div>
 
-            <!-- User Info Panel (akan muncul setelah login/register) -->
+            <!-- User Info Panel -->
             <div id="userPanel" class="user-panel">
                 <div class="info-item">
                     <span class="info-label">GrowID:</span>
@@ -323,16 +434,12 @@
                     <span class="info-label">Server:</span>
                     <span class="info-value">GTPSID</span>
                 </div>
-                <div class="info-item">
-                    <span class="info-label">Account Type:</span>
-                    <span class="info-value" id="accountType">-</span>
-                </div>
             </div>
 
-            <!-- Tab Navigation -->
+            <!-- Tab Navigation - SIMPLIFIED -->
             <div class="tab-navigation">
-                <button class="tab-btn active" data-tab="login">Login</button>
-                <button class="tab-btn" data-tab="register">Register</button>
+                <button class="tab-btn active" data-tab="login">LOGIN</button>
+                <button class="tab-btn" data-tab="register">REGISTER</button>
             </div>
             
             <!-- Login Form -->
@@ -340,15 +447,19 @@
                 <form autocomplete="off" id="loginFormElement">
                     <input type="text" name="_token" id="serverInput" placeholder="Server Name *" required />
                     
-                    <div class="optional-fields">GrowID & Password (Optional - for existing accounts)</div>
+                    <div class="optional-fields">GrowID & Password (for existing accounts)</div>
                     
-                    <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID Name (Optional)" />
-                    <input type="password" name="password" id="loginPassword" placeholder="Your GrowID Password (Optional)" />
+                    <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID" />
+                    <input type="password" name="password" id="loginPassword" placeholder="Your Password" />
                     
-                    <div class="toggle-password" id="toggleLoginPassword">Show Password</div>
+                    <div class="toggle-password" id="toggleLoginPassword">👁️ Show Password</div>
                     
-                    <button type="submit" class="btn-primary">Connect to Game</button>
+                    <button type="submit">CONNECT TO GAME</button>
                 </form>
+
+                <div class="switch-text">
+                    Don't have account? <span class="switch-link" data-tab="register">Create one here</span>
+                </div>
             </div>
 
             <!-- Register Form -->
@@ -356,9 +467,9 @@
                 <form autocomplete="off" id="registerFormElement">
                     <input type="text" name="_token" id="registerServerInput" placeholder="Server Name *" required />
                     
-                    <div class="optional-fields">Create Your GrowID Account</div>
+                    <div class="optional-fields">Create New GrowID Account</div>
                     
-                    <input type="text" name="growId" id="registerGrowId" placeholder="Choose GrowID Name *" required />
+                    <input type="text" name="growId" id="registerGrowId" placeholder="Choose GrowID *" required />
                     <input type="password" name="password" id="registerPassword" placeholder="Choose Password *" required />
                     <input type="email" name="email" id="registerEmail" placeholder="Your Email *" required />
                     
@@ -368,13 +479,19 @@
                         <option value="woman">Female</option>
                     </select>
                     
-                    <div class="toggle-password" id="toggleRegisterPassword">Show Password</div>
+                    <div class="toggle-password" id="toggleRegisterPassword">👁️ Show Password</div>
                     
-                    <button type="submit" class="btn-primary">Create Account & Play</button>
+                    <button type="submit">CREATE ACCOUNT</button>
                 </form>
+
+                <div class="switch-text">
+                    Already have account? <span class="switch-link" data-tab="login">Login here</span>
+                </div>
             </div>
 
-            <div class="footer">© 2025 GTPSID. All rights reserved.</div>
+            <div class="footer">
+                © 2025 GTPSID. All rights reserved.
+            </div>
         </div>
 
         <!-- Visual Section -->
@@ -388,36 +505,49 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            // Initialize tabs
+            // Initialize elements
             const tabButtons = document.querySelectorAll('.tab-btn');
             const formSections = document.querySelectorAll('.form-section');
             const alertMessage = document.getElementById('alertMessage');
             const userPanel = document.getElementById('userPanel');
+            const switchLinks = document.querySelectorAll('.switch-link');
 
             // Check if we have data from backend
-            const urlParams = new URLSearchParams(window.location.search);
             const hasData = <%= JSON.stringify(data).replace(/</g, '\\u003c') %>;
-
-            // Jika ada data dari backend, tampilkan user panel
             if (hasData && Object.keys(hasData).length > 0) {
                 showUserPanel(hasData);
             }
 
-            // Tab functionality
+            // Tab functionality - SIMPLIFIED
+            function switchTab(targetTab) {
+                // Update active tab
+                tabButtons.forEach(btn => {
+                    btn.classList.toggle('active', btn.getAttribute('data-tab') === targetTab);
+                });
+                
+                // Show target form
+                formSections.forEach(section => {
+                    section.classList.toggle('active', section.id === `${targetTab}Form`);
+                });
+                
+                // Clear alerts
+                hideAlert();
+            }
+
+            // Tab button clicks
             tabButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     const targetTab = button.getAttribute('data-tab');
-                    
-                    // Update active tab
-                    tabButtons.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-                    
-                    // Show target form
-                    formSections.forEach(section => section.classList.remove('active'));
-                    document.getElementById(`${targetTab}Form`).classList.add('active');
-                    
-                    // Clear alerts
-                    hideAlert();
+                    switchTab(targetTab);
+                });
+            });
+
+            // Switch link clicks - EASY TO CLICK
+            switchLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetTab = link.getAttribute('data-tab');
+                    switchTab(targetTab);
                 });
             });
 
@@ -442,9 +572,10 @@
             const serverInputs = document.querySelectorAll('input[name="_token"]');
             serverInputs.forEach(input => {
                 input.addEventListener('input', (e) => {
+                    const value = e.target.value;
                     serverInputs.forEach(otherInput => {
                         if (otherInput !== e.target) {
-                            otherInput.value = e.target.value;
+                            otherInput.value = value;
                         }
                     });
                 });
@@ -453,8 +584,43 @@
             // Login form handler
             document.getElementById('loginFormElement').addEventListener('submit', async (e) => {
                 e.preventDefault();
+                await handleLogin();
+            });
+
+            // Register form handler
+            document.getElementById('registerFormElement').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                await handleRegister();
+            });
+
+            // Enter key support
+            document.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    const activeForm = document.querySelector('.form-section.active form');
+                    if (activeForm) {
+                        activeForm.dispatchEvent(new Event('submit'));
+                    }
+                }
+            });
+
+            // Helper functions
+            function setupPasswordToggle(toggleId, passwordId) {
+                const toggle = document.getElementById(toggleId);
+                const password = document.getElementById(passwordId);
                 
-                const formData = new FormData(e.target);
+                toggle.addEventListener('click', () => {
+                    if (password.type === 'password') {
+                        password.type = 'text';
+                        toggle.innerHTML = '👁️ Hide Password';
+                    } else {
+                        password.type = 'password';
+                        toggle.innerHTML = '👁️ Show Password';
+                    }
+                });
+            }
+
+            async function handleLogin() {
+                const formData = new FormData(document.getElementById('loginFormElement'));
                 const data = {
                     _token: formData.get('_token'),
                     growId: formData.get('growId'),
@@ -468,13 +634,10 @@
                 }
 
                 await submitForm('/player/growid/login/validate', data, 'login');
-            });
+            }
 
-            // Register form handler
-            document.getElementById('registerFormElement').addEventListener('submit', async (e) => {
-                e.preventDefault();
-                
-                const formData = new FormData(e.target);
+            async function handleRegister() {
+                const formData = new FormData(document.getElementById('registerFormElement'));
                 const data = {
                     _token: formData.get('_token'),
                     growId: formData.get('growId'),
@@ -483,7 +646,7 @@
                     gender: formData.get('gender')
                 };
 
-                // Validation
+                // Simple validation
                 if (!data._token) {
                     showAlert('Please enter a server name!', 'error');
                     return;
@@ -494,49 +657,16 @@
                     return;
                 }
 
-                if (data.growId.length < 3 || data.growId.length > 18) {
-                    showAlert('GrowID must be between 3 and 18 characters!', 'error');
-                    return;
-                }
-
-                if (data.password.length < 4 || data.password.length > 18) {
-                    showAlert('Password must be between 4 and 18 characters!', 'error');
-                    return;
-                }
-
-                if (!/^[a-zA-Z0-9]+$/.test(data.growId)) {
-                    showAlert('GrowID can only contain letters and numbers!', 'error');
-                    return;
-                }
-
                 await submitForm('/player/growid/register/validate', data, 'register');
-            });
-
-            // Helper functions
-            function setupPasswordToggle(toggleId, passwordId) {
-                const toggle = document.getElementById(toggleId);
-                const password = document.getElementById(passwordId);
-                
-                toggle.addEventListener('click', () => {
-                    if (password.type === 'password') {
-                        password.type = 'text';
-                        toggle.textContent = 'Hide Password';
-                    } else {
-                        password.type = 'password';
-                        toggle.textContent = 'Show Password';
-                    }
-                });
             }
 
             async function submitForm(url, data, type) {
                 try {
-                    showAlert('Processing...', 'success');
+                    showAlert('Processing your request...', 'success');
                     
                     const response = await fetch(url, {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
+                        headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(data)
                     });
 
@@ -549,45 +679,37 @@
                             localStorage.setItem("lastServer", data._token);
                         }
 
+                        const userData = {
+                            growId: data.growId || 'Guest',
+                            status: type === 'register' ? 'Registered Successfully' : 'Logged In'
+                        };
+
+                        showUserPanel(userData);
+                        
                         if (type === 'register') {
-                            showAlert('Registration successful! You can now login with your new account.', 'success');
-                            // Show user panel
-                            showUserPanel({
-                                growId: data.growId,
-                                status: 'Registered Successfully'
-                            });
-                            // Switch to login tab after successful registration
-                            setTimeout(() => {
-                                tabButtons[0].click();
-                            }, 2000);
+                            showAlert('✅ Registration successful! You can now login.', 'success');
+                            setTimeout(() => switchTab('login'), 1500);
                         } else {
-                            showAlert('Login successful! Connecting to game...', 'success');
-                            // Show user panel
-                            showUserPanel({
-                                growId: data.growId || 'Guest',
-                                status: 'Logged In'
-                            });
+                            showAlert('✅ Login successful! Preparing game...', 'success');
                             // Simulate game connection
                             setTimeout(() => {
-                                // Redirect to game with token
                                 if (result.token) {
                                     window.location.href = 'gtpsid://play?token=' + result.token;
                                 }
                             }, 1000);
                         }
                     } else {
-                        showAlert(result.message || 'An error occurred!', 'error');
+                        showAlert('❌ ' + (result.message || 'An error occurred!'), 'error');
                     }
                 } catch (error) {
                     console.error('Submission error:', error);
-                    showAlert('Network error! Please try again.', 'error');
+                    showAlert('❌ Network error! Please check your connection.', 'error');
                 }
             }
 
             function showUserPanel(userData) {
-                document.getElementById('userGrowId').textContent = userData.growId || '-';
-                document.getElementById('userStatus').textContent = userData.status || 'Connected';
-                document.getElementById('accountType').textContent = userData.growId ? 'GrowID' : 'Guest';
+                document.getElementById('userGrowId').textContent = userData.growId;
+                document.getElementById('userStatus').textContent = userData.status;
                 userPanel.classList.add('active');
             }
 
@@ -595,6 +717,11 @@
                 alertMessage.textContent = message;
                 alertMessage.className = `alert alert-${type}`;
                 alertMessage.style.display = 'block';
+                
+                // Auto hide success messages after 3 seconds
+                if (type === 'success') {
+                    setTimeout(hideAlert, 3000);
+                }
             }
 
             function hideAlert() {

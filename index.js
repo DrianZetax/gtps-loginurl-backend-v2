@@ -18,16 +18,16 @@ app.use(compression({
 
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'public/html'));
+
 app.set('trust proxy', 1);
 
-// Middleware
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header(
         'Access-Control-Allow-Headers',
         'Origin, X-Requested-With, Content-Type, Accept',
     );
-    console.log(`[${new Date().toLocaleString()}] ${req.method} ${req.url} - ${req.ip}`);
+    console.log(`[${new Date().toLocaleString()}] ${req.method} ${req.url} - ${res.statusCode}`);
     next();
 });
 
@@ -38,53 +38,38 @@ app.use(rateLimiter({ windowMs: 15 * 60 * 1000, max: 10000, headers: true }));
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Routes
-
-// Dashboard route - FIXED
-// Dashboard route - FIXED
-app.all('/player/login/dashboard', function (req, res) {
-    console.log('Dashboard accessed with method:', req.method);
-    console.log('Body:', req.body);
-    console.log('Query:', req.query);
-    
-    const tData = {};
-    try {
-        // Handle different content types
-        if (req.is('application/json')) {
-            // JSON data
-            const body = req.body;
-            if (body.growId && body.password) {
-                tData['growId'] = body.growId;
-                tData['password'] = body.password;
-            }
-        } else if (req.is('application/x-www-form-urlencoded')) {
-            // Form data
-            const uData = Object.keys(req.body).map(key => `${key}|${req.body[key]}`);
-            for (let i = 0; i < uData.length; i++) { 
-                const d = uData[i].split('|'); 
-                tData[d[0]] = d[1]; 
-            }
-        }
-        
-        console.log('Processed data:', tData);
-        
-        // Render dashboard dengan data
-        res.render('dashboard', { data: tData });
-        
-    } catch (why) { 
-        console.log(`Dashboard error: ${why}`);
-        res.render('dashboard', { data: {} });
-    }
+app.all("/player/validate/close", function (req, res) {
+  res.send("<script>window.close();</script>");
 });
 
-// Registration endpoint
+app.all('/player/login/dashboard', function (req, res) {
+    const tData = {};
+    try {
+        const uData = JSON.stringify(req.body).split('"')[1].split('\\n'); 
+        const uName = uData[0].split('|'); 
+        const uPass = uData[1].split('|');
+        for (let i = 0; i < uData.length - 1; i++) { 
+            const d = uData[i].split('|'); 
+            tData[d[0]] = d[1]; 
+        }
+        if (uName[1] && uPass[1]) { 
+            res.redirect('/player/growid/login/validate'); 
+        }
+    } catch (why) { 
+        console.log(`Warning: ${why}`); 
+    }
+
+    res.render('dashboard', {data: tData});
+});
+
+// 🆕 ENDPOINT REGISTRASI BARU
 app.all('/player/growid/register/validate', (req, res) => {
     try {
-        console.log('Registration request:', req.body);
+        console.log('📝 REGISTRATION REQUEST:', req.body);
         
         const { _token, growId, password, email, gender } = req.body;
         
-        // Validation
+        // Validasi input
         if (!_token || !growId || !password || !email || !gender) {
             return res.status(400).json({
                 status: "error",
@@ -92,6 +77,7 @@ app.all('/player/growid/register/validate', (req, res) => {
             });
         }
 
+        // Validasi panjang GrowID
         if (growId.length < 3 || growId.length > 18) {
             return res.status(400).json({
                 status: "error", 
@@ -99,6 +85,7 @@ app.all('/player/growid/register/validate', (req, res) => {
             });
         }
 
+        // Validasi panjang password
         if (password.length < 4 || password.length > 18) {
             return res.status(400).json({
                 status: "error",
@@ -106,6 +93,7 @@ app.all('/player/growid/register/validate', (req, res) => {
             });
         }
 
+        // Validasi karakter GrowID
         if (!/^[a-zA-Z0-9]+$/.test(growId)) {
             return res.status(400).json({
                 status: "error",
@@ -113,23 +101,25 @@ app.all('/player/growid/register/validate', (req, res) => {
             });
         }
 
-        // Create registration token
+        // 🎯 BUAT TOKEN UNTUK REGISTRASI - FORMAT YANG BISA DIBACA C++
         const tokenData = {
             server_name: _token.toUpperCase(),
             growId: growId,
             password: password,
             email: email,
             gender: gender,
-            isRegister: true
+            isRegister: true  // 🚀 INI YANG PENTING - agar C++ tahu ini registrasi
         };
 
         const token = Buffer.from(JSON.stringify(tokenData)).toString('base64');
         
-        console.log('Registration successful for:', growId);
+        console.log('✅ REGISTRATION SUCCESS:', growId);
+        console.log('🔑 TOKEN:', token);
         
+        // Kirim response dengan format yang expected
         res.json({
             status: "success",
-            message: "Registration successful! You can now login.",
+            message: "Registration successful!",
             token: token,
             url: "",
             accountType: "growtopia",
@@ -137,7 +127,7 @@ app.all('/player/growid/register/validate', (req, res) => {
         });
 
     } catch (error) {
-        console.error('Registration error:', error);
+        console.error('❌ REGISTRATION ERROR:', error);
         res.status(500).json({
             status: "error",
             message: "Registration failed due to server error."
@@ -145,22 +135,21 @@ app.all('/player/growid/register/validate', (req, res) => {
     }
 });
 
-// Login endpoint
 app.all('/player/growid/login/validate', (req, res) => {
     try {
-        console.log('Login request:', req.body);
-        
         const { _token, growId, password, action } = req.body;
         
         let tokenData;
         if (action && action.toLowerCase() === 'login' && growId && password) {
+            // Login dengan GrowID
             tokenData = { 
                 server_name: _token.toUpperCase(), 
                 growId: growId, 
                 password: password,
-                isRegister: false 
+                isRegister: false  // 🚀 Pastikan false untuk login
             };
         } else {
+            // Guest login
             tokenData = { 
                 server_name: _token.toUpperCase(), 
                 growId: growId || "", 
@@ -171,11 +160,11 @@ app.all('/player/growid/login/validate', (req, res) => {
 
         const token = Buffer.from(JSON.stringify(tokenData)).toString('base64');
         
-        console.log('Login token generated for:', growId || 'Guest');
+        console.log('🔑 LOGIN TOKEN:', token);
         
         res.json({
             status: "success",
-            message: "Login successful!",
+            message: "Account Validated.",
             token: token,
             url: "",
             accountType: "growtopia", 
@@ -183,7 +172,7 @@ app.all('/player/growid/login/validate', (req, res) => {
         });
 
     } catch (error) {
-        console.error('Login validation error:', error);
+        console.error('Login error:', error);
         res.status(500).json({
             status: "error",
             message: "Login validation failed."
@@ -191,13 +180,11 @@ app.all('/player/growid/login/validate', (req, res) => {
     }
 });
 
-// Token check endpoint
 app.all('/player/growid/checktoken', (req, res) => {
-    console.log('Token check request:', req.body);
     const { refreshToken } = req.body;
     res.json({
         status: 'success',
-        message: 'Token is valid.',
+        message: 'Account Validated.',
         token: refreshToken,
         url: '',
         accountType: 'growtopia',
@@ -205,39 +192,13 @@ app.all('/player/growid/checktoken', (req, res) => {
     });
 });
 
-// Close window endpoint
-app.all("/player/validate/close", function (req, res) {
-    res.send("<script>window.close();</script>");
-});
-
-// Home page
+// 🆕 Home page dengan dashboard
 app.get('/', function (req, res) {
-    res.sendFile(path.join(__dirname, 'public/html/index.html'));
+   res.render('dashboard', {data: {}});
 });
 
-// Serve login page directly
-app.get('/login', function (req, res) {
-    res.sendFile(path.join(__dirname, 'public/html/index.html'));
-});
-
-// 404 handler
-app.use('*', (req, res) => {
-    console.log('404 - Route not found:', req.originalUrl);
-    res.status(404).send('Route not found');
-});
-
-// Error handler
-app.use((err, req, res, next) => {
-    console.error('Server error:', err);
-    res.status(500).json({
-        status: "error",
-        message: "Internal server error"
-    });
-});
-
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, function () {
-    console.log(`Server listening on port ${PORT}`);
-    console.log(`Home: http://localhost:${PORT}`);
-    console.log(`Login: http://localhost:${PORT}/login`);
+app.listen(5000, function () {
+    console.log('🚀 Server listening on port 5000');
+    console.log('📍 Home: http://localhost:5000');
+    console.log('📝 Register: http://localhost:5000/player/growid/register/validate');
 });

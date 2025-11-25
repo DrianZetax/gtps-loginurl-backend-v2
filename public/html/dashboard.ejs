@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GTPSID Login</title>
+  <title>GTPSID - Login & Register</title>
   <link rel="icon" href="https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/assets/images/growtopia.ico" />
   
   <style>
@@ -19,7 +19,6 @@
       background: transparent;
       color: #333;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      
       display: flex;
       align-items: center;
       justify-content: center;
@@ -27,12 +26,12 @@
       padding: 20px;
     }
 
-    /* Container utama yang memanjang ke samping */
+    /* Container utama */
     .main-container {
       display: flex;
       width: 100%;
-      max-width: 950px;
-      min-height: 520px;
+      max-width: 1000px;
+      min-height: 580px;
       background: linear-gradient(135deg, #3c2a21 0%, #1a1208 100%);
       border-radius: 16px;
       overflow: hidden;
@@ -59,14 +58,12 @@
       font-size: 42px;
       margin-bottom: 10px;
       font-weight: 300;
-      position: relative;
     }
 
     .visual-section h2 {
       font-size: 48px;
       margin-bottom: 30px;
       font-weight: 700;
-      position: relative;
     }
 
     .visual-section p {
@@ -74,7 +71,6 @@
       line-height: 1.7;
       max-width: 320px;
       opacity: 0.9;
-      position: relative;
     }
 
     /* Ikon dekoratif */
@@ -87,7 +83,6 @@
       align-items: center;
       justify-content: center;
       margin-bottom: 25px;
-      position: relative;
       backdrop-filter: blur(5px);
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
@@ -97,10 +92,10 @@
       font-size: 36px;
     }
 
-    /* Bagian kanan untuk form login */
-    .login-container {
+    /* Bagian kanan untuk form */
+    .form-container {
       flex: 1;
-      padding: 45px;
+      padding: 35px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -108,35 +103,53 @@
       backdrop-filter: blur(10px);
     }
 
-    /* Judul */
-    .login-title h1 {
-      font-size: 32px;
-      font-weight: 300;
-      color: #d7ccc8;
-      margin-bottom: 5px;
-      text-align: center;
+    /* Tab Navigation */
+    .tab-navigation {
+      display: flex;
+      margin-bottom: 25px;
+      border-bottom: 1px solid #5d4037;
     }
 
-    .login-title h2 {
-      font-size: 36px;
-      font-weight: 700;
-      color: #d7ccc8;
-      margin-bottom: 30px;
-      text-align: center;
+    .tab-btn {
+      flex: 1;
+      padding: 12px;
+      background: none;
+      border: none;
+      color: #8d6e63;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .tab-btn.active {
+      color: #d7a461;
+      border-bottom: 2px solid #d7a461;
     }
 
     /* Form Styling */
+    .form-section {
+      display: none;
+    }
+
+    .form-section.active {
+      display: block;
+    }
+
     form {
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 15px;
     }
 
     /* Input Fields */
-    input[type="text"], input[type="password"] {
+    input[type="text"], 
+    input[type="password"], 
+    input[type="email"],
+    select {
       width: 100%;
-      padding: 15px 18px;
-      font-size: 16px;
+      padding: 14px 16px;
+      font-size: 15px;
       background: rgba(50, 35, 25, 0.8);
       color: #efebe9;
       border: 1px solid #6d4c41;
@@ -144,28 +157,26 @@
       transition: all 0.3s ease;
     }
 
-    /* Efek fokus */
-    input:focus {
+    input:focus, select:focus {
       outline: none;
       border-color: #a1887f;
       background: rgba(60, 40, 30, 0.9);
     }
 
-    /* Placeholder style */
     ::placeholder {
       color: #bcaaa4;
     }
 
     /* Optional Fields */
     .optional-fields {
-      margin: 10px 0;
+      margin: 8px 0;
       color: #8d6e63;
-      font-size: 14px;
+      font-size: 13px;
       text-align: center;
     }
 
-    /* Tombol Umum */
-    button {
+    /* Tombol */
+    button[type="submit"] {
       width: 100%;
       padding: 15px;
       border: none;
@@ -174,18 +185,18 @@
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
-      margin-top: 8px;
+      margin-top: 10px;
     }
 
     button:active {
       transform: scale(0.98);
     }
 
-    /* Tombol Primer (Login) */
     .btn-primary {
       background: linear-gradient(45deg, #d7a461, #b08c5a);
       color: #3e2723;
     }
+
     .btn-primary:hover {
       background: linear-gradient(45deg, #e0b879, #c19a64);
     }
@@ -194,17 +205,40 @@
     .toggle-password {
       cursor: pointer;
       color: #a1887f;
-      font-size: 14px;
+      font-size: 13px;
       text-align: right;
       margin-top: -8px;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       transition: color 0.3s;
     }
+
     .toggle-password:hover {
       color: #d7a461;
     }
 
-    /* Footer kecil */
+    /* Alert Messages */
+    .alert {
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      font-size: 14px;
+      text-align: center;
+      display: none;
+    }
+
+    .alert-success {
+      background: rgba(76, 175, 80, 0.2);
+      color: #4caf50;
+      border: 1px solid #4caf50;
+    }
+
+    .alert-error {
+      background: rgba(244, 67, 54, 0.2);
+      color: #f44336;
+      border: 1px solid #f44336;
+    }
+
+    /* Footer */
     .footer {
       text-align: center;
       margin-top: 25px;
@@ -212,7 +246,7 @@
       font-size: 12px;
     }
 
-    /* ========== RESPONSIVE UNTUK MOBILE ========== */
+    /* Responsive */
     @media (max-width: 768px) {
       html, body {
         padding: 10px;
@@ -220,13 +254,6 @@
         height: auto;
         min-height: 100vh;
         display: block;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-      }
-
-      html::-webkit-scrollbar,
-      body::-webkit-scrollbar {
-        display: none;
       }
 
       .main-container {
@@ -235,13 +262,11 @@
         min-height: auto;
         margin: 0 auto;
         max-width: 100%;
-        overflow: visible;
       }
       
       .visual-section {
         padding: 30px 20px;
         order: 2;
-        overflow: visible;
       }
       
       .visual-section h1 {
@@ -253,282 +278,268 @@
         margin-bottom: 15px;
       }
       
-      .visual-section p {
-        font-size: 14px;
-        max-width: 100%;
-      }
-      
-      .login-container {
-        padding: 30px 20px;
+      .form-container {
+        padding: 25px 20px;
         order: 1;
-        overflow: visible;
-      }
-      
-      .login-title h1 {
-        font-size: 24px;
-      }
-      
-      .login-title h2 {
-        font-size: 28px;
-        margin-bottom: 20px;
-      }
-
-      input[type="text"], 
-      input[type="password"] {
-        padding: 12px 15px;
-        font-size: 16px;
-      }
-
-      button {
-        padding: 14px;
-        font-size: 16px;
-      }
-
-      .icon-container {
-        width: 60px;
-        height: 60px;
-        margin-bottom: 15px;
-      }
-
-      .icon-container::before {
-        font-size: 28px;
       }
     }
-
-    /* Untuk layar sangat kecil (iPhone SE dll) */
-    @media (max-width: 375px) {
-      .visual-section {
-        padding: 25px 15px;
-      }
-      
-      .login-container {
-        padding: 25px 15px;
-      }
-      
-      .visual-section h1 {
-        font-size: 24px;
-      }
-      
-      .visual-section h2 {
-        font-size: 28px;
-      }
-      
-      .login-title h1 {
-        font-size: 22px;
-      }
-      
-      .login-title h2 {
-        font-size: 26px;
-      }
-    }
-
-    /* Landscape mode untuk mobile */
-    @media (max-height: 500px) and (orientation: landscape) {
-      html, body {
-        padding: 10px;
-        overflow: auto;
-      }
-
-      .main-container {
-        height: auto;
-        min-height: auto;
-      }
-      
-      .visual-section,
-      .login-container {
-        padding: 20px;
-      }
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
   </style>
 </head>
 <body>
 
   <div class="main-container">
-    <!-- Bagian form login di sebelah kanan (atas di mobile) -->
-    <div class="login-container">
+    <!-- Bagian form -->
+    <div class="form-container">
       <div class="login-title">
-        <h1>Log Into Your</h1>
+        <h1>Welcome to</h1>
         <h2>GTPSID</h2>
       </div>
+
+      <!-- Alert Messages -->
+      <div id="alertMessage" class="alert"></div>
+
+      <!-- Tab Navigation -->
+      <div class="tab-navigation">
+        <button class="tab-btn active" data-tab="login">Login</button>
+        <button class="tab-btn" data-tab="register">Register</button>
+      </div>
       
-      <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="loginForm">
-        <input type="text" name="_token" id="serverInput" placeholder="Server Name *" required />
-        
-        <div class="optional-fields">GrowID & Password (Optional - for existing accounts)</div>
-        
-        <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID Name (Optional)" />
-        <input type="password" name="password" id="loginPassword" placeholder="Your GrowID Password (Optional)" />
-        
-        <div class="toggle-password" id="togglePassword">Show Password</div>
-        
-        <button type="submit" name="action" value="Login" class="btn-primary">Connect to Game</button>
-      </form>
+      <!-- Login Form -->
+      <div id="loginForm" class="form-section active">
+        <form method="POST" autocomplete="off" id="loginFormElement">
+          <input type="text" name="_token" id="serverInput" placeholder="Server Name *" required />
+          
+          <div class="optional-fields">GrowID & Password (Optional - for existing accounts)</div>
+          
+          <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID Name (Optional)" />
+          <input type="password" name="password" id="loginPassword" placeholder="Your GrowID Password (Optional)" />
+          
+          <div class="toggle-password" id="toggleLoginPassword">Show Password</div>
+          
+          <button type="submit" class="btn-primary">Connect to Game</button>
+        </form>
+      </div>
+
+      <!-- Register Form -->
+      <div id="registerForm" class="form-section">
+        <form method="POST" autocomplete="off" id="registerFormElement">
+          <input type="text" name="_token" id="registerServerInput" placeholder="Server Name *" required />
+          
+          <div class="optional-fields">Create Your GrowID Account</div>
+          
+          <input type="text" name="growId" id="registerGrowId" placeholder="Choose GrowID Name *" required />
+          <input type="password" name="password" id="registerPassword" placeholder="Choose Password *" required />
+          <input type="email" name="email" id="registerEmail" placeholder="Your Email *" required />
+          
+          <select name="gender" id="registerGender" required>
+            <option value="">Select Gender *</option>
+            <option value="man">Male</option>
+            <option value="woman">Female</option>
+          </select>
+          
+          <div class="toggle-password" id="toggleRegisterPassword">Show Password</div>
+          
+          <button type="submit" class="btn-primary">Create Account & Play</button>
+        </form>
+      </div>
+
       <div class="footer">© 2025 GTPSID. All rights reserved.</div>
     </div>
 
-    <!-- Bagian visual di sebelah kiri (bawah di mobile) -->
+    <!-- Bagian visual -->
     <div class="visual-section">
       <div class="icon-container"></div>
-      <h1>Welcome to</h1>
-      <h2>GTPSID</h2>
-      <p>Connect with thousands of players worldwide. Join the adventure in the world of Growtopia and explore endless possibilities!</p>
+      <h1>Join The</h1>
+      <h2>ADVENTURE</h2>
+      <p>Create your account and join thousands of players in the amazing world of Growtopia. Build, explore, and make new friends!</p>
     </div>
   </div>
 
   <script>
-    // Data server untuk autocomplete (opsional)
-    const servers = [
-    ];
-
     document.addEventListener("DOMContentLoaded", () => {
-      // Load data dari localStorage
-      const growId = localStorage.getItem("growId");
-      const lastServer = localStorage.getItem("lastServer");
-      
-      if (growId) document.getElementById("loginGrowId").value = growId;
-      if (lastServer) {
-        document.getElementById("serverInput").value = lastServer;
-      }
-      
-      // Setup autocomplete untuk server input
-      setupServerAutocomplete();
-    });
+      // Initialize tabs
+      const tabButtons = document.querySelectorAll('.tab-btn');
+      const formSections = document.querySelectorAll('.form-section');
+      const alertMessage = document.getElementById('alertMessage');
 
-    document.getElementById("togglePassword").addEventListener("click", () => {
-      const pwd = document.getElementById("loginPassword");
-      const toggle = document.getElementById("togglePassword");
-      if (pwd.type === "password") {
-        pwd.type = "text";
-        toggle.textContent = "Hide Password";
-      } else {
-        pwd.type = "password";
-        toggle.textContent = "Show Password";
-      }
-    });
-
-    // Handle form submission
-    document.getElementById("loginForm").addEventListener("submit", (e) => {
-      const growId = document.getElementById("loginGrowId").value;
-      const server = document.getElementById('serverInput').value;
-      
-      // Validasi hanya server name yang required
-      if (!server) {
-        e.preventDefault();
-        alert("Please enter a server name!");
-        return;
-      }
-      
-      // Simpan ke localStorage
-      if (growId) localStorage.setItem("growId", growId);
-      if (server) localStorage.setItem("lastServer", server);
-      
-      // Form akan langsung submit ke /player/growid/login/validate
-      console.log("Submitting form with:", {
-        server: server,
-        growId: growId || "empty",
-        password: document.getElementById("loginPassword").value ? "***" : "empty"
-      });
-    });
-
-    let startY;
-    const body = document.body;
-
-    body.addEventListener('touchstart', (e) => {
-      startY = e.touches[0].clientY;
-    });
-
-    body.addEventListener('touchmove', (e) => {
-      const currentY = e.touches[0].clientY;
-      const diff = startY - currentY;
-      
-      if (body.scrollHeight > window.innerHeight) {
-        return;
-      }
-      
-      if (Math.abs(diff) > 10) {
-        e.preventDefault();
-      }
-    }, { passive: false });
-
-    // Fungsi untuk setup autocomplete
-    function setupServerAutocomplete() {
-      const serverInput = document.getElementById('serverInput');
-      let autocompleteList = null;
-      
-      serverInput.addEventListener('input', function() {
-        // Hapus daftar autocomplete sebelumnya
-        if (autocompleteList) {
-          autocompleteList.remove();
-          autocompleteList = null;
-        }
-        
-        const value = this.value.toUpperCase();
-        if (!value) return;
-        
-        // Filter server yang cocok
-        const matches = servers.filter(server => 
-          server.startsWith(value)
-        );
-        
-        if (matches.length === 0) return;
-        
-        // Buat daftar autocomplete
-        autocompleteList = document.createElement('ul');
-        autocompleteList.className = 'autocomplete-list';
-        autocompleteList.style.cssText = `
-          position: absolute;
-          background: rgba(50, 35, 25, 0.95);
-          border: 1px solid #6d4c41;
-          border-radius: 10px;
-          width: ${serverInput.offsetWidth}px;
-          max-height: 150px;
-          overflow-y: auto;
-          z-index: 1000;
-          margin-top: 5px;
-          list-style: none;
-          padding: 0;
-        `;
-        
-        matches.forEach(match => {
-          const item = document.createElement('li');
-          item.textContent = match;
-          item.style.cssText = `
-            padding: 10px 15px;
-            cursor: pointer;
-            color: #efebe9;
-            border-bottom: 1px solid #6d4c41;
-          `;
-          item.addEventListener('mouseover', function() {
-            this.style.background = 'rgba(93, 64, 55, 0.8)';
-          });
-          item.addEventListener('mouseout', function() {
-            this.style.background = 'transparent';
-          });
-          item.addEventListener('click', function() {
-            serverInput.value = match;
-            autocompleteList.remove();
-            autocompleteList = null;
-          });
-          autocompleteList.appendChild(item);
+      // Tab functionality
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const targetTab = button.getAttribute('data-tab');
+          
+          // Update active tab
+          tabButtons.forEach(btn => btn.classList.remove('active'));
+          button.classList.add('active');
+          
+          // Show target form
+          formSections.forEach(section => section.classList.remove('active'));
+          document.getElementById(`${targetTab}Form`).classList.add('active');
+          
+          // Clear alerts
+          hideAlert();
         });
-        
-        // Tambahkan ke DOM
-        serverInput.parentNode.appendChild(autocompleteList);
       });
+
+      // Load saved data
+      const savedGrowId = localStorage.getItem("growId");
+      const savedServer = localStorage.getItem("lastServer");
       
-      // Hapus autocomplete saat klik di luar
-      document.addEventListener('click', function(e) {
-        if (autocompleteList && !serverInput.contains(e.target) && !autocompleteList.contains(e.target)) {
-          autocompleteList.remove();
-          autocompleteList = null;
-        }
+      if (savedGrowId) {
+        document.getElementById("loginGrowId").value = savedGrowId;
+        document.getElementById("registerGrowId").value = savedGrowId;
+      }
+      if (savedServer) {
+        document.getElementById("serverInput").value = savedServer;
+        document.getElementById("registerServerInput").value = savedServer;
+      }
+
+      // Password toggle functionality
+      setupPasswordToggle('toggleLoginPassword', 'loginPassword');
+      setupPasswordToggle('toggleRegisterPassword', 'registerPassword');
+
+      // Sync server inputs
+      const serverInputs = document.querySelectorAll('input[name="_token"]');
+      serverInputs.forEach(input => {
+        input.addEventListener('input', (e) => {
+          serverInputs.forEach(otherInput => {
+            if (otherInput !== e.target) {
+              otherInput.value = e.target.value;
+            }
+          });
+        });
       });
-    }
+
+      // Login form handler
+      document.getElementById('loginFormElement').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(e.target);
+        const data = {
+          _token: formData.get('_token'),
+          growId: formData.get('growId'),
+          password: formData.get('password'),
+          action: 'login'
+        };
+
+        if (!data._token) {
+          showAlert('Please enter a server name!', 'error');
+          return;
+        }
+
+        await submitForm('/player/growid/login/validate', data, 'login');
+      });
+
+      // Register form handler
+      document.getElementById('registerFormElement').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(e.target);
+        const data = {
+          _token: formData.get('_token'),
+          growId: formData.get('growId'),
+          password: formData.get('password'),
+          email: formData.get('email'),
+          gender: formData.get('gender')
+        };
+
+        // Validation
+        if (!data._token) {
+          showAlert('Please enter a server name!', 'error');
+          return;
+        }
+
+        if (!data.growId || !data.password || !data.email || !data.gender) {
+          showAlert('Please fill all required fields!', 'error');
+          return;
+        }
+
+        if (data.growId.length < 3 || data.growId.length > 18) {
+          showAlert('GrowID must be between 3 and 18 characters!', 'error');
+          return;
+        }
+
+        if (data.password.length < 4 || data.password.length > 18) {
+          showAlert('Password must be between 4 and 18 characters!', 'error');
+          return;
+        }
+
+        if (!/^[a-zA-Z0-9]+$/.test(data.growId)) {
+          showAlert('GrowID can only contain letters and numbers!', 'error');
+          return;
+        }
+
+        await submitForm('/player/growid/register/validate', data, 'register');
+      });
+
+      // Helper functions
+      function setupPasswordToggle(toggleId, passwordId) {
+        const toggle = document.getElementById(toggleId);
+        const password = document.getElementById(passwordId);
+        
+        toggle.addEventListener('click', () => {
+          if (password.type === 'password') {
+            password.type = 'text';
+            toggle.textContent = 'Hide Password';
+          } else {
+            password.type = 'password';
+            toggle.textContent = 'Show Password';
+          }
+        });
+      }
+
+      async function submitForm(url, data, type) {
+        try {
+          showAlert('Processing...', 'success');
+          
+          const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+          });
+
+          const result = await response.json();
+          
+          if (result.status === 'success') {
+            // Save to localStorage
+            if (data.growId) {
+              localStorage.setItem("growId", data.growId);
+              localStorage.setItem("lastServer", data._token);
+            }
+
+            if (type === 'register') {
+              showAlert('Registration successful! You can now login with your new account.', 'success');
+              // Switch to login tab after successful registration
+              setTimeout(() => {
+                tabButtons[0].click();
+              }, 2000);
+            } else {
+              showAlert('Login successful! Connecting to game...', 'success');
+              // Simulate game connection
+              setTimeout(() => {
+                window.location.href = 'gtpsid://play?token=' + result.token;
+              }, 1000);
+            }
+          } else {
+            showAlert(result.message || 'An error occurred!', 'error');
+          }
+        } catch (error) {
+          console.error('Submission error:', error);
+          showAlert('Network error! Please try again.', 'error');
+        }
+      }
+
+      function showAlert(message, type) {
+        alertMessage.textContent = message;
+        alertMessage.className = `alert alert-${type}`;
+        alertMessage.style.display = 'block';
+      }
+
+      function hideAlert() {
+        alertMessage.style.display = 'none';
+      }
+    });
   </script>
 
 </body>

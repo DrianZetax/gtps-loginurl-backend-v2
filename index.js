@@ -122,7 +122,7 @@ app.all('/player/growid/register/validate', (req, res) => {
             status: "success",
             message: "Registration successful!",
             token: token,
-            url: "gtpsid://play", // 🚀 URL untuk redirect
+            url: '', // 🚀 URL untuk redirect
             accountType: "growtopia",
             accountAge: 0
         });
@@ -181,7 +181,7 @@ app.all('/player/growid/login/validate', (req, res) => {
             status: "success",
             message: "Login successful!",
             token: token,
-            url: "gtpsid://play", // 🚀 URL untuk redirect
+            url: '', // 🚀 URL untuk redirect
             accountType: "growtopia", 
             accountAge: 2
         });

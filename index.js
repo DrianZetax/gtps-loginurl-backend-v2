@@ -16,7 +16,6 @@ app.use(compression({
 }));
 
 app.set('view engine', 'ejs');
-
 app.set('trust proxy', 1);
 
 app.use(function (req, res, next) {
@@ -25,18 +24,16 @@ app.use(function (req, res, next) {
         'Access-Control-Allow-Headers',
         'Origin, X-Requested-With, Content-Type, Accept',
     );
-    console.log(`[${new Date().toLocaleString()}] ${req.method} ${req.url} - ${res.statusCode}`);
+    console.log(`[${new Date().toLocaleString()}] ${req.method} ${req.url}`);
     next();
 });
 
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use(express.json());
-
 app.use(rateLimiter({ windowMs: 15 * 60 * 1000, max: 10000, headers: true }));
 
 app.all("/player/validate/close", function (req, res) {
-  res.send("<script>window.close();</script>");
+    res.send("<script>window.close();</script>");
 });
 
 app.all('/player/login/dashboard', function (req, res) {
@@ -59,7 +56,7 @@ app.all('/player/login/dashboard', function (req, res) {
     res.render(__dirname + '/public/html/dashboard.ejs', {data: tData});
 });
 
-// Endpoint untuk login/register - hanya generate token
+// Endpoint untuk login/register - HANYA GENERATE TOKEN
 app.all('/player/growid/login/validate', (req, res) => {
     try {
         const { _token, growId, password, action } = req.body;
@@ -96,6 +93,8 @@ app.all('/player/growid/login/validate', (req, res) => {
         const token = JSON.stringify(tokenData);
         const tokens = Buffer.from(token).toString('base64');
         
+        console.log(`Token generated for: ${growId || 'Guest'}, Action: ${action}, Server: ${serverName}`);
+        
         res.json({
             status: "success",
             message: "Token generated successfully.",
@@ -114,40 +113,6 @@ app.all('/player/growid/login/validate', (req, res) => {
     }
 });
 
-// Endpoint khusus register
-app.all('/player/growid/register', (req, res) => {
-    try {
-        const { _token, growId, password } = req.body;
-        const serverName = _token ? _token.toUpperCase() : "SERVER";
-        
-        const tokenData = { 
-            server_name: serverName, 
-            growId: growId || "", 
-            password: password || "",
-            isRegister: true
-        };
-        
-        const token = JSON.stringify(tokenData);
-        const tokens = Buffer.from(token).toString('base64');
-        
-        res.json({
-            status: "success",
-            message: "Registration token generated.",
-            token: tokens,
-            url: "",
-            accountType: "growtopia",
-            accountAge: 2
-        });
-        
-    } catch (error) {
-        console.log('Register token error:', error);
-        res.json({
-            status: "error",
-            message: "Registration token failed."
-        });
-    }
-});
-
 app.all('/player/growid/checktoken', (req, res) => {
     const { refreshToken } = req.body;
     res.json({
@@ -161,9 +126,9 @@ app.all('/player/growid/checktoken', (req, res) => {
 });
 
 app.get('/', function (req, res) {
-   res.send('Hello World');
+    res.send('Server Running');
 });
 
 app.listen(5000, function () {
-    console.log('Listening on port 5000');
+    console.log('Backend listening on port 5000 - Token Generator Only');
 });

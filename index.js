@@ -42,21 +42,110 @@ app.all("/player/validate/close", function (req, res) {
 app.all('/player/login/dashboard', function (req, res) {
     const tData = {};
     try {
-        const uData = JSON.stringify(req.body).split('"')[1].split('\\n'); const uName = uData[0].split('|'); const uPass = uData[1].split('|');
-        for (let i = 0; i < uData.length - 1; i++) { const d = uData[i].split('|'); tData[d[0]] = d[1]; }
-        if (uName[1] && uPass[1]) { res.redirect('/player/growid/login/validate'); }
-    } catch (why) { console.log(`Warning: ${why}`); }
+        const uData = JSON.stringify(req.body).split('"')[1].split('\\n'); 
+        const uName = uData[0].split('|'); 
+        const uPass = uData[1].split('|');
+        for (let i = 0; i < uData.length - 1; i++) { 
+            const d = uData[i].split('|'); 
+            tData[d[0]] = d[1]; 
+        }
+        if (uName[1] && uPass[1]) { 
+            res.redirect('/player/growid/login/validate'); 
+        }
+    } catch (why) { 
+        console.log(`Warning: ${why}`); 
+    }
 
     res.render(__dirname + '/public/html/dashboard.ejs', {data: tData});
 });
 
+// Endpoint untuk login/register - hanya generate token
 app.all('/player/growid/login/validate', (req, res) => {
-    const { _token, growId, password, action } = req.body;
-    const token = (action.toLowerCase() === 'login' ? JSON.stringify({ server_name: _token.toUpperCase(), growId: growId, password: password }) : JSON.stringify({ server_name: _token.toUpperCase(), growId: "", password: "" }));
-    const tokens = Buffer.from(token).toString('base64');
-    res.send(
-        `{"status":"success","message":"Account Validated.","token":"${tokens}","url":"","accountType":"growtopia", "accountAge": 2}`,
-    );
+    try {
+        const { _token, growId, password, action } = req.body;
+        const serverName = _token ? _token.toUpperCase() : "SERVER";
+        
+        let tokenData = {};
+        
+        if (action && action.toLowerCase() === 'register') {
+            // Mode Register - kirim data lengkap
+            tokenData = { 
+                server_name: serverName, 
+                growId: growId || "", 
+                password: password || "",
+                isRegister: true
+            };
+        } else if (growId && password) {
+            // Mode Login - kirim data lengkap
+            tokenData = { 
+                server_name: serverName, 
+                growId: growId, 
+                password: password,
+                isRegister: false
+            };
+        } else {
+            // Guest login - kosongkan data
+            tokenData = { 
+                server_name: serverName, 
+                growId: "", 
+                password: "",
+                isRegister: false
+            };
+        }
+        
+        const token = JSON.stringify(tokenData);
+        const tokens = Buffer.from(token).toString('base64');
+        
+        res.json({
+            status: "success",
+            message: "Token generated successfully.",
+            token: tokens,
+            url: "",
+            accountType: "growtopia", 
+            accountAge: 2
+        });
+        
+    } catch (error) {
+        console.log('Token generation error:', error);
+        res.json({
+            status: "error",
+            message: "Token generation failed."
+        });
+    }
+});
+
+// Endpoint khusus register
+app.all('/player/growid/register', (req, res) => {
+    try {
+        const { _token, growId, password } = req.body;
+        const serverName = _token ? _token.toUpperCase() : "SERVER";
+        
+        const tokenData = { 
+            server_name: serverName, 
+            growId: growId || "", 
+            password: password || "",
+            isRegister: true
+        };
+        
+        const token = JSON.stringify(tokenData);
+        const tokens = Buffer.from(token).toString('base64');
+        
+        res.json({
+            status: "success",
+            message: "Registration token generated.",
+            token: tokens,
+            url: "",
+            accountType: "growtopia",
+            accountAge: 2
+        });
+        
+    } catch (error) {
+        console.log('Register token error:', error);
+        res.json({
+            status: "error",
+            message: "Registration token failed."
+        });
+    }
 });
 
 app.all('/player/growid/checktoken', (req, res) => {
@@ -72,7 +161,7 @@ app.all('/player/growid/checktoken', (req, res) => {
 });
 
 app.get('/', function (req, res) {
-   res.send('Hello Memek');
+   res.send('Hello World');
 });
 
 app.listen(5000, function () {

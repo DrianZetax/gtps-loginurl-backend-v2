@@ -31,8 +31,8 @@
     .main-container {
       display: flex;
       width: 100%;
-      max-width: 950px;
-      min-height: 520px;
+      max-width: 1000px;
+      min-height: 550px;
       background: linear-gradient(135deg, #3c2a21 0%, #1a1208 100%);
       border-radius: 16px;
       overflow: hidden;
@@ -97,39 +97,70 @@
       font-size: 36px;
     }
 
-    /* Bagian kanan untuk form login */
-    .login-container {
+    /* Bagian kanan untuk form */
+    .form-container {
       flex: 1;
-      padding: 45px;
+      padding: 40px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       background: rgba(30, 20, 10, 0.7);
       backdrop-filter: blur(10px);
+      position: relative;
+    }
+
+    /* Tab Navigation */
+    .tab-navigation {
+      display: flex;
+      margin-bottom: 30px;
+      background: rgba(50, 35, 25, 0.8);
+      border-radius: 12px;
+      padding: 5px;
+    }
+
+    .tab-button {
+      flex: 1;
+      padding: 12px;
+      text-align: center;
+      background: transparent;
+      border: none;
+      color: #bcaaa4;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .tab-button.active {
+      background: linear-gradient(45deg, #d7a461, #b08c5a);
+      color: #3e2723;
+    }
+
+    /* Form Styling */
+    .form-content {
+      display: none;
+    }
+
+    .form-content.active {
+      display: block;
     }
 
     /* Judul */
-    .login-title h1 {
-      font-size: 32px;
+    .form-title h1 {
+      font-size: 28px;
       font-weight: 300;
       color: #d7ccc8;
       margin-bottom: 5px;
       text-align: center;
     }
 
-    .login-title h2 {
-      font-size: 36px;
+    .form-title h2 {
+      font-size: 32px;
       font-weight: 700;
       color: #d7ccc8;
-      margin-bottom: 30px;
+      margin-bottom: 25px;
       text-align: center;
-    }
-
-    /* Form Styling */
-    form {
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
     }
 
     /* Input Fields */
@@ -142,6 +173,7 @@
       border: 1px solid #6d4c41;
       border-radius: 10px;
       transition: all 0.3s ease;
+      margin-bottom: 15px;
     }
 
     /* Efek fokus */
@@ -156,14 +188,6 @@
       color: #bcaaa4;
     }
 
-    /* Optional Fields */
-    .optional-fields {
-      margin: 10px 0;
-      color: #8d6e63;
-      font-size: 14px;
-      text-align: center;
-    }
-
     /* Tombol Umum */
     button {
       width: 100%;
@@ -174,14 +198,14 @@
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
-      margin-top: 8px;
+      margin-top: 10px;
     }
 
     button:active {
       transform: scale(0.98);
     }
 
-    /* Tombol Primer (Login) */
+    /* Tombol Primer */
     .btn-primary {
       background: linear-gradient(45deg, #d7a461, #b08c5a);
       color: #3e2723;
@@ -190,14 +214,24 @@
       background: linear-gradient(45deg, #e0b879, #c19a64);
     }
 
+    /* Tombol Sekunder */
+    .btn-secondary {
+      background: rgba(93, 64, 55, 0.8);
+      color: #d7ccc8;
+      border: 1px solid #6d4c41;
+    }
+    .btn-secondary:hover {
+      background: rgba(109, 76, 65, 0.9);
+    }
+
     /* Link "Show Password" */
     .toggle-password {
       cursor: pointer;
       color: #a1887f;
       font-size: 14px;
       text-align: right;
-      margin-top: -8px;
-      margin-bottom: 12px;
+      margin-top: -10px;
+      margin-bottom: 15px;
       transition: color 0.3s;
     }
     .toggle-password:hover {
@@ -210,6 +244,42 @@
       margin-top: 25px;
       color: #8d6e63;
       font-size: 12px;
+    }
+
+    /* Guest Login Section */
+    .guest-section {
+      margin-top: 20px;
+      padding-top: 20px;
+      border-top: 1px solid #5d4037;
+    }
+
+    .guest-section p {
+      color: #8d6e63;
+      text-align: center;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+
+    /* Message Box */
+    .message-box {
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      text-align: center;
+      font-size: 14px;
+      display: none;
+    }
+
+    .message-success {
+      background: rgba(76, 175, 80, 0.2);
+      color: #a5d6a7;
+      border: 1px solid #4caf50;
+    }
+
+    .message-error {
+      background: rgba(244, 67, 54, 0.2);
+      color: #ef9a9a;
+      border: 1px solid #f44336;
     }
 
     /* ========== RESPONSIVE UNTUK MOBILE ========== */
@@ -258,17 +328,17 @@
         max-width: 100%;
       }
       
-      .login-container {
+      .form-container {
         padding: 30px 20px;
         order: 1;
         overflow: visible;
       }
       
-      .login-title h1 {
+      .form-title h1 {
         font-size: 24px;
       }
       
-      .login-title h2 {
+      .form-title h2 {
         font-size: 28px;
         margin-bottom: 20px;
       }
@@ -301,7 +371,7 @@
         padding: 25px 15px;
       }
       
-      .login-container {
+      .form-container {
         padding: 25px 15px;
       }
       
@@ -313,11 +383,11 @@
         font-size: 28px;
       }
       
-      .login-title h1 {
+      .form-title h1 {
         font-size: 22px;
       }
       
-      .login-title h2 {
+      .form-title h2 {
         font-size: 26px;
       }
     }
@@ -335,7 +405,7 @@
       }
       
       .visual-section,
-      .login-container {
+      .form-container {
         padding: 20px;
       }
     }
@@ -349,25 +419,61 @@
 <body>
 
   <div class="main-container">
-    <!-- Bagian form login di sebelah kanan (atas di mobile) -->
-    <div class="login-container">
-      <div class="login-title">
-        <h1>Log Into Your</h1>
-        <h2>GTPSID</h2>
+    <!-- Bagian form di sebelah kanan (atas di mobile) -->
+    <div class="form-container">
+      <!-- Tab Navigation -->
+      <div class="tab-navigation">
+        <button class="tab-button active" data-tab="login">Login</button>
+        <button class="tab-button" data-tab="register">Register</button>
       </div>
-      
-      <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="loginForm">
-        <input type="text" name="_token" id="serverInput" placeholder="Server Name *" required />
+
+      <!-- Login Form -->
+      <div class="form-content active" id="loginFormContent">
+        <div class="form-title">
+          <h1>Login to Your</h1>
+          <h2>Account</h2>
+        </div>
         
-        <div class="optional-fields">GrowID & Password (Optional - for existing accounts)</div>
+        <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="loginForm">
+          <input type="text" name="_token" id="loginServerInput" placeholder="Server Name *" required />
+          <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID *" required />
+          <input type="password" name="password" id="loginPassword" placeholder="Your Password *" required />
+          
+          <div class="toggle-password" id="toggleLoginPassword">Show Password</div>
+          
+          <button type="submit" name="action" value="Login" class="btn-primary">Login to Game</button>
+        </form>
+
+        <div class="guest-section">
+          <p>Don't have an account?</p>
+          <button type="button" class="btn-secondary" onclick="switchTab('register')">Create New Account</button>
+        </div>
+      </div>
+
+      <!-- Register Form -->
+      <div class="form-content" id="registerFormContent">
+        <div class="form-title">
+          <h1>Create New</h1>
+          <h2>Account</h2>
+        </div>
         
-        <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID Name (Optional)" />
-        <input type="password" name="password" id="loginPassword" placeholder="Your GrowID Password (Optional)" />
-        
-        <div class="toggle-password" id="togglePassword">Show Password</div>
-        
-        <button type="submit" name="action" value="Login" class="btn-primary">Connect to Game</button>
-      </form>
+        <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="registerForm">
+          <input type="text" name="_token" id="registerServerInput" placeholder="Server Name *" required />
+          <input type="text" name="growId" id="registerGrowId" placeholder="Choose GrowID *" required />
+          <input type="password" name="password" id="registerPassword" placeholder="Choose Password *" required />
+          <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password *" required />
+          
+          <div class="toggle-password" id="toggleRegisterPassword">Show Password</div>
+          
+          <button type="submit" name="action" value="Register" class="btn-primary">Create Account</button>
+        </form>
+
+        <div class="guest-section">
+          <p>Already have an account?</p>
+          <button type="button" class="btn-secondary" onclick="switchTab('login')">Back to Login</button>
+        </div>
+      </div>
+
       <div class="footer">© 2025 GTPSID. All rights reserved.</div>
     </div>
 
@@ -381,7 +487,7 @@
   </div>
 
   <script>
-    // Data server untuk autocomplete (opsional)
+    // Data server untuk autocomplete
     const servers = [
       "STYLOPS",
       "CHINAPS", 
@@ -397,18 +503,50 @@
       const growId = localStorage.getItem("growId");
       const lastServer = localStorage.getItem("lastServer");
       
-      if (growId) document.getElementById("loginGrowId").value = growId;
+      if (growId) {
+        document.getElementById("loginGrowId").value = growId;
+        document.getElementById("registerGrowId").value = growId;
+      }
       if (lastServer) {
-        document.getElementById("serverInput").value = lastServer;
+        document.getElementById("loginServerInput").value = lastServer;
+        document.getElementById("registerServerInput").value = lastServer;
       }
       
       // Setup autocomplete untuk server input
-      setupServerAutocomplete();
+      setupServerAutocomplete('loginServerInput');
+      setupServerAutocomplete('registerServerInput');
     });
 
-    document.getElementById("togglePassword").addEventListener("click", () => {
-      const pwd = document.getElementById("loginPassword");
-      const toggle = document.getElementById("togglePassword");
+    // Tab Switching Function
+    function switchTab(tabName) {
+      // Update tab buttons
+      document.querySelectorAll('.tab-button').forEach(button => {
+        button.classList.remove('active');
+        if (button.dataset.tab === tabName) {
+          button.classList.add('active');
+        }
+      });
+
+      // Update form content
+      document.querySelectorAll('.form-content').forEach(content => {
+        content.classList.remove('active');
+      });
+      document.getElementById(tabName + 'FormContent').classList.add('active');
+    }
+
+    // Password Toggle Functions
+    document.getElementById("toggleLoginPassword").addEventListener("click", () => {
+      togglePassword('loginPassword', 'toggleLoginPassword');
+    });
+
+    document.getElementById("toggleRegisterPassword").addEventListener("click", () => {
+      togglePassword('registerPassword', 'toggleRegisterPassword');
+      togglePassword('confirmPassword', 'toggleRegisterPassword');
+    });
+
+    function togglePassword(passwordId, toggleId) {
+      const pwd = document.getElementById(passwordId);
+      const toggle = document.getElementById(toggleId);
       if (pwd.type === "password") {
         pwd.type = "text";
         toggle.textContent = "Hide Password";
@@ -416,32 +554,78 @@
         pwd.type = "password";
         toggle.textContent = "Show Password";
       }
-    });
+    }
 
-    // Handle form submission
+    // Form Validation and Submission
     document.getElementById("loginForm").addEventListener("submit", (e) => {
       const growId = document.getElementById("loginGrowId").value;
-      const server = document.getElementById('serverInput').value;
+      const server = document.getElementById('loginServerInput').value;
+      const password = document.getElementById('loginPassword').value;
       
-      // Validasi hanya server name yang required
-      if (!server) {
+      if (!server || !growId || !password) {
         e.preventDefault();
-        alert("Please enter a server name!");
+        showMessage('Please fill all required fields!', 'error');
         return;
       }
       
       // Simpan ke localStorage
-      if (growId) localStorage.setItem("growId", growId);
-      if (server) localStorage.setItem("lastServer", server);
+      localStorage.setItem("growId", growId);
+      localStorage.setItem("lastServer", server);
       
-      // Form akan langsung submit ke /player/growid/login/validate
-      console.log("Submitting form with:", {
-        server: server,
-        growId: growId || "empty",
-        password: document.getElementById("loginPassword").value ? "***" : "empty"
-      });
+      console.log("Login submitted:", { server, growId });
     });
 
+    document.getElementById("registerForm").addEventListener("submit", (e) => {
+      const growId = document.getElementById("registerGrowId").value;
+      const server = document.getElementById('registerServerInput').value;
+      const password = document.getElementById('registerPassword').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+      
+      if (!server || !growId || !password || !confirmPassword) {
+        e.preventDefault();
+        showMessage('Please fill all required fields!', 'error');
+        return;
+      }
+      
+      if (password !== confirmPassword) {
+        e.preventDefault();
+        showMessage('Passwords do not match!', 'error');
+        return;
+      }
+      
+      if (password.length < 4) {
+        e.preventDefault();
+        showMessage('Password must be at least 4 characters!', 'error');
+        return;
+      }
+      
+      // Simpan ke localStorage
+      localStorage.setItem("growId", growId);
+      localStorage.setItem("lastServer", server);
+      
+      console.log("Register submitted:", { server, growId });
+    });
+
+    // Message Display Function
+    function showMessage(message, type) {
+      // Create message element if not exists
+      let messageBox = document.querySelector('.message-box');
+      if (!messageBox) {
+        messageBox = document.createElement('div');
+        messageBox.className = 'message-box';
+        document.querySelector('.form-content.active').insertBefore(messageBox, document.querySelector('.form-content.active form'));
+      }
+      
+      messageBox.textContent = message;
+      messageBox.className = `message-box message-${type}`;
+      messageBox.style.display = 'block';
+      
+      setTimeout(() => {
+        messageBox.style.display = 'none';
+      }, 5000);
+    }
+
+    // Touch handling untuk mobile
     let startY;
     const body = document.body;
 
@@ -462,13 +646,12 @@
       }
     }, { passive: false });
 
-    // Fungsi untuk setup autocomplete
-    function setupServerAutocomplete() {
-      const serverInput = document.getElementById('serverInput');
+    // Autocomplete Function
+    function setupServerAutocomplete(inputId) {
+      const serverInput = document.getElementById(inputId);
       let autocompleteList = null;
       
       serverInput.addEventListener('input', function() {
-        // Hapus daftar autocomplete sebelumnya
         if (autocompleteList) {
           autocompleteList.remove();
           autocompleteList = null;
@@ -477,14 +660,12 @@
         const value = this.value.toUpperCase();
         if (!value) return;
         
-        // Filter server yang cocok
         const matches = servers.filter(server => 
           server.startsWith(value)
         );
         
         if (matches.length === 0) return;
         
-        // Buat daftar autocomplete
         autocompleteList = document.createElement('ul');
         autocompleteList.className = 'autocomplete-list';
         autocompleteList.style.cssText = `
@@ -524,11 +705,9 @@
           autocompleteList.appendChild(item);
         });
         
-        // Tambahkan ke DOM
         serverInput.parentNode.appendChild(autocompleteList);
       });
       
-      // Hapus autocomplete saat klik di luar
       document.addEventListener('click', function(e) {
         if (autocompleteList && !serverInput.contains(e.target) && !autocompleteList.contains(e.target)) {
           autocompleteList.remove();
@@ -536,6 +715,13 @@
         }
       });
     }
+
+    // Tab button event listeners
+    document.querySelectorAll('.tab-button').forEach(button => {
+      button.addEventListener('click', function() {
+        switchTab(this.dataset.tab);
+      });
+    });
   </script>
 
 </body>

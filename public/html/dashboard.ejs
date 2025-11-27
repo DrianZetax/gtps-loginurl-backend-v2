@@ -16,9 +16,10 @@
 
     html, body {
       height: 100%;
-      background: linear-gradient(135deg, #1a2a3a 0%, #0d1b2a 100%);
+      background: transparent;
       color: #333;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      
       display: flex;
       align-items: center;
       justify-content: center;
@@ -32,18 +33,17 @@
       width: 100%;
       max-width: 1000px;
       min-height: 550px;
-      background: linear-gradient(135deg, #1e3c5a 0%, #2a4d6e 50%, #1a2a3a 100%);
-      border-radius: 20px;
+      background: linear-gradient(135deg, #3c2a21 0%, #1a1208 100%);
+      border-radius: 16px;
       overflow: hidden;
-      border: 1px solid #3a5a78;
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      border: 1px solid #5d4037;
       position: relative;
     }
 
     /* Bagian kiri untuk konten visual */
     .visual-section {
       flex: 1.2;
-      background: linear-gradient(135deg, #4a7ba6 0%, #2a4d6e 50%, #1e3c5a 100%);
+      background: linear-gradient(135deg, #8d6e63 0%, #5d4037 50%, #3e2723 100%);
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -55,23 +55,11 @@
       overflow: hidden;
     }
 
-    .visual-section::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.05)"/></svg>');
-      background-size: cover;
-    }
-
     .visual-section h1 {
       font-size: 42px;
       margin-bottom: 10px;
       font-weight: 300;
       position: relative;
-      text-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
 
     .visual-section h2 {
@@ -79,10 +67,6 @@
       margin-bottom: 30px;
       font-weight: 700;
       position: relative;
-      background: linear-gradient(45deg, #ffd166, #ff9e6d);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
     .visual-section p {
@@ -91,14 +75,13 @@
       max-width: 320px;
       opacity: 0.9;
       position: relative;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.2);
     }
 
     /* Ikon dekoratif */
     .icon-container {
       width: 80px;
       height: 80px;
-      background: rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.1);
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -106,8 +89,7 @@
       margin-bottom: 25px;
       position: relative;
       backdrop-filter: blur(5px);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     .icon-container::before {
@@ -122,7 +104,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      background: rgba(25, 35, 45, 0.85);
+      background: rgba(30, 20, 10, 0.7);
       backdrop-filter: blur(10px);
       position: relative;
     }
@@ -131,10 +113,9 @@
     .tab-navigation {
       display: flex;
       margin-bottom: 30px;
-      background: rgba(40, 55, 70, 0.8);
+      background: rgba(50, 35, 25, 0.8);
       border-radius: 12px;
       padding: 5px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
     .tab-button {
@@ -143,7 +124,7 @@
       text-align: center;
       background: transparent;
       border: none;
-      color: #a8c0d0;
+      color: #bcaaa4;
       font-size: 16px;
       font-weight: 600;
       cursor: pointer;
@@ -152,9 +133,8 @@
     }
 
     .tab-button.active {
-      background: linear-gradient(45deg, #4a9de3, #6bb5ff);
-      color: #fff;
-      box-shadow: 0 4px 10px rgba(74, 157, 227, 0.3);
+      background: linear-gradient(45deg, #d7a461, #b08c5a);
+      color: #3e2723;
     }
 
     /* Form Styling */
@@ -170,7 +150,7 @@
     .form-title h1 {
       font-size: 28px;
       font-weight: 300;
-      color: #d0e4f2;
+      color: #d7ccc8;
       margin-bottom: 5px;
       text-align: center;
     }
@@ -178,7 +158,7 @@
     .form-title h2 {
       font-size: 32px;
       font-weight: 700;
-      color: #d0e4f2;
+      color: #d7ccc8;
       margin-bottom: 25px;
       text-align: center;
     }
@@ -188,26 +168,24 @@
       width: 100%;
       padding: 15px 18px;
       font-size: 16px;
-      background: rgba(40, 55, 70, 0.8);
-      color: #e8f4fd;
-      border: 1px solid #4a7ba6;
+      background: rgba(50, 35, 25, 0.8);
+      color: #efebe9;
+      border: 1px solid #6d4c41;
       border-radius: 10px;
       transition: all 0.3s ease;
       margin-bottom: 15px;
-      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
     /* Efek fokus */
     input:focus {
       outline: none;
-      border-color: #6bb5ff;
-      background: rgba(50, 70, 90, 0.9);
-      box-shadow: 0 0 0 2px rgba(107, 181, 255, 0.3);
+      border-color: #a1887f;
+      background: rgba(60, 40, 30, 0.9);
     }
 
     /* Placeholder style */
     ::placeholder {
-      color: #a8c0d0;
+      color: #bcaaa4;
     }
 
     /* Tombol Umum */
@@ -221,7 +199,6 @@
       cursor: pointer;
       transition: all 0.3s ease;
       margin-top: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
 
     button:active {
@@ -230,45 +207,42 @@
 
     /* Tombol Primer */
     .btn-primary {
-      background: linear-gradient(45deg, #4a9de3, #6bb5ff);
-      color: #fff;
+      background: linear-gradient(45deg, #d7a461, #b08c5a);
+      color: #3e2723;
     }
     .btn-primary:hover {
-      background: linear-gradient(45deg, #5ca8ed, #7bc0ff);
-      box-shadow: 0 6px 15px rgba(74, 157, 227, 0.4);
+      background: linear-gradient(45deg, #e0b879, #c19a64);
     }
 
     /* Tombol Sekunder */
     .btn-secondary {
-      background: rgba(74, 123, 166, 0.8);
-      color: #e8f4fd;
-      border: 1px solid #5a8bb5;
+      background: rgba(93, 64, 55, 0.8);
+      color: #d7ccc8;
+      border: 1px solid #6d4c41;
     }
     .btn-secondary:hover {
-      background: rgba(90, 139, 181, 0.9);
-      box-shadow: 0 6px 15px rgba(74, 123, 166, 0.3);
+      background: rgba(109, 76, 65, 0.9);
     }
 
     /* Link "Show Password" */
     .toggle-password {
       cursor: pointer;
-      color: #6bb5ff;
+      color: #a1887f;
       font-size: 14px;
       text-align: right;
       margin-top: -10px;
       margin-bottom: 15px;
       transition: color 0.3s;
-      font-weight: 500;
     }
     .toggle-password:hover {
-      color: #a8d4ff;
+      color: #d7a461;
     }
 
     /* Footer kecil */
     .footer {
       text-align: center;
       margin-top: 25px;
-      color: #7a9bb5;
+      color: #8d6e63;
       font-size: 12px;
     }
 
@@ -276,11 +250,11 @@
     .guest-section {
       margin-top: 20px;
       padding-top: 20px;
-      border-top: 1px solid #4a7ba6;
+      border-top: 1px solid #5d4037;
     }
 
     .guest-section p {
-      color: #a8c0d0;
+      color: #8d6e63;
       text-align: center;
       margin-bottom: 15px;
       font-size: 14px;
@@ -308,34 +282,6 @@
       border: 1px solid #f44336;
     }
 
-    /* Autocomplete List */
-    .autocomplete-list {
-      position: absolute;
-      background: rgba(40, 55, 70, 0.95);
-      border: 1px solid #4a7ba6;
-      border-radius: 10px;
-      width: 100%;
-      max-height: 150px;
-      overflow-y: auto;
-      z-index: 1000;
-      margin-top: 5px;
-      list-style: none;
-      padding: 0;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    }
-
-    .autocomplete-list li {
-      padding: 10px 15px;
-      cursor: pointer;
-      color: #e8f4fd;
-      border-bottom: 1px solid #4a7ba6;
-      transition: background 0.2s;
-    }
-
-    .autocomplete-list li:hover {
-      background: rgba(74, 123, 166, 0.8);
-    }
-
     /* ========== RESPONSIVE UNTUK MOBILE ========== */
     @media (max-width: 768px) {
       html, body {
@@ -346,7 +292,6 @@
         display: block;
         scrollbar-width: none;
         -ms-overflow-style: none;
-        background: linear-gradient(135deg, #1a2a3a 0%, #0d1b2a 100%);
       }
 
       html::-webkit-scrollbar,
@@ -361,15 +306,12 @@
         margin: 0 auto;
         max-width: 100%;
         overflow: visible;
-        border-radius: 16px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
       }
       
       .visual-section {
-        padding: 25px 20px;
+        padding: 30px 20px;
         order: 2;
         overflow: visible;
-        border-radius: 0 0 16px 16px;
       }
       
       .visual-section h1 {
@@ -387,10 +329,9 @@
       }
       
       .form-container {
-        padding: 25px 20px;
+        padding: 30px 20px;
         order: 1;
         overflow: visible;
-        border-radius: 16px 16px 0 0;
       }
       
       .form-title h1 {
@@ -422,20 +363,16 @@
       .icon-container::before {
         font-size: 28px;
       }
-      
-      .tab-navigation {
-        margin-bottom: 20px;
-      }
     }
 
     /* Untuk layar sangat kecil (iPhone SE dll) */
     @media (max-width: 375px) {
       .visual-section {
-        padding: 20px 15px;
+        padding: 25px 15px;
       }
       
       .form-container {
-        padding: 20px 15px;
+        padding: 25px 15px;
       }
       
       .visual-section h1 {
@@ -453,11 +390,6 @@
       .form-title h2 {
         font-size: 26px;
       }
-      
-      .tab-button {
-        padding: 10px;
-        font-size: 14px;
-      }
     }
 
     /* Landscape mode untuk mobile */
@@ -470,35 +402,11 @@
       .main-container {
         height: auto;
         min-height: auto;
-        max-width: 95%;
       }
       
       .visual-section,
       .form-container {
         padding: 20px;
-      }
-      
-      .visual-section h1 {
-        font-size: 22px;
-      }
-      
-      .visual-section h2 {
-        font-size: 26px;
-        margin-bottom: 10px;
-      }
-      
-      .visual-section p {
-        font-size: 12px;
-      }
-      
-      .icon-container {
-        width: 50px;
-        height: 50px;
-        margin-bottom: 10px;
-      }
-      
-      .icon-container::before {
-        font-size: 22px;
       }
     }
 
@@ -760,12 +668,31 @@
         
         autocompleteList = document.createElement('ul');
         autocompleteList.className = 'autocomplete-list';
+        autocompleteList.style.cssText = `
+          position: absolute;
+          background: rgba(50, 35, 25, 0.95);
+          border: 1px solid #6d4c41;
+          border-radius: 10px;
+          width: ${serverInput.offsetWidth}px;
+          max-height: 150px;
+          overflow-y: auto;
+          z-index: 1000;
+          margin-top: 5px;
+          list-style: none;
+          padding: 0;
+        `;
         
         matches.forEach(match => {
           const item = document.createElement('li');
           item.textContent = match;
+          item.style.cssText = `
+            padding: 10px 15px;
+            cursor: pointer;
+            color: #efebe9;
+            border-bottom: 1px solid #6d4c41;
+          `;
           item.addEventListener('mouseover', function() {
-            this.style.background = 'rgba(74, 123, 166, 0.8)';
+            this.style.background = 'rgba(93, 64, 55, 0.8)';
           });
           item.addEventListener('mouseout', function() {
             this.style.background = 'transparent';

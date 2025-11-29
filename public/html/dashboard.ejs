@@ -16,7 +16,7 @@
 
     html, body {
       height: 100%;
-      background: linear-gradient(135deg, #1a2a3a 0%, #0d1b2a 100%);
+      background: linear-gradient(135deg, #0a1929 0%, #1a3a5a 100%);
       color: #333;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       display: flex;
@@ -43,7 +43,7 @@
     /* Bagian kiri untuk konten visual */
     .visual-section {
       flex: 1.2;
-      background: linear-gradient(135deg, #4a7ba6 0%, #2a4d6e 50%, #1e3c5a 100%);
+      background: linear-gradient(135deg, #2a5a8c 0%, #1e3c5a 50%, #0f2a42 100%);
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -67,7 +67,7 @@
     }
 
     .visual-section h1 {
-      font-size: 42px;
+      font-size: 32px;
       margin-bottom: 10px;
       font-weight: 300;
       position: relative;
@@ -75,13 +75,11 @@
     }
 
     .visual-section h2 {
-      font-size: 48px;
+      font-size: 42px;
       margin-bottom: 30px;
       font-weight: 700;
       position: relative;
-      background: linear-gradient(45deg, #ffd166, #ff9e6d);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: #fff;
       text-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
@@ -94,10 +92,10 @@
       text-shadow: 0 1px 3px rgba(0,0,0,0.2);
     }
 
-    /* Ikon dekoratif */
-    .icon-container {
-      width: 80px;
-      height: 80px;
+    /* Logo Growtopia */
+    .logo-container {
+      width: 120px;
+      height: 120px;
       background: rgba(255, 255, 255, 0.15);
       border-radius: 50%;
       display: flex;
@@ -108,11 +106,13 @@
       backdrop-filter: blur(5px);
       border: 1px solid rgba(255, 255, 255, 0.3);
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
     }
 
-    .icon-container::before {
-      content: '🌿';
-      font-size: 36px;
+    .logo-container img {
+      width: 80%;
+      height: auto;
+      filter: brightness(0) invert(1);
     }
 
     /* Bagian kanan untuk form */
@@ -152,9 +152,9 @@
     }
 
     .tab-button.active {
-      background: linear-gradient(45deg, #4a9de3, #6bb5ff);
+      background: linear-gradient(45deg, #2a6bb5, #4a9de3);
       color: #fff;
-      box-shadow: 0 4px 10px rgba(74, 157, 227, 0.3);
+      box-shadow: 0 4px 10px rgba(42, 107, 181, 0.3);
     }
 
     /* Form Styling */
@@ -200,9 +200,9 @@
     /* Efek fokus */
     input:focus {
       outline: none;
-      border-color: #6bb5ff;
+      border-color: #4a9de3;
       background: rgba(50, 70, 90, 0.9);
-      box-shadow: 0 0 0 2px rgba(107, 181, 255, 0.3);
+      box-shadow: 0 0 0 2px rgba(74, 157, 227, 0.3);
     }
 
     /* Placeholder style */
@@ -230,29 +230,29 @@
 
     /* Tombol Primer */
     .btn-primary {
-      background: linear-gradient(45deg, #4a9de3, #6bb5ff);
+      background: linear-gradient(45deg, #2a6bb5, #4a9de3);
       color: #fff;
     }
     .btn-primary:hover {
-      background: linear-gradient(45deg, #5ca8ed, #7bc0ff);
-      box-shadow: 0 6px 15px rgba(74, 157, 227, 0.4);
+      background: linear-gradient(45deg, #3a7bc5, #5aade3);
+      box-shadow: 0 6px 15px rgba(42, 107, 181, 0.4);
     }
 
     /* Tombol Sekunder */
     .btn-secondary {
-      background: rgba(74, 123, 166, 0.8);
+      background: rgba(42, 107, 181, 0.8);
       color: #e8f4fd;
-      border: 1px solid #5a8bb5;
+      border: 1px solid #3a7bc5;
     }
     .btn-secondary:hover {
-      background: rgba(90, 139, 181, 0.9);
-      box-shadow: 0 6px 15px rgba(74, 123, 166, 0.3);
+      background: rgba(58, 123, 197, 0.9);
+      box-shadow: 0 6px 15px rgba(42, 107, 181, 0.3);
     }
 
     /* Link "Show Password" */
     .toggle-password {
       cursor: pointer;
-      color: #6bb5ff;
+      color: #4a9de3;
       font-size: 14px;
       text-align: right;
       margin-top: -10px;
@@ -261,7 +261,7 @@
       font-weight: 500;
     }
     .toggle-password:hover {
-      color: #a8d4ff;
+      color: #7bc0ff;
     }
 
     /* Footer kecil */
@@ -346,7 +346,7 @@
         display: block;
         scrollbar-width: none;
         -ms-overflow-style: none;
-        background: linear-gradient(135deg, #1a2a3a 0%, #0d1b2a 100%);
+        background: linear-gradient(135deg, #0a1929 0%, #1a3a5a 100%);
       }
 
       html::-webkit-scrollbar,
@@ -413,14 +413,14 @@
         font-size: 16px;
       }
 
-      .icon-container {
-        width: 60px;
-        height: 60px;
+      .logo-container {
+        width: 80px;
+        height: 80px;
         margin-bottom: 15px;
       }
 
-      .icon-container::before {
-        font-size: 28px;
+      .logo-container img {
+        width: 70%;
       }
       
       .tab-navigation {
@@ -491,14 +491,14 @@
         font-size: 12px;
       }
       
-      .icon-container {
-        width: 50px;
-        height: 50px;
+      .logo-container {
+        width: 60px;
+        height: 60px;
         margin-bottom: 10px;
       }
       
-      .icon-container::before {
-        font-size: 22px;
+      .logo-container img {
+        width: 60%;
       }
     }
 
@@ -571,7 +571,9 @@
 
     <!-- Bagian visual di sebelah kiri (bawah di mobile) -->
     <div class="visual-section">
-      <div class="icon-container"></div>
+      <div class="logo-container">
+        <img src="https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/assets/images/logo_header.png" alt="Growtopia Logo" draggable="false">
+      </div>
       <h1>Welcome to</h1>
       <h2>GTPSID</h2>
       <p>Connect with thousands of players worldwide. Join the adventure in the world of Growtopia and explore endless possibilities!</p>

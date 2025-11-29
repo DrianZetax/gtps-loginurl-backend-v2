@@ -23,32 +23,32 @@
       align-items: center;
       justify-content: center;
       overflow: hidden;
-      padding: 20px;
+      padding: 10px;
     }
 
-    /* Container utama yang memanjang ke samping */
+    /* Container utama - lebih kecil */
     .main-container {
       display: flex;
       width: 100%;
-      max-width: 1000px;
-      min-height: 550px;
+      max-width: 800px;
+      min-height: 400px;
       background: linear-gradient(135deg, #1e3c5a 0%, #2a4d6e 50%, #1a2a3a 100%);
-      border-radius: 20px;
+      border-radius: 12px;
       overflow: hidden;
       border: 1px solid #3a5a78;
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
       position: relative;
     }
 
     /* Bagian kiri untuk konten visual */
     .visual-section {
-      flex: 1.2;
+      flex: 1;
       background: linear-gradient(135deg, #2a5a8c 0%, #1e3c5a 50%, #0f2a42 100%);
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      padding: 40px;
+      padding: 25px;
       color: #fff;
       text-align: center;
       position: relative;
@@ -67,16 +67,16 @@
     }
 
     .visual-section h1 {
-      font-size: 32px;
-      margin-bottom: 10px;
+      font-size: 20px;
+      margin-bottom: 8px;
       font-weight: 300;
       position: relative;
       text-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
 
     .visual-section h2 {
-      font-size: 42px;
-      margin-bottom: 30px;
+      font-size: 26px;
+      margin-bottom: 15px;
       font-weight: 700;
       position: relative;
       color: #fff;
@@ -84,33 +84,33 @@
     }
 
     .visual-section p {
-      font-size: 16px;
-      line-height: 1.7;
-      max-width: 320px;
+      font-size: 12px;
+      line-height: 1.5;
+      max-width: 240px;
       opacity: 0.9;
       position: relative;
       text-shadow: 0 1px 3px rgba(0,0,0,0.2);
     }
 
-    /* Logo Growtopia */
+    /* Logo Growtopia - lebih kecil */
     .logo-container {
-      width: 120px;
-      height: 120px;
+      width: 70px;
+      height: 70px;
       background: rgba(255, 255, 255, 0.15);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 25px;
+      margin-bottom: 15px;
       position: relative;
       backdrop-filter: blur(5px);
       border: 1px solid rgba(255, 255, 255, 0.3);
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
       overflow: hidden;
     }
 
     .logo-container img {
-      width: 80%;
+      width: 70%;
       height: auto;
       filter: brightness(0) invert(1);
     }
@@ -118,7 +118,7 @@
     /* Bagian kanan untuk form */
     .form-container {
       flex: 1;
-      padding: 40px;
+      padding: 25px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -127,34 +127,34 @@
       position: relative;
     }
 
-    /* Tab Navigation */
+    /* Tab Navigation - lebih kecil */
     .tab-navigation {
       display: flex;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
       background: rgba(40, 55, 70, 0.8);
-      border-radius: 12px;
-      padding: 5px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 4px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     }
 
     .tab-button {
       flex: 1;
-      padding: 12px;
+      padding: 8px;
       text-align: center;
       background: transparent;
       border: none;
       color: #a8c0d0;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 600;
       cursor: pointer;
-      border-radius: 8px;
+      border-radius: 6px;
       transition: all 0.3s ease;
     }
 
     .tab-button.active {
       background: linear-gradient(45deg, #2a6bb5, #4a9de3);
       color: #fff;
-      box-shadow: 0 4px 10px rgba(42, 107, 181, 0.3);
+      box-shadow: 0 2px 6px rgba(42, 107, 181, 0.3);
     }
 
     /* Form Styling */
@@ -166,35 +166,35 @@
       display: block;
     }
 
-    /* Judul */
+    /* Judul - lebih kecil */
     .form-title h1 {
-      font-size: 28px;
+      font-size: 18px;
       font-weight: 300;
       color: #d0e4f2;
-      margin-bottom: 5px;
+      margin-bottom: 3px;
       text-align: center;
     }
 
     .form-title h2 {
-      font-size: 32px;
+      font-size: 22px;
       font-weight: 700;
       color: #d0e4f2;
-      margin-bottom: 25px;
+      margin-bottom: 15px;
       text-align: center;
     }
 
-    /* Input Fields */
+    /* Input Fields - lebih kecil */
     input[type="text"], input[type="password"] {
       width: 100%;
-      padding: 15px 18px;
-      font-size: 16px;
+      padding: 10px 12px;
+      font-size: 14px;
       background: rgba(40, 55, 70, 0.8);
       color: #e8f4fd;
       border: 1px solid #4a7ba6;
-      border-radius: 10px;
+      border-radius: 6px;
       transition: all 0.3s ease;
-      margin-bottom: 15px;
-      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin-bottom: 10px;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
     }
 
     /* Efek fokus */
@@ -208,20 +208,21 @@
     /* Placeholder style */
     ::placeholder {
       color: #a8c0d0;
+      font-size: 13px;
     }
 
-    /* Tombol Umum */
+    /* Tombol Umum - lebih kecil */
     button {
       width: 100%;
-      padding: 15px;
+      padding: 10px;
       border: none;
-      border-radius: 10px;
-      font-size: 16px;
+      border-radius: 6px;
+      font-size: 14px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
-      margin-top: 10px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      margin-top: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
     }
 
     button:active {
@@ -235,7 +236,7 @@
     }
     .btn-primary:hover {
       background: linear-gradient(45deg, #3a7bc5, #5aade3);
-      box-shadow: 0 6px 15px rgba(42, 107, 181, 0.4);
+      box-shadow: 0 3px 8px rgba(42, 107, 181, 0.4);
     }
 
     /* Tombol Sekunder */
@@ -246,17 +247,17 @@
     }
     .btn-secondary:hover {
       background: rgba(58, 123, 197, 0.9);
-      box-shadow: 0 6px 15px rgba(42, 107, 181, 0.3);
+      box-shadow: 0 3px 8px rgba(42, 107, 181, 0.3);
     }
 
-    /* Link "Show Password" */
+    /* Link "Show Password" - lebih kecil */
     .toggle-password {
       cursor: pointer;
       color: #4a9de3;
-      font-size: 14px;
+      font-size: 12px;
       text-align: right;
-      margin-top: -10px;
-      margin-bottom: 15px;
+      margin-top: -8px;
+      margin-bottom: 10px;
       transition: color 0.3s;
       font-weight: 500;
     }
@@ -267,32 +268,32 @@
     /* Footer kecil */
     .footer {
       text-align: center;
-      margin-top: 25px;
+      margin-top: 15px;
       color: #7a9bb5;
-      font-size: 12px;
+      font-size: 10px;
     }
 
     /* Guest Login Section */
     .guest-section {
-      margin-top: 20px;
-      padding-top: 20px;
+      margin-top: 15px;
+      padding-top: 15px;
       border-top: 1px solid #4a7ba6;
     }
 
     .guest-section p {
       color: #a8c0d0;
       text-align: center;
-      margin-bottom: 15px;
-      font-size: 14px;
+      margin-bottom: 10px;
+      font-size: 12px;
     }
 
     /* Message Box */
     .message-box {
-      padding: 12px;
-      border-radius: 8px;
-      margin-bottom: 15px;
+      padding: 8px;
+      border-radius: 6px;
+      margin-bottom: 10px;
       text-align: center;
-      font-size: 14px;
+      font-size: 12px;
       display: none;
     }
 
@@ -313,23 +314,24 @@
       position: absolute;
       background: rgba(40, 55, 70, 0.95);
       border: 1px solid #4a7ba6;
-      border-radius: 10px;
+      border-radius: 6px;
       width: 100%;
-      max-height: 150px;
+      max-height: 120px;
       overflow-y: auto;
       z-index: 1000;
-      margin-top: 5px;
+      margin-top: 3px;
       list-style: none;
       padding: 0;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 3px 8px rgba(0, 0, 0, 0.2);
     }
 
     .autocomplete-list li {
-      padding: 10px 15px;
+      padding: 6px 10px;
       cursor: pointer;
       color: #e8f4fd;
       border-bottom: 1px solid #4a7ba6;
       transition: background 0.2s;
+      font-size: 13px;
     }
 
     .autocomplete-list li:hover {
@@ -339,7 +341,7 @@
     /* ========== RESPONSIVE UNTUK MOBILE ========== */
     @media (max-width: 768px) {
       html, body {
-        padding: 10px;
+        padding: 5px;
         overflow: auto;
         height: auto;
         min-height: 100vh;
@@ -361,109 +363,109 @@
         margin: 0 auto;
         max-width: 100%;
         overflow: visible;
-        border-radius: 16px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
       }
       
       .visual-section {
-        padding: 25px 20px;
+        padding: 15px 15px;
         order: 2;
         overflow: visible;
-        border-radius: 0 0 16px 16px;
+        border-radius: 0 0 10px 10px;
       }
       
       .visual-section h1 {
-        font-size: 28px;
+        font-size: 18px;
       }
       
       .visual-section h2 {
-        font-size: 32px;
-        margin-bottom: 15px;
+        font-size: 22px;
+        margin-bottom: 10px;
       }
       
       .visual-section p {
-        font-size: 14px;
+        font-size: 11px;
         max-width: 100%;
       }
       
       .form-container {
-        padding: 25px 20px;
+        padding: 15px 15px;
         order: 1;
         overflow: visible;
-        border-radius: 16px 16px 0 0;
+        border-radius: 10px 10px 0 0;
       }
       
       .form-title h1 {
-        font-size: 24px;
+        font-size: 16px;
       }
       
       .form-title h2 {
-        font-size: 28px;
-        margin-bottom: 20px;
+        font-size: 20px;
+        margin-bottom: 12px;
       }
 
       input[type="text"], 
       input[type="password"] {
-        padding: 12px 15px;
-        font-size: 16px;
+        padding: 8px 10px;
+        font-size: 14px;
       }
 
       button {
-        padding: 14px;
-        font-size: 16px;
+        padding: 9px;
+        font-size: 14px;
       }
 
       .logo-container {
-        width: 80px;
-        height: 80px;
-        margin-bottom: 15px;
+        width: 60px;
+        height: 60px;
+        margin-bottom: 10px;
       }
 
       .logo-container img {
-        width: 70%;
+        width: 65%;
       }
       
       .tab-navigation {
-        margin-bottom: 20px;
+        margin-bottom: 15px;
       }
     }
 
     /* Untuk layar sangat kecil (iPhone SE dll) */
     @media (max-width: 375px) {
       .visual-section {
-        padding: 20px 15px;
+        padding: 12px 10px;
       }
       
       .form-container {
-        padding: 20px 15px;
+        padding: 12px 10px;
       }
       
       .visual-section h1 {
-        font-size: 24px;
+        font-size: 16px;
       }
       
       .visual-section h2 {
-        font-size: 28px;
+        font-size: 20px;
       }
       
       .form-title h1 {
-        font-size: 22px;
+        font-size: 14px;
       }
       
       .form-title h2 {
-        font-size: 26px;
+        font-size: 18px;
       }
       
       .tab-button {
-        padding: 10px;
-        font-size: 14px;
+        padding: 6px;
+        font-size: 12px;
       }
     }
 
     /* Landscape mode untuk mobile */
     @media (max-height: 500px) and (orientation: landscape) {
       html, body {
-        padding: 10px;
+        padding: 5px;
         overflow: auto;
       }
 
@@ -475,26 +477,26 @@
       
       .visual-section,
       .form-container {
-        padding: 20px;
+        padding: 12px;
       }
       
       .visual-section h1 {
-        font-size: 22px;
+        font-size: 14px;
       }
       
       .visual-section h2 {
-        font-size: 26px;
-        margin-bottom: 10px;
+        font-size: 18px;
+        margin-bottom: 8px;
       }
       
       .visual-section p {
-        font-size: 12px;
+        font-size: 10px;
       }
       
       .logo-container {
-        width: 60px;
-        height: 60px;
-        margin-bottom: 10px;
+        width: 50px;
+        height: 50px;
+        margin-bottom: 8px;
       }
       
       .logo-container img {

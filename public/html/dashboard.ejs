@@ -16,24 +16,18 @@
         }
 
         html, body {
-            height: 100vh; /* Jaga agar tinggi halaman 100% viewport */
-            width: 100vw;
-            /* PERUBAHAN KUNCI 1: Hapus latar belakang biru tua dari body/html */
-            background: transparent; 
+            height: auto; 
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a2a3a 0%, #0d1b2a 100%);
             color: #333;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden; /* PERUBAHAN KUNCI 2: Sembunyikan scrollbar pada body */
+            overflow-y: auto;
+            padding: 20px;
         }
-        
-        /* Tambahkan background gelap pada form-wrapper, jika tampilan body benar-benar transparan */
-        .form-wrapper {
-             background: #1a2a3a; /* Tetap pertahankan background gelap pada form area */
-             /* ... lainnya ... */
-        }
-        
+
         .pixel-font {
             font-family: 'Press Start 2P', cursive;
             text-shadow: 2px 2px #000;
@@ -44,17 +38,13 @@
             flex-direction: column;
             width: 100%;
             max-width: 650px; 
-            /* min-height dan max-height dihapus agar lebih responsif */
-            background: linear-gradient(135deg, #1e3c5a 0%, #2a4d6e 50%, #1a2a3a 100%); /* Latar belakang untuk kotak utama tetap ada */
+            min-height: 600px;
+            background: linear-gradient(135deg, #1e3c5a 0%, #2a4d6e 50%, #1a2a3a 100%);
             border-radius: 20px;
             overflow: hidden;
             border: 5px solid #4a9de3;
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
             position: relative;
-            
-            /* PERUBAHAN KUNCI 3: Tambahkan max-height agar kontainer bisa menyesuaikan layar */
-            max-height: 90vh; /* Maksimal 90% dari tinggi viewport */
-            min-height: 400px;
         }
 
         .visual-section {
@@ -88,9 +78,7 @@
         /* Wrapper untuk Animasi Geser Form */
         .form-wrapper {
             position: relative;
-            /* PERUBAHAN KUNCI 4: Set overflow-y: auto agar form-wrapper bisa di-scroll jika kontennya melebihi max-height main-container */
-            overflow-x: hidden;
-            overflow-y: auto; 
+            overflow: hidden;
             flex-grow: 1;
             padding: 0 40px 40px; 
             background: #1a2a3a;
@@ -104,38 +92,24 @@
             transition: transform 0.5s ease-in-out, opacity 0.5s, visibility 0.5s;
             display: flex;
             flex-direction: column;
-            justify-content: center; 
-            align-items: center; 
+            justify-content: center; /* Perubahan KUNCI 1: Mengatur konten di tengah vertikal */
+            align-items: center; /* Perubahan KUNCI 2: Mengatur konten di tengah horizontal */
             position: absolute; 
-            /* PERUBAHAN KUNCI 5: Hapus top: 0, agar konten form terpusat vertikal oleh justify-content: center */
+            top: 0;
             left: 0;
             padding: 40px 0;
-            /* Min-height 100% agar form-container mengisi seluruh tinggi form-wrapper */
-            min-height: 100%; 
-        }
-        
-        /* [GAYA ELEMEN LAINNYA] - Sama seperti sebelumnya */
-        .form-main-content {
-            width: 100%;
-            max-width: 400px; 
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
         }
 
-        .form-title { 
-            margin-bottom: 20px; 
-            text-align: center; 
-        }
-        
-        .switch-section {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #4a7ba6;
+        /* Kontainer Utama Form (Judul + Input) */
+        .form-main-content {
             width: 100%;
-            max-width: 400px; 
+            max-width: 400px; /* Batasi lebar untuk menengahkan konten input */
+            /* Perubahan KUNCI 3: Agar .form-main-content berada di tengah form-container */
+            display: flex;
+            flex-direction: column;
+            align-items: stretch; /* Agar input mengisi lebar 100% dari max-width 400px */
         }
-        /* ... Gaya Input, Tombol, Footer, dll. (tidak diubah) ... */
+
 
         /* Posisi default Register (Tersembunyi di kanan) */
         #registerFormContent {
@@ -174,20 +148,94 @@
             visibility: hidden;
             opacity: 0;
         }
+        
+        /* [GAYA ELEMEN LAINNYA] */
+        .form-title { 
+            margin-bottom: 20px; 
+            text-align: center; /* Perubahan KUNCI 4: Menengahkan judul form */
+        }
+        .form-title h1 { font-size: 18px; color: #a8c0d0; }
+        .form-title h2 { font-size: 24px; color: #4a9de3; }
 
-        @media (max-width: 700px) {
-            .main-container {
-                max-width: 100%;
-                min-height: 100vh;
-                max-height: 100vh; /* Pastikan di mobile mengisi penuh */
-                border-radius: 0;
-                overflow-y: auto;
-            }
-            .form-wrapper {
-                padding: 0 20px 20px;
-                overflow-y: visible; /* Biarkan form-wrapper di scroll */
-            }
-            /* ... lainnya ... */
+        .input-group {
+            position: relative; 
+            margin-bottom: 15px; 
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 16px; 
+            background: #2a4d6e;
+            color: #e8f4fd;
+            border: 2px solid #4a9de3;
+            border-radius: 8px;
+            margin-bottom: 0; 
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-top: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .btn-secondary {
+            background: #2a4d6e;
+            color: #e8f4fd;
+            border: 2px solid #1a2a3a;
+            font-size: 14px;
+            padding: 12px;
+        }
+
+        .btn-primary {
+            background: #ffd166;
+            color: #1a2a3a;
+            border: 2px solid #ffbc3b;
+            font-weight: bold;
+            box-shadow: 0 4px 0 #cc9a2e;
+            transition: all 0.1s ease;
+        }
+        .btn-primary:active {
+            box-shadow: 0 1px 0 #cc9a30;
+            transform: translateY(3px);
+        }
+
+        .toggle-password {
+            font-size: 12px;
+            color: #4a9de3;
+            cursor: pointer;
+            margin-bottom: 15px; 
+            display: inline-block;
+        }
+
+        .switch-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #4a7ba6;
+            width: 100%;
+            max-width: 400px; /* Perubahan KUNCI 5: Batasi lebar agar menengahkan section ini */
+        }
+        .switch-section p {
+            text-align: center; /* Perubahan KUNCI 6: Teks switch section di tengah */
+        }
+        
+        .footer {
+            margin-top: 20px;
+            font-size: 11px;
+            text-align: center; /* Perubahan KUNCI 7: Footer di tengah */
+        }
+
+        .message-box { 
+            padding: 12px; 
+            border-radius: 6px; 
+            margin-bottom: 15px; 
+            text-align: center; 
+            font-size: 14px; 
+            display: none; 
         }
     </style>
 </head>
@@ -203,8 +251,7 @@
 
         <div class="form-wrapper" id="formWrapper">
             <div class="form-container" id="loginFormContent">
-                <div class="form-main-content">
-                    <div class="form-title">
+                <div class="form-main-content"> <div class="form-title">
                         <h1>Login to Your</h1>
                         <h2 class="pixel-font">Account</h2>
                     </div>
@@ -224,9 +271,7 @@
                         
                         <button type="submit" name="action" value="Login" class="btn-primary pixel-font">Login</button>
                     </form>
-                </div>
-
-                <div class="switch-section">
+                </div> <div class="switch-section">
                     <p>Don't have an account?</p>
                     <button type="button" class="btn-secondary pixel-font" onclick="switchForm('register')">Create New Account</button>
                     
@@ -235,8 +280,7 @@
             </div>
 
             <div class="form-container" id="registerFormContent">
-                <div class="form-main-content">
-                    <div class="form-title">
+                <div class="form-main-content"> <div class="form-title">
                         <h1>Create New</h1>
                         <h2 class="pixel-font">Account</h2>
                     </div>
@@ -259,9 +303,7 @@
                         
                         <button type="submit" name="action" value="Register" class="btn-primary pixel-font">Register</button>
                     </form>
-                </div>
-
-                <div class="switch-section">
+                </div> <div class="switch-section">
                     <p>Already have an account?</p>
                     <button type="button" class="btn-secondary pixel-font" onclick="switchForm('login')">Back to Login</button>
                     
@@ -305,7 +347,7 @@
         // Fungsi untuk mengatur tinggi wrapper (dengan delay 50ms)
         function setWrapperHeight(activeForm) {
             setTimeout(() => {
-                // Menggunakan scrollHeight untuk mendapatkan tinggi penuh konten
+                // Gunakan scrollHeight untuk mendapatkan tinggi penuh jika kontennya panjang
                 const height = activeForm.scrollHeight; 
                 formWrapper.style.height = `${height}px`;
             }, 50); 

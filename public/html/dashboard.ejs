@@ -89,20 +89,32 @@
         /* Form Content (Form yang akan digeser) */
         .form-container {
             width: 100%;
-            transition: transform 0.5s ease-in-out, opacity 0.5s, visibility 0.5s; /* Tambahkan transisi opacity dan visibility */
+            transition: transform 0.5s ease-in-out, opacity 0.5s, visibility 0.5s;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            position: absolute; /* Tetap absolute untuk transisi geser */
+            justify-content: center; /* Perubahan KUNCI 1: Mengatur konten di tengah vertikal */
+            align-items: center; /* Perubahan KUNCI 2: Mengatur konten di tengah horizontal */
+            position: absolute; 
             top: 0;
             left: 0;
             padding: 40px 0;
         }
 
+        /* Kontainer Utama Form (Judul + Input) */
+        .form-main-content {
+            width: 100%;
+            max-width: 400px; /* Batasi lebar untuk menengahkan konten input */
+            /* Perubahan KUNCI 3: Agar .form-main-content berada di tengah form-container */
+            display: flex;
+            flex-direction: column;
+            align-items: stretch; /* Agar input mengisi lebar 100% dari max-width 400px */
+        }
+
+
         /* Posisi default Register (Tersembunyi di kanan) */
         #registerFormContent {
             transform: translateX(100%);
-            visibility: hidden; /* Sembunyikan sepenuhnya */
+            visibility: hidden;
             opacity: 0;
         }
 
@@ -115,7 +127,6 @@
         
         /* === ANIMASI GESER DAN VISIBILITAS FORM === */
 
-        /* Ketika Geser ke Register: Login (kiri) hilang, Register (tengah) muncul */
         .form-wrapper.slide-to-register #loginFormContent {
             transform: translateX(-100%);
             visibility: hidden;
@@ -127,7 +138,6 @@
             opacity: 1;
         }
         
-        /* Ketika Geser ke Login: Register (kanan) hilang, Login (tengah) muncul */
         .form-wrapper.slide-to-login #loginFormContent {
             transform: translateX(0);
             visibility: visible;
@@ -140,7 +150,10 @@
         }
         
         /* [GAYA ELEMEN LAINNYA] */
-        .form-title { margin-bottom: 20px; }
+        .form-title { 
+            margin-bottom: 20px; 
+            text-align: center; /* Perubahan KUNCI 4: Menengahkan judul form */
+        }
         .form-title h1 { font-size: 18px; color: #a8c0d0; }
         .form-title h2 { font-size: 24px; color: #4a9de3; }
 
@@ -203,6 +216,17 @@
             margin-top: 20px;
             padding-top: 20px;
             border-top: 1px solid #4a7ba6;
+            width: 100%;
+            max-width: 400px; /* Perubahan KUNCI 5: Batasi lebar agar menengahkan section ini */
+        }
+        .switch-section p {
+            text-align: center; /* Perubahan KUNCI 6: Teks switch section di tengah */
+        }
+        
+        .footer {
+            margin-top: 20px;
+            font-size: 11px;
+            text-align: center; /* Perubahan KUNCI 7: Footer di tengah */
         }
 
         .message-box { 
@@ -227,8 +251,7 @@
 
         <div class="form-wrapper" id="formWrapper">
             <div class="form-container" id="loginFormContent">
-                <div>
-                    <div class="form-title">
+                <div class="form-main-content"> <div class="form-title">
                         <h1>Login to Your</h1>
                         <h2 class="pixel-font">Account</h2>
                     </div>
@@ -248,9 +271,7 @@
                         
                         <button type="submit" name="action" value="Login" class="btn-primary pixel-font">Login</button>
                     </form>
-                </div>
-
-                <div class="switch-section">
+                </div> <div class="switch-section">
                     <p>Don't have an account?</p>
                     <button type="button" class="btn-secondary pixel-font" onclick="switchForm('register')">Create New Account</button>
                     
@@ -259,8 +280,7 @@
             </div>
 
             <div class="form-container" id="registerFormContent">
-                <div>
-                    <div class="form-title">
+                <div class="form-main-content"> <div class="form-title">
                         <h1>Create New</h1>
                         <h2 class="pixel-font">Account</h2>
                     </div>
@@ -283,9 +303,7 @@
                         
                         <button type="submit" name="action" value="Register" class="btn-primary pixel-font">Register</button>
                     </form>
-                </div>
-
-                <div class="switch-section">
+                </div> <div class="switch-section">
                     <p>Already have an account?</p>
                     <button type="button" class="btn-secondary pixel-font" onclick="switchForm('login')">Back to Login</button>
                     
@@ -329,12 +347,13 @@
         // Fungsi untuk mengatur tinggi wrapper (dengan delay 50ms)
         function setWrapperHeight(activeForm) {
             setTimeout(() => {
-                const height = activeForm.offsetHeight;
+                // Gunakan scrollHeight untuk mendapatkan tinggi penuh jika kontennya panjang
+                const height = activeForm.scrollHeight; 
                 formWrapper.style.height = `${height}px`;
             }, 50); 
         }
 
-        // Logika switchForm (sudah benar)
+        // Logika switchForm
         function switchForm(targetForm) {
             const nextActiveForm = targetForm === 'register' ? registerContent : loginContent;
             

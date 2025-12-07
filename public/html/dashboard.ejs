@@ -16,17 +16,16 @@
         }
 
         html, body {
-            /* MENGAKTIFKAN SCROLLING */
             height: auto; 
-            min-height: 100vh; /* Memastikan latar belakang menutupi seluruh halaman */
+            min-height: 100vh;
             background: linear-gradient(135deg, #1a2a3a 0%, #0d1b2a 100%);
             color: #333;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow-y: auto; /* Memungkinkan scrolling vertikal */
-            padding: 20px; /* Padding ditingkatkan */
+            overflow-y: auto;
+            padding: 20px;
         }
 
         /* Font Pixel untuk Judul */
@@ -40,9 +39,9 @@
             display: flex;
             flex-direction: column;
             width: 100%;
-            max-width: 650px; /* Diperlebar menjadi 650px */
-            min-height: 600px; /* Tinggi minimum ditingkatkan agar terlihat proporsional */
-            max-height: auto; /* Menghapus batasan tinggi agar dapat di-scroll */
+            max-width: 650px; 
+            min-height: 600px;
+            max-height: auto;
             background: linear-gradient(135deg, #1e3c5a 0%, #2a4d6e 50%, #1a2a3a 100%);
             border-radius: 20px;
             overflow: hidden;
@@ -51,21 +50,19 @@
             position: relative;
         }
 
-        /* Bagian visual di atas */
+        /* Visual Section (Tidak berubah) */
         .visual-section {
             background: linear-gradient(135deg, #4a9de3 0%, #2a4d6e 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 40px 30px 30px; /* Padding ditingkatkan */
+            padding: 40px 30px 30px;
             color: #fff;
             text-align: center;
             position: relative;
             z-index: 10;
         }
-
-        /* Styling Visual Section lainnya */
         .visual-section::before {
             content: '';
             position: absolute;
@@ -76,58 +73,29 @@
             background: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05) 5px, transparent 5px, transparent 10px);
             opacity: 0.5;
         }
-        .visual-section h1 {
-            font-size: 20px;
-            margin-bottom: 5px;
-            font-weight: 400;
-            color: #e8f4fd;
-        }
-        .visual-section h2 {
-            font-size: 32px; /* Ukuran judul ditingkatkan */
-            margin-bottom: 20px;
-            font-weight: 700;
-            color: #ffd166;
-            text-shadow: 4px 4px #000;
-        }
-        .visual-section p {
-            font-size: 14px;
-            line-height: 1.6;
-            max-width: 400px; /* Lebar teks ditingkatkan */
-            opacity: 0.9;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.2);
-            margin-top: 10px;
-        }
-        .icon-container {
-            width: 70px; /* Ukuran ikon ditingkatkan */
-            height: 70px;
-            background: #fff;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-            border: 3px solid #1a2a3a;
-        }
-        .icon-container::before {
-            content: '👾';
-            font-size: 36px;
-        }
+        .visual-section h1 { font-size: 20px; margin-bottom: 5px; font-weight: 400; color: #e8f4fd; }
+        .visual-section h2 { font-size: 32px; margin-bottom: 20px; font-weight: 700; color: #ffd166; text-shadow: 4px 4px #000; }
+        .visual-section p { font-size: 14px; line-height: 1.6; max-width: 400px; opacity: 0.9; text-shadow: 0 1px 3px rgba(0,0,0,0.2); margin-top: 10px; }
+        .icon-container { width: 70px; height: 70px; background: #fff; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); border: 3px solid #1a2a3a; }
+        .icon-container::before { content: '👾'; font-size: 36px; }
 
-        /* Wrapper untuk Animasi Geser Form */
+        /* Wrapper untuk Animasi Geser Form (PENTING: Tinggi diatur oleh JS) */
         .form-wrapper {
             position: relative;
             overflow: hidden;
             flex-grow: 1;
-            padding: 0 40px 40px; /* Padding ditingkatkan */
+            padding: 0 40px 40px; 
             background: #1a2a3a;
+            /* Tambahkan transisi untuk tinggi agar perubahan ukuran wrapper mulus */
+            transition: height 0.5s ease-in-out; 
+            min-height: 400px; /* Jaga agar tidak terlalu kecil */
         }
 
         /* Form Content */
         .form-container {
             width: 100%;
             transition: transform 0.5s ease-in-out;
-            min-height: 400px; /* Tinggi minimum ditingkatkan */
+            /* Hapus min-height agar tinggi fleksibel */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -148,19 +116,6 @@
             padding: 40px 0;
         }
         
-        /* Form Title */
-        .form-title {
-            margin-bottom: 20px;
-        }
-        .form-title h1 {
-            font-size: 18px;
-            color: #a8c0d0;
-        }
-        .form-title h2 {
-            font-size: 24px;
-            color: #4a9de3;
-        }
-
         /* Animasi Geser */
         .form-wrapper.slide-to-register #loginFormContent {
             transform: translateX(-100%);
@@ -175,12 +130,16 @@
         .form-wrapper.slide-to-login #registerFormContent {
             transform: translateX(100%);
         }
+        
+        /* Gaya Input, Tombol, dll (Sama seperti sebelumnya) */
+        .form-title { margin-bottom: 20px; }
+        .form-title h1 { font-size: 18px; color: #a8c0d0; }
+        .form-title h2 { font-size: 24px; color: #4a9de3; }
 
-        /* Input Fields */
         input[type="text"], input[type="password"] {
             width: 100%;
-            padding: 12px 15px; /* Padding input ditingkatkan */
-            font-size: 16px; /* Ukuran font input ditingkatkan */
+            padding: 12px 15px;
+            font-size: 16px; 
             background: #2a4d6e;
             color: #e8f4fd;
             border: 2px solid #4a9de3;
@@ -188,10 +147,9 @@
             margin-bottom: 15px;
         }
 
-        /* Tombol Umum */
         button {
             width: 100%;
-            padding: 15px; /* Padding tombol ditingkatkan */
+            padding: 15px;
             border-radius: 8px;
             font-size: 16px;
             margin-top: 10px;
@@ -199,7 +157,6 @@
             text-transform: uppercase;
         }
 
-        /* Tombol Sekunder (Biru Tua) */
         .btn-secondary {
             background: #2a4d6e;
             color: #e8f4fd;
@@ -208,14 +165,12 @@
             padding: 12px;
         }
 
-        /* Link "Show Password" */
         .toggle-password {
             font-size: 12px;
             margin-top: -10px;
             margin-bottom: 15px;
         }
 
-        /* Guest Login Section (Switch Section) */
         .switch-section {
             margin-top: 20px;
             padding-top: 20px;
@@ -227,18 +182,15 @@
             margin-bottom: 10px;
         }
         
-        /* Footer */
         .footer {
             margin-top: 20px;
             font-size: 11px;
         }
 
-        /* Message Box */
-         .message-box { padding: 12px; border-radius: 6px; margin-bottom: 15px; text-align: center; font-size: 14px; display: none; }
-         .message-success { background: rgba(76, 175, 80, 0.2); color: #a5d6a7; border: 1px solid #4caf50; }
-         .message-error { background: rgba(244, 67, 54, 0.2); color: #ef9a9a; border: 1px solid #f44336; }
+        .message-box { padding: 12px; border-radius: 6px; margin-bottom: 15px; text-align: center; font-size: 14px; display: none; }
+        .message-success { background: rgba(76, 175, 80, 0.2); color: #a5d6a7; border: 1px solid #4caf50; }
+        .message-error { background: rgba(244, 67, 54, 0.2); color: #ef9a9a; border: 1px solid #f44336; }
 
-        /* Autocomplete List Styling */
         .autocomplete-list {
             position: absolute;
             background: rgba(40, 55, 70, 0.95);
@@ -361,7 +313,7 @@
         const registerContent = document.getElementById('registerFormContent');
 
         document.addEventListener("DOMContentLoaded", () => {
-            // Load data dari localStorage
+            // Load data
             const growId = localStorage.getItem("growId");
             const lastServer = localStorage.getItem("lastServer");
             
@@ -377,23 +329,41 @@
             // Setup autocomplete
             setupServerAutocomplete('loginServerInput');
             setupServerAutocomplete('registerServerInput');
-        });
 
-        // FIX: Logika switchForm yang diperbaiki
+            // PENTING: Atur tinggi awal form wrapper
+            setWrapperHeight(loginContent);
+        });
+        
+        // Fungsi baru untuk mengatur tinggi wrapper sesuai dengan form aktif
+        function setWrapperHeight(activeForm) {
+            // Dapatkan tinggi konten form
+            const height = activeForm.offsetHeight;
+            // Terapkan tinggi ke wrapper
+            formWrapper.style.height = `${height}px`;
+        }
+
+
+        // FIX: Logika switchForm yang diperbaiki untuk mengatur tinggi
         function switchForm(targetForm) {
+            // Tentukan form yang akan aktif
+            const nextActiveForm = targetForm === 'register' ? registerContent : loginContent;
+            
+            // 1. Atur tinggi wrapper ke tinggi form yang akan datang (dilakukan sebelum transisi geser dimulai)
+            setWrapperHeight(nextActiveForm);
+
             // Hapus semua class slide
             formWrapper.classList.remove('slide-to-login', 'slide-to-register');
 
-            // Atur posisi form yang tidak aktif ke absolute agar wrapper tidak berubah tinggi saat transisi
             if (targetForm === 'register') {
+                // Terapkan animasi geser ke Register
                 formWrapper.classList.add('slide-to-register');
-                registerContent.style.position = 'absolute';
-                loginContent.style.position = 'absolute';
             } else if (targetForm === 'login') {
+                // Terapkan animasi geser ke Login
                 formWrapper.classList.add('slide-to-login');
-                loginContent.style.position = 'absolute';
-                registerContent.style.position = 'absolute';
             }
+            
+            // Karena kita menggunakan height: auto, kita biarkan saja position: absolute tetap aktif
+            // agar kedua form bisa saling menimpa dalam proses transisi.
         }
         
         // --- Fungsi lainnya (Toggle Password, Validation, Autocomplete) tetap sama dan bekerja ---

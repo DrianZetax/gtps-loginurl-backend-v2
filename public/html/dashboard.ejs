@@ -16,53 +16,54 @@
         }
 
         html, body {
-            height: 100%;
+            height: 100vh; /* Menggunakan 100vh agar fit di layar */
             background: linear-gradient(135deg, #1a2a3a 0%, #0d1b2a 100%);
             color: #333;
-            /* Font Utama untuk Teks Biasa */
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden;
-            padding: 20px;
+            overflow: hidden; /* Mencegah scroll yang tidak perlu */
+            padding: 10px;
         }
 
         /* Font Pixel untuk Judul */
         .pixel-font {
             font-family: 'Press Start 2P', cursive;
-            text-shadow: 2px 2px #000; /* Menambah efek pixel shadow */
+            text-shadow: 2px 2px #000;
         }
 
         /* Container utama yang lebih kecil dan vertikal */
         .main-container {
             display: flex;
-            flex-direction: column; /* Mengubah tata letak menjadi vertikal */
+            flex-direction: column;
             width: 100%;
-            max-width: 600px; /* Ukuran diperkecil */
-            min-height: 500px;
+            max-width: 450px; /* Diperkecil agar fit di Windows */
+            min-height: 550px; /* Menambah tinggi minimum agar proporsional */
+            max-height: 95vh; /* Batasan tinggi untuk layar kecil */
             background: linear-gradient(135deg, #1e3c5a 0%, #2a4d6e 50%, #1a2a3a 100%);
             border-radius: 20px;
             overflow: hidden;
-            border: 5px solid #4a9de3; /* Border biru lebih tebal */
+            border: 5px solid #4a9de3;
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
             position: relative;
         }
 
-        /* Bagian atas untuk konten visual */
+        /* Bagian visual di atas */
         .visual-section {
-            background: linear-gradient(135deg, #4a9de3 0%, #2a4d6e 100%); /* Biru lebih kuat */
+            background: linear-gradient(135deg, #4a9de3 0%, #2a4d6e 100%);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            padding: 40px 20px;
+            padding: 30px 20px 20px; /* Padding atas dikurangi */
             color: #fff;
             text-align: center;
             position: relative;
             z-index: 10;
         }
 
+        /* Styling Visual Section lainnya tetap sama */
         .visual-section::before {
             content: '';
             position: absolute;
@@ -70,298 +71,206 @@
             left: 0;
             right: 0;
             bottom: 0;
-            /* Pola kotak-kotak/pixel halus */
-            background: repeating-linear-gradient(
-                45deg,
-                rgba(255, 255, 255, 0.05),
-                rgba(255, 255, 255, 0.05) 5px,
-                transparent 5px,
-                transparent 10px
-            );
+            background: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05) 5px, transparent 5px, transparent 10px);
             opacity: 0.5;
         }
-
         .visual-section h1 {
-            font-size: 20px;
+            font-size: 18px;
             margin-bottom: 5px;
             font-weight: 400;
-            position: relative;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.2);
             color: #e8f4fd;
         }
-
         .visual-section h2 {
-            font-size: 32px;
-            margin-bottom: 20px;
+            font-size: 28px;
+            margin-bottom: 15px; /* Margin dikurangi */
             font-weight: 700;
-            position: relative;
-            color: #ffd166; /* Kuning/emas untuk kontras */
+            color: #ffd166;
             text-shadow: 4px 4px #000;
         }
-
         .visual-section p {
-            font-size: 14px;
+            font-size: 13px;
             line-height: 1.6;
             max-width: 350px;
             opacity: 0.9;
-            position: relative;
             text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+            margin-top: 10px; /* Menambah jarak dari judul */
         }
-
-        /* Ikon dekoratif (dibuat lebih pixel-like) */
         .icon-container {
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             background: #fff;
             border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 20px;
-            position: relative;
+            margin-bottom: 15px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             border: 3px solid #1a2a3a;
         }
-
         .icon-container::before {
-            content: '👾'; /* Mengganti ikon */
-            font-size: 40px;
+            content: '👾';
+            font-size: 32px; /* Ikon diperkecil */
         }
 
-        /* Bagian bawah untuk form */
+        /* Wrapper untuk Animasi Geser Form (INI PENTING!) */
         .form-wrapper {
             position: relative;
-            overflow: hidden; /* Penting untuk animasi geser */
+            overflow: hidden;
+            flex-grow: 1; /* Agar form mengambil sisa ruang */
+            padding: 0 30px 30px; /* Pindah padding horizontal ke wrapper */
+            background: #1a2a3a; /* Latar belakang form */
         }
 
+        /* Form Content */
         .form-container {
-            padding: 30px;
-            background: #1a2a3a; /* Latar belakang gelap untuk form */
-            position: relative;
-            z-index: 5;
-            transition: transform 0.5s ease-in-out; /* Transisi untuk pergeseran */
-            min-height: 350px; /* Tinggi minimum agar tidak terlalu pendek */
-        }
-
-        /* Form Title */
-        .form-title {
-            margin-bottom: 20px;
-        }
-        .form-title h1 {
-            font-size: 18px;
-            font-weight: 400;
-            color: #a8c0d0;
-            text-align: center;
-        }
-        .form-title h2 {
-            font-size: 24px;
-            font-weight: 700;
-            color: #4a9de3;
-            text-align: center;
-            margin-top: 5px;
-        }
-
-        /* Form Content - Untuk Animasi Geser */
-        #loginFormContent, #registerFormContent {
-            transition: opacity 0.3s ease-in-out;
-            position: absolute;
             width: 100%;
+            transition: transform 0.5s ease-in-out;
+            min-height: 380px; /* Tinggi minimum agar tidak bergoyang */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Untuk meletakkan footer di bawah */
+        }
+
+        #registerFormContent {
+            /* Posisikan Register di sebelah kanan secara default (untuk animasi) */
+            transform: translateX(100%);
+            position: absolute; /* Penting untuk transisi */
             top: 0;
             left: 0;
-            padding: 30px;
-            opacity: 0;
-            pointer-events: none;
-            visibility: hidden;
+            padding: 30px 0; /* Padding vertikal di form container */
         }
 
-        #loginFormContent.active, #registerFormContent.active {
-            opacity: 1;
-            pointer-events: all;
-            visibility: visible;
-            position: relative;
+        #loginFormContent {
+            /* Posisikan Login di tengah secara default */
+            transform: translateX(0);
+            padding: 30px 0;
+        }
+        
+        /* Form Title */
+        .form-title {
+            margin-bottom: 15px; /* Margin dikurangi */
+        }
+        .form-title h1 {
+            font-size: 16px;
+            color: #a8c0d0;
+        }
+        .form-title h2 {
+            font-size: 22px;
+            color: #4a9de3;
         }
 
-        /* Animasi Geser (Slide) */
+        /* Animasi Geser */
         .form-wrapper.slide-to-register #loginFormContent {
             transform: translateX(-100%);
-            opacity: 0;
         }
         .form-wrapper.slide-to-register #registerFormContent {
             transform: translateX(0);
-            opacity: 1;
         }
         
         .form-wrapper.slide-to-login #loginFormContent {
             transform: translateX(0);
-            opacity: 1;
         }
         .form-wrapper.slide-to-login #registerFormContent {
             transform: translateX(100%);
-            opacity: 0;
         }
 
         /* Input Fields */
         input[type="text"], input[type="password"] {
             width: 100%;
-            padding: 12px 15px;
+            padding: 10px 12px; /* Padding dikurangi */
             font-size: 14px;
-            background: #2a4d6e; /* Background input biru tua */
+            background: #2a4d6e;
             color: #e8f4fd;
             border: 2px solid #4a9de3;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            margin-bottom: 15px;
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Efek fokus */
-        input:focus {
-            outline: none;
-            border-color: #6bb5ff;
-            background: #3a5a78;
-            box-shadow: 0 0 0 3px rgba(74, 157, 227, 0.5);
-        }
-
-        /* Placeholder style */
-        ::placeholder {
-            color: #a8c0d0;
+            border-radius: 6px; /* Radius dikurangi */
+            margin-bottom: 10px; /* Margin dikurangi */
         }
 
         /* Tombol Umum */
         button {
             width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            padding: 12px; /* Padding dikurangi */
+            border-radius: 6px;
+            font-size: 14px;
+            margin-top: 5px; /* Margin dikurangi */
             letter-spacing: 1px;
             text-transform: uppercase;
         }
 
-        button:active {
-            transform: scale(0.98);
-        }
-
-        /* Tombol Primer (Biru) */
-        .btn-primary {
-            background: linear-gradient(45deg, #4a9de3, #6bb5ff);
-            color: #1a2a3a;
-            border: 2px solid #2a4d6e;
-        }
-        .btn-primary:hover {
-            background: linear-gradient(45deg, #5ca8ed, #7bc0ff);
-            box-shadow: 0 6px 15px rgba(74, 157, 227, 0.5);
-        }
-
-        /* Tombol Sekunder (Abu-abu Tua) */
+        /* Tombol Sekunder (Biru Tua) */
         .btn-secondary {
             background: #2a4d6e;
             color: #e8f4fd;
             border: 2px solid #1a2a3a;
-            font-size: 14px;
-            padding: 12px;
-            margin-top: 5px;
-        }
-        .btn-secondary:hover {
-            background: #3a5a78;
-            box-shadow: 0 4px 10px rgba(42, 77, 110, 0.5);
+            font-size: 12px;
+            padding: 10px;
         }
 
         /* Link "Show Password" */
         .toggle-password {
-            cursor: pointer;
-            color: #6bb5ff;
-            font-size: 12px;
-            text-align: right;
-            margin-top: -10px;
-            margin-bottom: 15px;
-            transition: color 0.3s;
-            font-weight: 500;
-        }
-        .toggle-password:hover {
-            color: #a8d4ff;
+            font-size: 11px;
+            margin-top: -5px;
+            margin-bottom: 10px;
         }
 
-        /* Footer kecil */
-        .footer {
-            text-align: center;
-            margin-top: 25px;
-            color: #7a9bb5;
-            font-size: 10px;
-        }
-
-        /* Guest Login Section (Diubah menjadi Switch Section) */
+        /* Guest Login Section (Switch Section) */
         .switch-section {
-            text-align: center;
-            margin-top: 20px;
-            padding-top: 20px;
+            margin-top: 15px;
+            padding-top: 15px;
             border-top: 1px solid #4a7ba6;
         }
 
         .switch-section p {
-            color: #a8c0d0;
-            text-align: center;
-            margin-bottom: 10px;
-            font-size: 14px;
+            font-size: 12px;
+            margin-bottom: 5px;
         }
         
-        /* Form content adjustment */
-        .form-content {
-            /* Pastikan form content menyesuaikan tinggi container untuk animasi geser */
-            min-height: 250px;
+        /* Footer */
+        .footer {
+            margin-top: 15px;
+            font-size: 10px;
         }
 
-        /* ========== RESPONSIVE UNTUK MOBILE (Disesuaikan untuk layout vertikal) ========== */
-        @media (max-width: 650px) {
-            html, body {
-                padding: 10px;
-                overflow-y: auto;
-            }
+        /* Autocomplete List Styling (Pastikan terlihat di form yang aktif) */
+        .autocomplete-list {
+            position: absolute;
+            background: rgba(40, 55, 70, 0.95);
+            border: 1px solid #4a7ba6;
+            border-radius: 8px;
+            width: 100%;
+            max-height: 120px;
+            overflow-y: auto;
+            z-index: 1000;
+            margin-top: 5px;
+            list-style: none;
+            padding: 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .autocomplete-list li {
+            padding: 8px 12px;
+            cursor: pointer;
+            color: #e8f4fd;
+            border-bottom: 1px solid #4a7ba6;
+            transition: background 0.2s;
+        }
+        .autocomplete-list li:hover {
+            background: rgba(74, 123, 166, 0.8);
+        }
 
+        /* Media Query untuk Mobile */
+        @media (max-width: 500px) {
             .main-container {
                 max-width: 100%;
-                min-height: auto;
-                margin: 0 auto;
-                border-radius: 16px;
+                min-height: 100vh;
+                border-radius: 0;
+                overflow-y: auto;
+                max-height: unset;
             }
-
-            .visual-section {
-                padding: 30px 20px;
+            .form-wrapper {
+                padding: 0 20px 20px;
             }
-
-            .visual-section h2 {
-                font-size: 28px;
-            }
-
-            .form-container {
-                padding: 25px 20px;
-            }
-
-            .form-title h2 {
-                font-size: 22px;
-            }
-
-            input[type="text"], input[type="password"] {
-                padding: 10px 12px;
-                font-size: 14px;
-            }
-
-            button {
-                padding: 12px;
-                font-size: 14px;
-            }
-
-            .switch-section p {
-                font-size: 12px;
-            }
-
-            .btn-secondary {
-                padding: 10px;
+            #loginFormContent, #registerFormContent {
+                padding: 20px 0;
             }
         }
     </style>
@@ -377,60 +286,66 @@
         </div>
 
         <div class="form-wrapper" id="formWrapper">
-            <div class="form-container active" id="loginFormContent">
-                <div class="form-title">
-                    <h1>Login to Your</h1>
-                    <h2 class="pixel-font">Account</h2>
+            <div class="form-container" id="loginFormContent">
+                <div>
+                    <div class="form-title">
+                        <h1>Login to Your</h1>
+                        <h2 class="pixel-font">Account</h2>
+                    </div>
+                    
+                    <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="loginForm">
+                        <div style="position: relative;">
+                            <input type="text" name="_token" id="loginServerInput" placeholder="Server Name *" required />
+                        </div>
+                        <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID *" required />
+                        <input type="password" name="password" id="loginPassword" placeholder="Your Password *" required />
+                        
+                        <div class="toggle-password" id="toggleLoginPassword">Show Password</div>
+                        
+                        <button type="submit" name="action" value="Login" class="btn-primary pixel-font">Login</button>
+                    </form>
                 </div>
-                
-                <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="loginForm">
-                    <input type="text" name="_token" id="loginServerInput" placeholder="Server Name *" required />
-                    <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID *" required />
-                    <input type="password" name="password" id="loginPassword" placeholder="Your Password *" required />
-                    
-                    <div class="toggle-password" id="toggleLoginPassword">Show Password</div>
-                    
-                    <button type="submit" name="action" value="Login" class="btn-primary pixel-font">Login</button>
-                </form>
 
                 <div class="switch-section">
                     <p>Don't have an account?</p>
                     <button type="button" class="btn-secondary pixel-font" onclick="switchForm('register')">Create New Account</button>
+                    
+                    <div class="footer">© 2025 GTPSID. All rights reserved.</div>
                 </div>
-                
-                <div class="footer">© 2025 GTPSID. All rights reserved.</div>
             </div>
 
             <div class="form-container" id="registerFormContent">
-                <div class="form-title">
-                    <h1>Create New</h1>
-                    <h2 class="pixel-font">Account</h2>
+                <div>
+                    <div class="form-title">
+                        <h1>Create New</h1>
+                        <h2 class="pixel-font">Account</h2>
+                    </div>
+                    
+                    <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="registerForm">
+                        <div style="position: relative;">
+                            <input type="text" name="_token" id="registerServerInput" placeholder="Server Name *" required />
+                        </div>
+                        <input type="text" name="growId" id="registerGrowId" placeholder="Choose GrowID *" required />
+                        <input type="password" name="password" id="registerPassword" placeholder="Choose Password *" required />
+                        <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password *" required />
+                        
+                        <div class="toggle-password" id="toggleRegisterPassword">Show Password</div>
+                        
+                        <button type="submit" name="action" value="Register" class="btn-primary pixel-font">Register</button>
+                    </form>
                 </div>
-                
-                <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="registerForm">
-                    <input type="text" name="_token" id="registerServerInput" placeholder="Server Name *" required />
-                    <input type="text" name="growId" id="registerGrowId" placeholder="Choose GrowID *" required />
-                    <input type="password" name="password" id="registerPassword" placeholder="Choose Password *" required />
-                    <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password *" required />
-                    
-                    <div class="toggle-password" id="toggleRegisterPassword">Show Password</div>
-                    
-                    <button type="submit" name="action" value="Register" class="btn-primary pixel-font">Register</button>
-                </form>
 
                 <div class="switch-section">
                     <p>Already have an account?</p>
                     <button type="button" class="btn-secondary pixel-font" onclick="switchForm('login')">Back to Login</button>
+                    
+                    <div class="footer">© 2025 GTPSID. All rights reserved.</div>
                 </div>
-                
-                <div class="footer">© 2025 GTPSID. All rights reserved.</div>
             </div>
         </div>
-
     </div>
 
     <script>
-        // Data server untuk autocomplete
         const servers = [
             "STYLOPS", "CHINAPS", "COASTPS", "SLOWLYPS", "NEXPS", "TESPS", "IDLEPS"
         ];
@@ -453,58 +368,45 @@
                 document.getElementById("registerServerInput").value = lastServer;
             }
             
-            // Setup autocomplete untuk server input
+            // Setup autocomplete
             setupServerAutocomplete('loginServerInput');
             setupServerAutocomplete('registerServerInput');
-
-            // Tetapkan awal hanya Login yang aktif dan Register di luar layar
-            loginContent.classList.add('active');
-            registerContent.style.position = 'absolute';
-            registerContent.style.transform = 'translateX(100%)';
-            registerContent.style.opacity = '0';
         });
 
-        // Function untuk beralih form dengan animasi geser
+        // FIX: Logika switchForm yang diperbaiki
         function switchForm(targetForm) {
+            // Hapus semua class slide
+            formWrapper.classList.remove('slide-to-login', 'slide-to-register');
+
             if (targetForm === 'register') {
-                // Aktifkan transisi ke register
-                formWrapper.classList.remove('slide-to-login');
+                // Terapkan animasi geser ke Register
                 formWrapper.classList.add('slide-to-register');
                 
-                // Atur posisi Register dan Login
-                registerContent.style.position = 'relative'; // Bawa ke posisi relatif agar terhitung tinggi
-                loginContent.style.position = 'absolute'; // Pindah ke absolute untuk transisi
-                
-                // Tambahkan class active setelah transisi dimulai
-                setTimeout(() => {
-                    loginContent.classList.remove('active');
-                    registerContent.classList.add('active');
-                }, 100); // Penundaan kecil agar transisi terlihat
+                // Pastikan form Register diatur ke posisi absolute sebelum transisi balik ke Login
+                registerContent.style.position = 'absolute';
+                loginContent.style.position = 'absolute';
+
+                // Setelah animasi selesai, reset properti posisi jika diperlukan, tapi kita biarkan CSS yang menangani
+                // Untuk stabilitas, kita biarkan position absolute agar tinggi wrapper tetap stabil
                 
             } else if (targetForm === 'login') {
-                // Aktifkan transisi ke login
-                formWrapper.classList.remove('slide-to-register');
+                // Terapkan animasi geser ke Login
                 formWrapper.classList.add('slide-to-login');
-                
-                // Atur posisi Login dan Register
-                loginContent.style.position = 'relative';
+
+                // Pastikan form Login diatur ke posisi absolute sebelum transisi
+                loginContent.style.position = 'absolute';
                 registerContent.style.position = 'absolute';
-                
-                // Tambahkan class active setelah transisi dimulai
-                setTimeout(() => {
-                    registerContent.classList.remove('active');
-                    loginContent.classList.add('active');
-                }, 100);
             }
         }
-
+        
+        // --- Fungsi lainnya (Toggle Password, Validation, Autocomplete) tetap sama dan bekerja ---
+        
         // Password Toggle Functions
         document.getElementById("toggleLoginPassword").addEventListener("click", () => {
             togglePassword('loginPassword', 'toggleLoginPassword');
         });
 
         document.getElementById("toggleRegisterPassword").addEventListener("click", () => {
-            // Mengubah kedua field password register
             togglePassword('registerPassword', 'toggleRegisterPassword');
             togglePassword('confirmPassword', 'toggleRegisterPassword');
         });
@@ -521,7 +423,7 @@
             }
         }
 
-        // Form Validation and Submission (Tetap sama)
+        // Form Validation and Submission
         document.getElementById("loginForm").addEventListener("submit", (e) => {
             const growId = document.getElementById("loginGrowId").value;
             const server = document.getElementById('loginServerInput').value;
@@ -533,10 +435,8 @@
                 return;
             }
             
-            // Simpan ke localStorage
             localStorage.setItem("growId", growId);
             localStorage.setItem("lastServer", server);
-            
             console.log("Login submitted:", { server, growId });
         });
 
@@ -564,45 +464,50 @@
                 return;
             }
             
-            // Simpan ke localStorage
             localStorage.setItem("growId", growId);
             localStorage.setItem("lastServer", server);
-            
             console.log("Register submitted:", { server, growId });
         });
 
-        // Message Display Function (Diperbarui untuk menemukan parent yang benar)
+        // Message Display Function
         function showMessage(message, type, parentId) {
             const parent = document.getElementById(parentId);
             if (!parent) return;
 
-            // Cari atau buat message element
+            // Cari form di dalam parent
+            const form = parent.querySelector('form');
+            if (!form) return;
+
             let messageBox = parent.querySelector('.message-box');
             if (!messageBox) {
                 messageBox = document.createElement('div');
                 messageBox.className = 'message-box';
-                parent.insertBefore(messageBox, parent.querySelector('form'));
+                form.parentNode.insertBefore(messageBox, form); // Insert sebelum form
             }
             
             messageBox.textContent = message;
             messageBox.className = `message-box message-${type}`;
             messageBox.style.display = 'block';
             
-            // Tambahkan CSS untuk message box (jika belum ada di style)
-            const style = document.createElement('style');
-            style.textContent = `
-                .message-box { padding: 12px; border-radius: 8px; margin-bottom: 15px; text-align: center; font-size: 14px; display: none; }
-                .message-success { background: rgba(76, 175, 80, 0.2); color: #a5d6a7; border: 1px solid #4caf50; }
-                .message-error { background: rgba(244, 67, 54, 0.2); color: #ef9a9a; border: 1px solid #f44336; }
-            `;
-            document.head.appendChild(style);
+            // Tambahkan CSS untuk message box (jika belum ada)
+            let style = document.getElementById('message-style');
+            if (!style) {
+                 style = document.createElement('style');
+                 style.id = 'message-style';
+                 style.textContent = `
+                    .message-box { padding: 10px; border-radius: 6px; margin-bottom: 10px; text-align: center; font-size: 13px; display: none; }
+                    .message-success { background: rgba(76, 175, 80, 0.2); color: #a5d6a7; border: 1px solid #4caf50; }
+                    .message-error { background: rgba(244, 67, 54, 0.2); color: #ef9a9a; border: 1px solid #f44336; }
+                `;
+                document.head.appendChild(style);
+            }
 
             setTimeout(() => {
                 messageBox.style.display = 'none';
             }, 5000);
         }
 
-        // Autocomplete Function (Tetap sama)
+        // Autocomplete Function
         function setupServerAutocomplete(inputId) {
             const serverInput = document.getElementById(inputId);
             let autocompleteList = null;
@@ -628,12 +533,6 @@
                 matches.forEach(match => {
                     const item = document.createElement('li');
                     item.textContent = match;
-                    item.addEventListener('mouseover', function() {
-                        this.style.background = 'rgba(74, 123, 166, 0.8)';
-                    });
-                    item.addEventListener('mouseout', function() {
-                        this.style.background = 'transparent';
-                    });
                     item.addEventListener('click', function() {
                         serverInput.value = match;
                         autocompleteList.remove();
@@ -642,15 +541,10 @@
                     autocompleteList.appendChild(item);
                 });
                 
-                // Set posisi list di bawah input
-                const rect = serverInput.getBoundingClientRect();
-                autocompleteList.style.position = 'absolute';
-                autocompleteList.style.top = `${rect.height + 5}px`;
-                autocompleteList.style.left = '0';
-                autocompleteList.style.width = '100%';
-                
-                serverInput.parentNode.style.position = 'relative'; // Pastikan parent memiliki position: relative
-                serverInput.parentNode.appendChild(autocompleteList);
+                // Masukkan autocomplete list di dalam div parent input
+                const inputParent = serverInput.parentNode;
+                inputParent.style.position = 'relative'; // Pastikan parent input memiliki position: relative
+                inputParent.appendChild(autocompleteList);
             });
             
             document.addEventListener('click', function(e) {

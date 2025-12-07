@@ -1,561 +1,581 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GTPSID Login</title>
-  <link rel="icon" href="https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/assets/images/growtopia.ico" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
-    /* ========== VARIABEL WARNA & CONFIG ========== */
+    /* ========== VAR & RESET ========== */
     :root {
-      --primary-gradient: linear-gradient(135deg, #FF9966 0%, #FF5E62 100%);
-      --bg-gradient: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
-      --text-main: #2d3436;
-      --text-muted: #636e72;
-      --input-bg: #f1f2f6;
+      --primary-grad: linear-gradient(to right, #FF4B2B, #FF416C);
+      --overlay-grad: linear-gradient(to right, #FF416C, #FF4B2B);
+      --bg-color: #f6f5f7;
       --white: #ffffff;
-      --shadow: 0 10px 40px rgba(255, 100, 50, 0.2);
+      --gray: #333;
+      --input-bg: #eee;
     }
 
-    /* ========== RESET & BASE ========== */
     * {
-      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Poppins', sans-serif; /* Font modern */
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
     }
 
     body {
-      min-height: 100vh;
+      background: #f6f5f7;
       display: flex;
       justify-content: center;
       align-items: center;
-      background: var(--bg-gradient);
-      padding: 20px;
-      overflow-x: hidden;
-    }
-
-    /* ========== CONTAINER UTAMA (KOTAK DASHBOARD) ========== */
-    .auth-wrapper {
-      position: relative;
-      background: var(--white);
-      width: 100%;
-      max-width: 420px; /* Ukuran kecil & rapi */
-      min-height: 580px;
-      border-radius: 30px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
-      padding: 40px 30px;
-      overflow: hidden;
-      display: flex;
       flex-direction: column;
+      height: 100vh;
+      margin: 0;
+      /* Background dinamis */
+      background: linear-gradient(135deg, #FFDEE9 0%, #B5FFFC 100%);
     }
 
-    /* Hiasan background bulat di dalam kartu */
-    .auth-wrapper::before {
-      content: '';
+    /* ========== CONTAINER UTAMA ========== */
+    .container {
+      background-color: var(--white);
+      border-radius: 20px;
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 
+                  0 10px 10px rgba(0, 0, 0, 0.22);
+      position: relative;
+      overflow: hidden;
+      width: 768px;
+      max-width: 100%;
+      min-height: 480px;
+    }
+
+    /* ========== FORM STYLING ========== */
+    .form-container {
       position: absolute;
-      top: -50px;
-      right: -50px;
-      width: 150px;
-      height: 150px;
-      background: var(--primary-gradient);
-      border-radius: 50%;
-      opacity: 0.1;
-      z-index: 0;
+      top: 0;
+      height: 100%;
+      transition: all 0.6s ease-in-out;
     }
 
-    .auth-wrapper::after {
-      content: '';
-      position: absolute;
-      bottom: -30px;
-      left: -30px;
-      width: 100px;
-      height: 100px;
-      background: #f6d365;
-      border-radius: 50%;
-      opacity: 0.2;
-      z-index: 0;
-    }
-
-    /* ========== HEADER ========== */
-    .header {
+    form {
+      background-color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 0 50px;
+      height: 100%;
       text-align: center;
-      margin-bottom: 30px;
-      z-index: 1;
     }
 
-    .logo-icon {
-      width: 60px;
-      height: 60px;
-      background: var(--primary-gradient);
-      border-radius: 15px;
+    h1 {
+      font-weight: 700;
+      margin: 0;
+      color: var(--gray);
+    }
+
+    .social-container {
+      margin: 20px 0;
+    }
+
+    .social-container a {
+      border: 1px solid #DDDDDD;
+      border-radius: 50%;
       display: inline-flex;
       justify-content: center;
       align-items: center;
-      font-size: 30px;
+      margin: 0 5px;
+      height: 40px;
+      width: 40px;
+      text-decoration: none;
+      color: #333;
+      transition: 0.3s;
+    }
+
+    .social-container a:hover {
+      background: #FF416C;
       color: white;
+      border-color: #FF416C;
+    }
+
+    span {
+      font-size: 12px;
+      color: #888;
       margin-bottom: 15px;
-      box-shadow: 0 10px 20px rgba(255, 94, 98, 0.3);
-      transform: rotate(-10deg);
     }
 
-    .header h1 {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--text-main);
-    }
-
-    .header p {
-      font-size: 14px;
-      color: var(--text-muted);
-      margin-top: 5px;
-    }
-
-    /* ========== TOGGLE SWITCH (ANIMASI KEREN) ========== */
-    .toggle-container {
+    /* Input Fields */
+    .input-group {
       position: relative;
-      display: flex;
-      background: var(--input-bg);
-      border-radius: 50px;
-      padding: 5px;
-      margin-bottom: 30px;
-      z-index: 1;
+      width: 100%;
+      margin: 8px 0;
     }
 
-    .toggle-btn {
-      flex: 1;
-      text-align: center;
-      padding: 10px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-muted);
+    input {
+      background-color: var(--input-bg);
       border: none;
-      background: transparent;
-      transition: color 0.3s ease;
-      z-index: 2;
+      padding: 12px 15px 12px 45px; /* Padding kiri buat icon */
+      width: 100%;
+      border-radius: 8px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .input-group i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #888;
+      font-size: 18px;
+    }
+
+    /* Buttons */
+    button {
+      border-radius: 20px;
+      border: 1px solid #FF4B2B;
+      background: var(--primary-grad);
+      color: #FFFFFF;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 12px 45px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: transform 80ms ease-in;
+      cursor: pointer;
+      margin-top: 20px;
+      box-shadow: 0 5px 15px rgba(255, 75, 43, 0.3);
+    }
+
+    button:active {
+      transform: scale(0.95);
+    }
+
+    button:focus {
       outline: none;
     }
 
-    .toggle-btn.active {
-      color: white;
+    button.ghost {
+      background: transparent;
+      border-color: #FFFFFF;
+      box-shadow: none;
     }
 
-    /* Background pill yang bergerak */
-    .slider {
-      position: absolute;
-      top: 5px;
-      left: 5px;
-      height: calc(100% - 10px);
-      width: calc(50% - 5px);
-      background: var(--primary-gradient);
-      border-radius: 40px;
-      transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Bouncy effect */
-      z-index: 1;
-      box-shadow: 0 5px 15px rgba(255, 94, 98, 0.3);
+    /* ========== LOGIKA ANIMASI GESER (CORE) ========== */
+    
+    /* Posisi Awal: Login di kiri, Register di kanan (tersembunyi) */
+    .sign-in-container {
+      left: 0;
+      width: 50%;
+      z-index: 2;
     }
 
-    /* ========== FORM AREA (SLIDING EFFECT) ========== */
-    .forms-wrapper {
-      position: relative;
-      flex: 1;
-      overflow: hidden;
+    .sign-up-container {
+      left: 0;
+      width: 50%;
+      opacity: 0;
       z-index: 1;
     }
 
-    .form-content {
+    /* Saat Container Active (Register Mode) */
+    .container.right-panel-active .sign-in-container {
+      transform: translateX(100%); /* Geser Login ke kanan */
+    }
+
+    .container.right-panel-active .sign-up-container {
+      transform: translateX(100%); /* Geser Register ke kanan (posisi layar kanan) */
+      opacity: 1;
+      z-index: 5;
+      animation: show 0.6s; /* Animasi muncul */
+    }
+
+    @keyframes show {
+      0%, 49.99% {
+        opacity: 0;
+        z-index: 1;
+      }
+      50%, 100% {
+        opacity: 1;
+        z-index: 5;
+      }
+    }
+
+    /* ========== OVERLAY (BAGIAN BERWARNA YANG BERGERAK) ========== */
+    .overlay-container {
       position: absolute;
       top: 0;
-      left: 0;
-      width: 100%;
+      left: 50%; /* Mulai di tengah */
+      width: 50%;
       height: 100%;
-      transition: all 0.5s ease-in-out;
-      opacity: 0;
-      pointer-events: none;
-      transform: translateX(100px); /* Default slide right */
+      overflow: hidden;
+      transition: transform 0.6s ease-in-out;
+      z-index: 100;
     }
 
-    .form-content.active {
-      opacity: 1;
-      pointer-events: all;
-      transform: translateX(0);
-      position: relative; /* Agar tingginya terhitung */
+    .container.right-panel-active .overlay-container {
+      transform: translateX(-100%); /* Geser Overlay ke kiri */
     }
 
-    /* Geser ke kiri untuk form yang tidak aktif */
-    .form-content.slide-left {
-      transform: translateX(-100px);
-    }
-
-    /* ========== INPUT STYLES ========== */
-    .input-group {
-      margin-bottom: 20px;
+    .overlay {
+      background: var(--overlay-grad);
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: 0 0;
+      color: #FFFFFF;
       position: relative;
+      left: -100%;
+      height: 100%;
+      width: 200%; /* Lebar 200% agar gradasi halus */
+      transform: translateX(0);
+      transition: transform 0.6s ease-in-out;
     }
 
-    input[type="text"], 
-    input[type="password"] {
-      width: 100%;
-      padding: 15px 20px;
-      border: 2px solid transparent;
-      background: var(--input-bg);
-      border-radius: 12px;
-      font-size: 14px;
-      color: var(--text-main);
-      transition: all 0.3s ease;
-      outline: none;
+    .container.right-panel-active .overlay {
+      transform: translateX(50%);
     }
 
-    input:focus {
-      background: white;
-      border-color: #FF9966;
-      box-shadow: 0 5px 20px rgba(255, 153, 102, 0.1);
-    }
-
-    ::placeholder {
-      color: #b2bec3;
-    }
-
-    /* Show Password Toggle */
-    .toggle-password {
-      font-size: 12px;
-      color: #FF5E62;
-      text-align: right;
-      margin-top: -10px;
-      margin-bottom: 20px;
-      cursor: pointer;
-      font-weight: 600;
-      display: inline-block;
-      float: right;
-    }
-
-    /* ========== BUTTONS ========== */
-    .btn-primary {
-      width: 100%;
-      padding: 15px;
-      background: var(--primary-gradient);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      box-shadow: 0 10px 20px rgba(255, 94, 98, 0.3);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 15px 30px rgba(255, 94, 98, 0.4);
-    }
-
-    .btn-primary:active {
-      transform: scale(0.98);
-    }
-
-    /* ========== AUTOCOMPLETE ========== */
-    .autocomplete-list {
+    .overlay-panel {
       position: absolute;
-      top: 100%;
-      left: 0;
-      width: 100%;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      z-index: 10;
-      list-style: none;
-      max-height: 150px;
-      overflow-y: auto;
-      margin-top: 5px;
-      padding: 5px 0;
-    }
-
-    .autocomplete-list li {
-      padding: 10px 20px;
-      font-size: 14px;
-      color: var(--text-main);
-      cursor: pointer;
-    }
-
-    .autocomplete-list li:hover {
-      background: #fff0eb;
-      color: #FF5E62;
-    }
-
-    /* ========== MESSAGE BOX ========== */
-    .message-box {
-      padding: 12px;
-      border-radius: 10px;
-      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 0 40px;
       text-align: center;
-      font-size: 13px;
-      display: none;
-      animation: fadeIn 0.3s ease;
+      top: 0;
+      height: 100%;
+      width: 50%;
+      transform: translateX(0);
+      transition: transform 0.6s ease-in-out;
+    }
+
+    .overlay-left {
+      transform: translateX(-20%);
+    }
+
+    .container.right-panel-active .overlay-left {
+      transform: translateX(0);
+    }
+
+    .overlay-right {
+      right: 0;
+      transform: translateX(0);
+    }
+
+    .container.right-panel-active .overlay-right {
+      transform: translateX(20%);
+    }
+
+    /* Typography di Overlay */
+    .overlay-panel h1 {
+      color: white;
+      font-size: 24px;
+      margin-bottom: 10px;
     }
     
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(-10px); }
-        to { opacity: 1; transform: translateY(0); }
+    .overlay-panel p {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 20px;
+      letter-spacing: 0.5px;
+      margin: 20px 0 30px;
     }
 
-    .message-success { background: #dff9fb; color: #2ecc71; border: 1px solid #badc58; }
-    .message-error { background: #ff767520; color: #d63031; border: 1px solid #ff7675; }
+    /* Error Message Styling */
+    .error-message {
+      color: #ff4444;
+      font-size: 11px;
+      text-align: left;
+      width: 100%;
+      padding-left: 10px;
+      height: 0;
+      overflow: hidden;
+      transition: 0.3s;
+    }
+    .error-message.show {
+      height: auto;
+      margin-bottom: 5px;
+    }
 
-    /* ========== FOOTER ========== */
-    .footer {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 12px;
-      color: var(--text-muted);
-      opacity: 0.7;
+    /* ========== RESPONSIVE MOBILE ========== */
+    @media (max-width: 600px) {
+      .container {
+        width: 100%;
+        min-height: 550px;
+        border-radius: 0;
+        box-shadow: none;
+      }
+      
+      .form-container {
+        width: 100%;
+        position: absolute;
+        transition: all 0.4s;
+      }
+
+      /* Di mobile, kita hilangkan efek sliding overlay kompleks 
+         dan ganti dengan tumpukan (stack) atau toggle sederhana 
+         agar tidak rusak layoutnya */
+      .overlay-container {
+        display: none; /* Hide slide overlay on mobile */
+      }
+      
+      .sign-in-container, .sign-up-container {
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        opacity: 1;
+        z-index: 1;
+        background: white;
+      }
+
+      /* Manual Toggle Button for Mobile */
+      .mobile-toggle {
+        display: block;
+        margin-top: 15px;
+        color: #FF4B2B;
+        font-weight: bold;
+        cursor: pointer;
+        font-size: 13px;
+      }
+
+      /* Logic Sederhana Mobile */
+      .sign-in-container { z-index: 2; }
+      .sign-up-container { z-index: 1; opacity: 0; }
+      
+      .container.right-panel-active .sign-in-container {
+        z-index: 1; opacity: 0; transform: none;
+      }
+      .container.right-panel-active .sign-up-container {
+        z-index: 2; opacity: 1; transform: none; animation: none;
+      }
+    }
+
+    @media (min-width: 601px) {
+      .mobile-toggle { display: none; }
     }
 
   </style>
 </head>
+
 <body>
 
-  <div class="auth-wrapper">
-    <div class="header">
-      <div class="logo-icon">⚡</div>
-      <h1 id="headerTitle">Welcome Back!</h1>
-      <p id="headerDesc">Enter your details to continue.</p>
+  <div class="container" id="container">
+    
+    <div class="form-container sign-up-container">
+      <form method="post" action="/player/growid/login/validate" id="regisForm">
+        <h1>Create Account</h1>
+        <div class="social-container">
+          <a href="#" class="social"><i class='bx bxl-facebook'></i></a>
+          <a href="#" class="social"><i class='bx bxl-google-plus'></i></a>
+          <a href="#" class="social"><i class='bx bxl-linkedin'></i></a>
+        </div>
+        <span>or use your email for registration</span>
+        
+        <input name="type" value="reg" type="hidden" />
+        <input name="_token" value="<%= JSON.stringify(data) %>" type="hidden" />
+
+        <div class="input-group">
+          <i class='bx bxs-user'></i>
+          <input type="text" name="growId" id="regisGrowId" placeholder="GrowID / Username" />
+          <div class="error-message" id="regisUsernameError"></div>
+        </div>
+
+        <div class="input-group">
+          <i class='bx bxs-envelope'></i>
+          <input type="email" name="email" id="regisEmail" placeholder="Email" />
+          <div class="error-message" id="regisEmailError"></div>
+        </div>
+
+        <div class="input-group">
+          <i class='bx bxs-lock-alt'></i>
+          <input type="password" name="password" id="regisPassword" placeholder="Password" />
+          <div class="error-message" id="regisPasswordError"></div>
+        </div>
+
+        <button type="submit" id="regisButton">Sign Up</button>
+        <div class="mobile-toggle" id="mobileToLogin">Already have account? Sign In</div>
+      </form>
     </div>
 
-    <div class="toggle-container">
-      <div class="slider" id="slider"></div>
-      <button class="toggle-btn active" id="btn-login" onclick="toggleForm('login')">Login</button>
-      <button class="toggle-btn" id="btn-register" onclick="toggleForm('register')">Register</button>
+    <div class="form-container sign-in-container">
+      <form method="post" action="/player/growid/login/validate" id="loginForm">
+        <h1>Sign in</h1>
+        <div class="social-container">
+          <a href="#" class="social"><i class='bx bxl-facebook'></i></a>
+          <a href="#" class="social"><i class='bx bxl-discord'></i></a>
+          <a href="#" class="social"><i class='bx bxl-telegram'></i></a>
+        </div>
+        <span>or use your account</span>
+
+        <input name="type" value="log" type="hidden" />
+        <input name="_token" value="<%= JSON.stringify(data) %>" type="hidden" />
+
+        <div class="input-group">
+          <i class='bx bxs-user'></i>
+          <input type="text" name="growId" id="loginGrowId" placeholder="GrowID" />
+          <div class="error-message" id="loginUsernameError"></div>
+        </div>
+
+        <div class="input-group">
+          <i class='bx bxs-lock-alt'></i>
+          <input type="password" name="password" id="loginPassword" placeholder="Password" />
+          <div class="error-message" id="loginPasswordError"></div>
+        </div>
+
+        <a href="https://eternityps.site/" style="color: #333; font-size: 12px; margin: 15px 0; text-decoration: none;">Forgot your password?</a>
+        
+        <button type="submit" id="loginButton">Sign In</button>
+        <div class="mobile-toggle" id="mobileToRegister">Don't have account? Sign Up</div>
+      </form>
     </div>
 
-    <div class="forms-wrapper">
-      
-      <div class="form-content active" id="loginFormContent">
-        <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="loginForm">
-          <div class="input-group">
-            <input type="text" name="_token" id="loginServerInput" placeholder="Server Name" required />
-          </div>
-          <div class="input-group">
-            <input type="text" name="growId" id="loginGrowId" placeholder="GrowID / Username" required />
-          </div>
-          <div class="input-group">
-            <input type="password" name="password" id="loginPassword" placeholder="Password" required />
-          </div>
-          <div class="toggle-password" onclick="togglePassword('loginPassword', this)">Show Password</div>
-
-          <button type="submit" name="action" value="Login" class="btn-primary">Sign In</button>
-        </form>
+    <div class="overlay-container">
+      <div class="overlay">
+        <div class="overlay-panel overlay-left">
+          <h1>Welcome Back!</h1>
+          <p>To keep connected with us please login with your personal info</p>
+          <button class="ghost" id="signIn">Sign In</button>
+        </div>
+        <div class="overlay-panel overlay-right">
+          <h1>Hello, Friend!</h1>
+          <p>Enter your personal details and start journey with us</p>
+          <button class="ghost" id="signUp">Sign Up</button>
+        </div>
       </div>
-
-      <div class="form-content" id="registerFormContent">
-        <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="registerForm">
-           <div class="input-group">
-            <input type="text" name="_token" id="registerServerInput" placeholder="Server Name" required />
-          </div>
-          <div class="input-group">
-            <input type="text" name="growId" id="registerGrowId" placeholder="Create GrowID" required />
-          </div>
-          <div class="input-group">
-            <input type="password" name="password" id="registerPassword" placeholder="Create Password" required />
-          </div>
-          <div class="input-group">
-            <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" required />
-          </div>
-          <div class="toggle-password" onclick="toggleMultiplePasswords(['registerPassword', 'confirmPassword'], this)">Show Password</div>
-
-          <button type="submit" name="action" value="Register" class="btn-primary">Create Account</button>
-        </form>
-      </div>
-
     </div>
 
-    <div class="footer">
-      &copy; 2025 GTPSID. Secure System.
-    </div>
   </div>
 
   <script>
-    /* ========== LOGIC JAVASCRIPT ========== */
-    
-    // Data Server
-    const servers = ["STYLOPS", "CHINAPS", "COASTPS", "SLOWLYPS", "NEXPS", "TESPS", "IDLEPS"];
-
-    // State Handling
-    document.addEventListener("DOMContentLoaded", () => {
-      // Load LocalStorage
-      const growId = localStorage.getItem("growId");
-      const lastServer = localStorage.getItem("lastServer");
+    document.addEventListener('DOMContentLoaded', () => {
+      /* ========== TOGGLE SLIDER LOGIC ========== */
+      const signUpButton = document.getElementById('signUp');
+      const signInButton = document.getElementById('signIn');
+      const container = document.getElementById('container');
       
-      if (growId) {
-        document.getElementById("loginGrowId").value = growId;
-        document.getElementById("registerGrowId").value = growId;
-      }
-      if (lastServer) {
-        document.getElementById("loginServerInput").value = lastServer;
-        document.getElementById("registerServerInput").value = lastServer;
-      }
+      // Mobile Toggles
+      const mobileToRegister = document.getElementById('mobileToRegister');
+      const mobileToLogin = document.getElementById('mobileToLogin');
+
+      // Geser ke Kanan (Mode Register)
+      const activateRegister = () => {
+        container.classList.add("right-panel-active");
+        resetErrors('loginForm');
+      };
+
+      // Geser ke Kiri (Mode Login)
+      const activateLogin = () => {
+        container.classList.remove("right-panel-active");
+        resetErrors('regisForm');
+      };
+
+      signUpButton.addEventListener('click', activateRegister);
+      signInButton.addEventListener('click', activateLogin);
       
-      setupServerAutocomplete('loginServerInput');
-      setupServerAutocomplete('registerServerInput');
-    });
+      // Mobile listeners
+      mobileToRegister.addEventListener('click', activateRegister);
+      mobileToLogin.addEventListener('click', activateLogin);
 
-    // 1. ANIMATED TOGGLE FUNCTION
-    function toggleForm(mode) {
-      const slider = document.getElementById('slider');
-      const loginBtn = document.getElementById('btn-login');
-      const regBtn = document.getElementById('btn-register');
-      const loginForm = document.getElementById('loginFormContent');
-      const regForm = document.getElementById('registerFormContent');
-      const title = document.getElementById('headerTitle');
-      const desc = document.getElementById('headerDesc');
-
-      // Reset Message Box when switching
-      const msgBox = document.querySelector('.message-box');
-      if(msgBox) msgBox.style.display = 'none';
-
-      if (mode === 'register') {
-        // Pindah Slider ke Kanan
-        slider.style.transform = 'translateX(100%)';
-        
-        // Update Class Button
-        loginBtn.classList.remove('active');
-        regBtn.classList.add('active');
-
-        // Animasi Form
-        loginForm.classList.remove('active');
-        loginForm.classList.add('slide-left'); // Login geser ke kiri
-        
-        regForm.classList.add('active');
-        regForm.classList.remove('slide-left');
-
-        // Ganti Teks
-        title.innerText = "Join Us!";
-        desc.innerText = "Create a new adventure today.";
-      } else {
-        // Pindah Slider ke Kiri
-        slider.style.transform = 'translateX(0)';
-
-        // Update Class Button
-        regBtn.classList.remove('active');
-        loginBtn.classList.add('active');
-
-        // Animasi Form
-        regForm.classList.remove('active');
-        
-        loginForm.classList.remove('slide-left'); // Reset posisi login
-        loginForm.classList.add('active');
-
-        // Ganti Teks
-        title.innerText = "Welcome Back!";
-        desc.innerText = "Enter your details to continue.";
+      /* ========== LOCAL STORAGE LOGIC ========== */
+      if (localStorage.getItem('growId')) {
+        const loginGrowId = document.getElementById('loginGrowId');
+        if (loginGrowId) loginGrowId.value = localStorage.getItem('growId');
       }
-    }
 
-    // 2. PASSWORD TOGGLE
-    function togglePassword(id, el) {
-      const input = document.getElementById(id);
-      if (input.type === "password") {
-        input.type = "text";
-        el.innerText = "Hide";
-      } else {
-        input.type = "password";
-        el.innerText = "Show Password";
+      /* ========== VALIDATION LOGIC (SAMA SEPERTI YANG KAMU BERIKAN) ========== */
+      const validateUsername = (username, errorElement) => {
+        if (!username) return showValidationError(errorElement, 'Please enter username');
+        if (username.length < 4) return showValidationError(errorElement, 'Min 4 characters');
+        if (!/^[a-zA-Z0-9]+$/.test(username)) return showValidationError(errorElement, 'Alphanumeric only');
+        if (username.length > 20) return showValidationError(errorElement, 'Max 20 characters');
+        return true;
+      };
+
+      const validatePassword = (password, errorElement) => {
+        if (!password) return showValidationError(errorElement, 'Please enter password');
+        if (password.length < 6) return showValidationError(errorElement, 'Min 6 characters');
+        return true;
+      };
+
+      const validateEmail = (email, errorElement) => {
+        if (!email) return showValidationError(errorElement, 'Please enter email');
+        if (!/^\S+@\S+\.\S+$/.test(email)) return showValidationError(errorElement, 'Invalid email format');
+        return true;
+      };
+
+      const showValidationError = (el, msg) => {
+        if (el) {
+          el.innerHTML = msg;
+          el.classList.add('show');
+        }
+        return false;
+      };
+
+      function resetErrors(formId) {
+        const form = document.getElementById(formId);
+        const errs = form.querySelectorAll('.error-message');
+        errs.forEach(e => e.classList.remove('show'));
       }
-    }
 
-    function toggleMultiplePasswords(ids, el) {
-      let isPassword = true;
-      // Check first input to decide state
-      if(document.getElementById(ids[0]).type === "text") isPassword = false;
-
-      ids.forEach(id => {
-        document.getElementById(id).type = isPassword ? "text" : "password";
-      });
-      el.innerText = isPassword ? "Hide" : "Show Password";
-    }
-
-    // 3. FORM VALIDATION
-    function handleFormSubmit(e, type) {
-      const server = document.getElementById(type + 'ServerInput').value;
-      const growId = document.getElementById(type + 'GrowId').value;
-      const password = document.getElementById(type + 'Password').value;
-
-      // Basic Check
-      if(!server || !growId || !password) {
+      /* ========== FORM HANDLERS ========== */
+      
+      // LOGIN
+      const form_login = document.getElementById('loginForm');
+      form_login.addEventListener('submit', (e) => {
         e.preventDefault();
-        showMessage(e.target, "All fields are required!", "error");
-        return;
-      }
-
-      if(type === 'register') {
-        const confirm = document.getElementById('confirmPassword').value;
-        if(password !== confirm) {
-          e.preventDefault();
-          showMessage(e.target, "Passwords do not match!", "error");
-          return;
+        const growId = document.getElementById('loginGrowId').value.trim();
+        const pass = document.getElementById('loginPassword').value.trim();
+        
+        resetErrors('loginForm');
+        
+        if (validateUsername(growId, document.getElementById('loginUsernameError')) && 
+            validatePassword(pass, document.getElementById('loginPasswordError'))) {
+              
+          const btn = document.getElementById("loginButton");
+          btn.textContent = "Logging in...";
+          
+          setTimeout(() => {
+             localStorage.setItem('growId', growId);
+             form_login.submit();
+          }, 1500);
         }
-      }
+      });
 
-      // Save Data
-      localStorage.setItem("growId", growId);
-      localStorage.setItem("lastServer", server);
-    }
+      // REGISTER
+      const form_regis = document.getElementById('regisForm');
+      form_regis.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const growId = document.getElementById('regisGrowId').value.trim();
+        const email = document.getElementById('regisEmail').value.trim();
+        const pass = document.getElementById('regisPassword').value.trim();
 
-    document.getElementById("loginForm").addEventListener("submit", (e) => handleFormSubmit(e, 'login'));
-    document.getElementById("registerForm").addEventListener("submit", (e) => handleFormSubmit(e, 'register'));
+        resetErrors('regisForm');
 
-    // 4. MESSAGE SYSTEM
-    function showMessage(form, msg, type) {
-      let box = form.parentNode.querySelector('.message-box');
-      if(!box) {
-        box = document.createElement('div');
-        form.parentNode.insertBefore(box, form);
-      }
-      box.className = `message-box message-${type}`;
-      box.innerText = msg;
-      box.style.display = 'block';
-      setTimeout(() => box.style.display = 'none', 3000);
-    }
+        if (validateUsername(growId, document.getElementById('regisUsernameError')) && 
+            validateEmail(email, document.getElementById('regisEmailError')) &&
+            validatePassword(pass, document.getElementById('regisPasswordError'))) {
+              
+          const btn = document.getElementById("regisButton");
+          btn.textContent = "Registering...";
+          
+          setTimeout(() => {
+             form_regis.submit();
+          }, 1500);
+        }
+      });
 
-    // 5. AUTOCOMPLETE SYSTEM (Sama seperti sebelumnya tapi styling baru)
-    function setupServerAutocomplete(inputId) {
-      const input = document.getElementById(inputId);
-      let list = null;
-
-      input.addEventListener('input', function() {
-        if(list) list.remove();
-        const val = this.value.toUpperCase();
-        if(!val) return;
-        
-        const matches = servers.filter(s => s.startsWith(val));
-        if(!matches.length) return;
-
-        list = document.createElement('ul');
-        list.className = 'autocomplete-list';
-        
-        matches.forEach(m => {
-          const item = document.createElement('li');
-          item.innerText = m;
-          item.onclick = () => {
-            input.value = m;
-            list.remove();
-            list = null;
-          };
-          list.appendChild(item);
+      // Clear errors on typing
+      document.querySelectorAll('input').forEach(input => {
+        input.addEventListener('input', function() {
+          const err = this.parentElement.querySelector('.error-message');
+          if(err) err.classList.remove('show');
         });
-        
-        input.parentNode.appendChild(list);
       });
 
-      document.addEventListener('click', (e) => {
-        if(list && !input.contains(e.target)) {
-          list.remove();
-          list = null;
-        }
-      });
-    }
-
+    });
   </script>
 </body>
 </html>

@@ -41,7 +41,6 @@
             width: 100%;
             max-width: 650px; 
             min-height: 600px;
-            max-height: auto;
             background: linear-gradient(135deg, #1e3c5a 0%, #2a4d6e 50%, #1a2a3a 100%);
             border-radius: 20px;
             overflow: hidden;
@@ -50,7 +49,7 @@
             position: relative;
         }
 
-        /* Visual Section (Tidak berubah) */
+        /* Visual Section */
         .visual-section {
             background: linear-gradient(135deg, #4a9de3 0%, #2a4d6e 100%);
             display: flex;
@@ -79,23 +78,21 @@
         .icon-container { width: 70px; height: 70px; background: #fff; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); border: 3px solid #1a2a3a; }
         .icon-container::before { content: '👾'; font-size: 36px; }
 
-        /* Wrapper untuk Animasi Geser Form (PENTING: Tinggi diatur oleh JS) */
+        /* Wrapper untuk Animasi Geser Form */
         .form-wrapper {
             position: relative;
             overflow: hidden;
             flex-grow: 1;
             padding: 0 40px 40px; 
             background: #1a2a3a;
-            /* Tambahkan transisi untuk tinggi agar perubahan ukuran wrapper mulus */
             transition: height 0.5s ease-in-out; 
-            min-height: 400px; /* Jaga agar tidak terlalu kecil */
+            min-height: 400px; 
         }
 
         /* Form Content */
         .form-container {
             width: 100%;
             transition: transform 0.5s ease-in-out;
-            /* Hapus min-height agar tinggi fleksibel */
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -131,10 +128,16 @@
             transform: translateX(100%);
         }
         
-        /* Gaya Input, Tombol, dll (Sama seperti sebelumnya) */
+        /* Form Title */
         .form-title { margin-bottom: 20px; }
         .form-title h1 { font-size: 18px; color: #a8c0d0; }
         .form-title h2 { font-size: 24px; color: #4a9de3; }
+
+        /* Input Field Styling */
+        .input-group {
+            position: relative; /* Penting untuk Autocomplete */
+            margin-bottom: 15px; /* Margin konsisten untuk setiap grup input */
+        }
 
         input[type="text"], input[type="password"] {
             width: 100%;
@@ -144,9 +147,11 @@
             color: #e8f4fd;
             border: 2px solid #4a9de3;
             border-radius: 8px;
-            margin-bottom: 15px;
+            /* Margin bottom dihapus dari sini dan dipindahkan ke .input-group */
+            margin-bottom: 0; 
         }
 
+        /* Tombol Umum */
         button {
             width: 100%;
             padding: 15px;
@@ -165,12 +170,19 @@
             padding: 12px;
         }
 
+        /* Link "Show Password" */
         .toggle-password {
             font-size: 12px;
-            margin-top: -10px;
-            margin-bottom: 15px;
+            color: #4a9de3;
+            cursor: pointer;
+            margin-bottom: 15px; /* Margin konsisten */
+            display: inline-block;
+        }
+        .toggle-password:hover {
+            text-decoration: underline;
         }
 
+        /* Switch Section & Footer */
         .switch-section {
             margin-top: 20px;
             padding-top: 20px;
@@ -187,10 +199,19 @@
             font-size: 11px;
         }
 
-        .message-box { padding: 12px; border-radius: 6px; margin-bottom: 15px; text-align: center; font-size: 14px; display: none; }
+        /* Message Box */
+        .message-box { 
+            padding: 12px; 
+            border-radius: 6px; 
+            margin-bottom: 15px; /* Margin agar tidak menempel */
+            text-align: center; 
+            font-size: 14px; 
+            display: none; 
+        }
         .message-success { background: rgba(76, 175, 80, 0.2); color: #a5d6a7; border: 1px solid #4caf50; }
         .message-error { background: rgba(244, 67, 54, 0.2); color: #ef9a9a; border: 1px solid #f44336; }
 
+        /* Autocomplete List Styling */
         .autocomplete-list {
             position: absolute;
             background: rgba(40, 55, 70, 0.95);
@@ -200,7 +221,8 @@
             max-height: 150px;
             overflow-y: auto;
             z-index: 1000;
-            margin-top: 5px;
+            top: 100%; /* Posisikan di bawah input */
+            left: 0;
             list-style: none;
             padding: 0;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
@@ -252,11 +274,15 @@
                     </div>
                     
                     <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="loginForm">
-                        <div style="position: relative;">
+                        <div class="input-group">
                             <input type="text" name="_token" id="loginServerInput" placeholder="Server Name *" required />
                         </div>
-                        <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID *" required />
-                        <input type="password" name="password" id="loginPassword" placeholder="Your Password *" required />
+                        <div class="input-group">
+                            <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID *" required />
+                        </div>
+                        <div class="input-group">
+                            <input type="password" name="password" id="loginPassword" placeholder="Your Password *" required />
+                        </div>
                         
                         <div class="toggle-password" id="toggleLoginPassword">Show Password</div>
                         
@@ -280,12 +306,18 @@
                     </div>
                     
                     <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="registerForm">
-                        <div style="position: relative;">
+                        <div class="input-group">
                             <input type="text" name="_token" id="registerServerInput" placeholder="Server Name *" required />
                         </div>
-                        <input type="text" name="growId" id="registerGrowId" placeholder="Choose GrowID *" required />
-                        <input type="password" name="password" id="registerPassword" placeholder="Choose Password *" required />
-                        <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password *" required />
+                        <div class="input-group">
+                            <input type="text" name="growId" id="registerGrowId" placeholder="Choose GrowID *" required />
+                        </div>
+                        <div class="input-group">
+                            <input type="password" name="password" id="registerPassword" placeholder="Choose Password *" required />
+                        </div>
+                        <div class="input-group">
+                            <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password *" required />
+                        </div>
                         
                         <div class="toggle-password" id="toggleRegisterPassword">Show Password</div>
                         
@@ -330,43 +362,36 @@
             setupServerAutocomplete('loginServerInput');
             setupServerAutocomplete('registerServerInput');
 
-            // PENTING: Atur tinggi awal form wrapper
+            // Atur tinggi awal form wrapper
             setWrapperHeight(loginContent);
         });
         
-        // Fungsi baru untuk mengatur tinggi wrapper sesuai dengan form aktif
         function setWrapperHeight(activeForm) {
-            // Dapatkan tinggi konten form
-            const height = activeForm.offsetHeight;
-            // Terapkan tinggi ke wrapper
-            formWrapper.style.height = `${height}px`;
+            // Kita gunakan setTimeout 0ms untuk memastikan DOM sudah stabil setelah transisi
+            setTimeout(() => {
+                const height = activeForm.offsetHeight;
+                formWrapper.style.height = `${height}px`;
+            }, 50); // Tambahkan sedikit delay untuk stabilitas
         }
 
 
-        // FIX: Logika switchForm yang diperbaiki untuk mengatur tinggi
         function switchForm(targetForm) {
-            // Tentukan form yang akan aktif
             const nextActiveForm = targetForm === 'register' ? registerContent : loginContent;
             
-            // 1. Atur tinggi wrapper ke tinggi form yang akan datang (dilakukan sebelum transisi geser dimulai)
+            // 1. Atur tinggi wrapper ke tinggi form yang akan datang
             setWrapperHeight(nextActiveForm);
 
             // Hapus semua class slide
             formWrapper.classList.remove('slide-to-login', 'slide-to-register');
 
             if (targetForm === 'register') {
-                // Terapkan animasi geser ke Register
                 formWrapper.classList.add('slide-to-register');
             } else if (targetForm === 'login') {
-                // Terapkan animasi geser ke Login
                 formWrapper.classList.add('slide-to-login');
             }
-            
-            // Karena kita menggunakan height: auto, kita biarkan saja position: absolute tetap aktif
-            // agar kedua form bisa saling menimpa dalam proses transisi.
         }
         
-        // --- Fungsi lainnya (Toggle Password, Validation, Autocomplete) tetap sama dan bekerja ---
+        // --- Fungsi lainnya (Toggle Password, Validation, Autocomplete, Message) ---
         
         // Password Toggle Functions
         document.getElementById("toggleLoginPassword").addEventListener("click", () => {
@@ -455,21 +480,16 @@
             messageBox.className = `message-box message-${type}`;
             messageBox.style.display = 'block';
             
-            // Tambahkan CSS untuk message box (jika belum ada)
-            let style = document.getElementById('message-style');
-            if (!style) {
-                 style = document.createElement('style');
-                 style.id = 'message-style';
-                 style.textContent = `
-                    .message-box { padding: 12px; border-radius: 6px; margin-bottom: 15px; text-align: center; font-size: 14px; display: block; }
-                    .message-success { background: rgba(76, 175, 80, 0.2); color: #a5d6a7; border: 1px solid #4caf50; }
-                    .message-error { background: rgba(244, 67, 54, 0.2); color: #ef9a9a; border: 1px solid #f44336; }
-                `;
-                document.head.appendChild(style);
-            }
+            // Perlu dipastikan CSS message box sudah ada di <style> utama atau di sini.
+            // Kita sudah pastikan ada di <style> utama.
+
+            // Setelah pesan muncul, atur ulang tinggi wrapper
+            setWrapperHeight(parent);
 
             setTimeout(() => {
                 messageBox.style.display = 'none';
+                // Setelah pesan hilang, atur ulang tinggi wrapper lagi
+                setWrapperHeight(parent); 
             }, 5000);
         }
 
@@ -507,9 +527,12 @@
                     autocompleteList.appendChild(item);
                 });
                 
-                const inputParent = serverInput.parentNode;
-                inputParent.style.position = 'relative';
-                inputParent.appendChild(autocompleteList);
+                // Cari parent .input-group
+                const inputParent = serverInput.closest('.input-group'); 
+                if (inputParent) {
+                    inputParent.style.position = 'relative';
+                    inputParent.appendChild(autocompleteList);
+                }
             });
             
             document.addEventListener('click', function(e) {

@@ -11,9 +11,10 @@
   <style>
     /* ========== VAR & RESET ========== */
     :root {
+      /* Tema Sunset / Jeruk Hangat */
       --primary-grad: linear-gradient(to right, #FF4B2B, #FF416C);
       --overlay-grad: linear-gradient(to right, #FF416C, #FF4B2B);
-      --bg-color: #f6f5f7;
+      --bg-grad: linear-gradient(135deg, #FFDEE9 0%, #B5FFFC 100%);
       --white: #ffffff;
       --gray: #333;
       --input-bg: #eee;
@@ -27,15 +28,13 @@
     }
 
     body {
-      background: #f6f5f7;
       display: flex;
       justify-content: center;
       align-items: center;
       flex-direction: column;
       height: 100vh;
-      margin: 0;
-      /* Background dinamis */
-      background: linear-gradient(135deg, #FFDEE9 0%, #B5FFFC 100%);
+      background: var(--bg-grad);
+      overflow: hidden; /* Mencegah scroll saat keyboard muncul di HP */
     }
 
     /* ========== CONTAINER UTAMA ========== */
@@ -46,12 +45,11 @@
                   0 10px 10px rgba(0, 0, 0, 0.22);
       position: relative;
       overflow: hidden;
-      width: 768px;
+      width: 850px; /* Sedikit lebih lebar agar input muat */
       max-width: 100%;
-      min-height: 480px;
+      min-height: 550px; /* Lebih tinggi untuk akomodasi input tambahan */
     }
 
-    /* ========== FORM STYLING ========== */
     .form-container {
       position: absolute;
       top: 0;
@@ -72,38 +70,15 @@
 
     h1 {
       font-weight: 700;
-      margin: 0;
+      margin-bottom: 20px;
       color: var(--gray);
-    }
-
-    .social-container {
-      margin: 20px 0;
-    }
-
-    .social-container a {
-      border: 1px solid #DDDDDD;
-      border-radius: 50%;
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      margin: 0 5px;
-      height: 40px;
-      width: 40px;
-      text-decoration: none;
-      color: #333;
-      transition: 0.3s;
-    }
-
-    .social-container a:hover {
-      background: #FF416C;
-      color: white;
-      border-color: #FF416C;
     }
 
     span {
       font-size: 12px;
       color: #888;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
+      display: block;
     }
 
     /* Input Fields */
@@ -115,12 +90,19 @@
 
     input {
       background-color: var(--input-bg);
-      border: none;
-      padding: 12px 15px 12px 45px; /* Padding kiri buat icon */
+      border: 1px solid transparent;
+      padding: 12px 15px 12px 45px;
       width: 100%;
       border-radius: 8px;
       outline: none;
       font-size: 14px;
+      transition: all 0.3s;
+    }
+
+    input:focus {
+      background-color: #fff;
+      border-color: #FF4B2B;
+      box-shadow: 0 0 10px rgba(255, 75, 43, 0.1);
     }
 
     .input-group i {
@@ -130,6 +112,34 @@
       transform: translateY(-50%);
       color: #888;
       font-size: 18px;
+      z-index: 1;
+    }
+
+    /* Autocomplete List Styling */
+    .autocomplete-list {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #ddd;
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      z-index: 10;
+      max-height: 150px;
+      overflow-y: auto;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      text-align: left;
+    }
+    .autocomplete-list li {
+      padding: 10px 15px;
+      cursor: pointer;
+      font-size: 13px;
+      color: #333;
+    }
+    .autocomplete-list li:hover {
+      background-color: #f1f1f1;
+      color: #FF4B2B;
     }
 
     /* Buttons */
@@ -145,33 +155,40 @@
       text-transform: uppercase;
       transition: transform 80ms ease-in;
       cursor: pointer;
-      margin-top: 20px;
+      margin-top: 25px;
       box-shadow: 0 5px 15px rgba(255, 75, 43, 0.3);
     }
 
-    button:active {
-      transform: scale(0.95);
-    }
-
-    button:focus {
-      outline: none;
-    }
-
+    button:active { transform: scale(0.95); }
+    button:focus { outline: none; }
     button.ghost {
       background: transparent;
       border-color: #FFFFFF;
       box-shadow: none;
     }
 
-    /* ========== LOGIKA ANIMASI GESER (CORE) ========== */
-    
-    /* Posisi Awal: Login di kiri, Register di kanan (tersembunyi) */
+    /* Error Message */
+    .error-message {
+      color: #ff4444;
+      font-size: 11px;
+      text-align: left;
+      width: 100%;
+      padding-left: 10px;
+      height: 0;
+      overflow: hidden;
+      transition: 0.3s;
+    }
+    .error-message.show {
+      height: auto;
+      margin-top: 5px;
+    }
+
+    /* ========== LOGIKA ANIMASI GESER ========== */
     .sign-in-container {
       left: 0;
       width: 50%;
       z-index: 2;
     }
-
     .sign-up-container {
       left: 0;
       width: 50%;
@@ -179,34 +196,23 @@
       z-index: 1;
     }
 
-    /* Saat Container Active (Register Mode) */
-    .container.right-panel-active .sign-in-container {
-      transform: translateX(100%); /* Geser Login ke kanan */
-    }
-
+    .container.right-panel-active .sign-in-container { transform: translateX(100%); }
     .container.right-panel-active .sign-up-container {
-      transform: translateX(100%); /* Geser Register ke kanan (posisi layar kanan) */
+      transform: translateX(100%);
       opacity: 1;
       z-index: 5;
-      animation: show 0.6s; /* Animasi muncul */
+      animation: show 0.6s;
     }
 
     @keyframes show {
-      0%, 49.99% {
-        opacity: 0;
-        z-index: 1;
-      }
-      50%, 100% {
-        opacity: 1;
-        z-index: 5;
-      }
+      0%, 49.99% { opacity: 0; z-index: 1; }
+      50%, 100% { opacity: 1; z-index: 5; }
     }
 
-    /* ========== OVERLAY (BAGIAN BERWARNA YANG BERGERAK) ========== */
     .overlay-container {
       position: absolute;
       top: 0;
-      left: 50%; /* Mulai di tengah */
+      left: 50%;
       width: 50%;
       height: 100%;
       overflow: hidden;
@@ -214,9 +220,7 @@
       z-index: 100;
     }
 
-    .container.right-panel-active .overlay-container {
-      transform: translateX(-100%); /* Geser Overlay ke kiri */
-    }
+    .container.right-panel-active .overlay-container { transform: translateX(-100%); }
 
     .overlay {
       background: var(--overlay-grad);
@@ -227,14 +231,12 @@
       position: relative;
       left: -100%;
       height: 100%;
-      width: 200%; /* Lebar 200% agar gradasi halus */
+      width: 200%;
       transform: translateX(0);
       transition: transform 0.6s ease-in-out;
     }
 
-    .container.right-panel-active .overlay {
-      transform: translateX(50%);
-    }
+    .container.right-panel-active .overlay { transform: translateX(50%); }
 
     .overlay-panel {
       position: absolute;
@@ -251,112 +253,27 @@
       transition: transform 0.6s ease-in-out;
     }
 
-    .overlay-left {
-      transform: translateX(-20%);
-    }
+    .overlay-left { transform: translateX(-20%); }
+    .container.right-panel-active .overlay-left { transform: translateX(0); }
+    .overlay-right { right: 0; transform: translateX(0); }
+    .container.right-panel-active .overlay-right { transform: translateX(20%); }
 
-    .container.right-panel-active .overlay-left {
-      transform: translateX(0);
-    }
+    /* Mobile Styles */
+    .mobile-toggle { display: none; margin-top: 15px; color: #FF4B2B; font-weight: bold; font-size: 13px; cursor: pointer; }
 
-    .overlay-right {
-      right: 0;
-      transform: translateX(0);
-    }
-
-    .container.right-panel-active .overlay-right {
-      transform: translateX(20%);
-    }
-
-    /* Typography di Overlay */
-    .overlay-panel h1 {
-      color: white;
-      font-size: 24px;
-      margin-bottom: 10px;
-    }
-    
-    .overlay-panel p {
-      font-size: 14px;
-      font-weight: 300;
-      line-height: 20px;
-      letter-spacing: 0.5px;
-      margin: 20px 0 30px;
-    }
-
-    /* Error Message Styling */
-    .error-message {
-      color: #ff4444;
-      font-size: 11px;
-      text-align: left;
-      width: 100%;
-      padding-left: 10px;
-      height: 0;
-      overflow: hidden;
-      transition: 0.3s;
-    }
-    .error-message.show {
-      height: auto;
-      margin-bottom: 5px;
-    }
-
-    /* ========== RESPONSIVE MOBILE ========== */
-    @media (max-width: 600px) {
-      .container {
-        width: 100%;
-        min-height: 550px;
-        border-radius: 0;
-        box-shadow: none;
-      }
+    @media (max-width: 768px) {
+      .container { width: 100%; min-height: 100vh; border-radius: 0; box-shadow: none; }
+      .form-container { width: 100%; }
+      .overlay-container { display: none; } /* Hide animation on mobile */
       
-      .form-container {
-        width: 100%;
-        position: absolute;
-        transition: all 0.4s;
-      }
-
-      /* Di mobile, kita hilangkan efek sliding overlay kompleks 
-         dan ganti dengan tumpukan (stack) atau toggle sederhana 
-         agar tidak rusak layoutnya */
-      .overlay-container {
-        display: none; /* Hide slide overlay on mobile */
-      }
-      
-      .sign-in-container, .sign-up-container {
-        width: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        opacity: 1;
-        z-index: 1;
-        background: white;
-      }
-
-      /* Manual Toggle Button for Mobile */
-      .mobile-toggle {
-        display: block;
-        margin-top: 15px;
-        color: #FF4B2B;
-        font-weight: bold;
-        cursor: pointer;
-        font-size: 13px;
-      }
-
-      /* Logic Sederhana Mobile */
       .sign-in-container { z-index: 2; }
       .sign-up-container { z-index: 1; opacity: 0; }
       
-      .container.right-panel-active .sign-in-container {
-        z-index: 1; opacity: 0; transform: none;
-      }
-      .container.right-panel-active .sign-up-container {
-        z-index: 2; opacity: 1; transform: none; animation: none;
-      }
+      .container.right-panel-active .sign-in-container { opacity: 0; pointer-events: none; }
+      .container.right-panel-active .sign-up-container { opacity: 1; pointer-events: all; transform: none; animation: none; }
+      
+      .mobile-toggle { display: block; }
     }
-
-    @media (min-width: 601px) {
-      .mobile-toggle { display: none; }
-    }
-
   </style>
 </head>
 
@@ -365,28 +282,21 @@
   <div class="container" id="container">
     
     <div class="form-container sign-up-container">
-      <form method="post" action="/player/growid/login/validate" id="regisForm">
+      <form method="post" action="/player/growid/login/validate" id="regisForm" autocomplete="off">
         <h1>Create Account</h1>
-        <div class="social-container">
-          <a href="#" class="social"><i class='bx bxl-facebook'></i></a>
-          <a href="#" class="social"><i class='bx bxl-google-plus'></i></a>
-          <a href="#" class="social"><i class='bx bxl-linkedin'></i></a>
-        </div>
-        <span>or use your email for registration</span>
+        <span>Isi data lengkap untuk mendaftar</span>
         
         <input name="type" value="reg" type="hidden" />
-        <input name="_token" value="<%= JSON.stringify(data) %>" type="hidden" />
+        <div class="input-group">
+          <i class='bx bxs-server'></i>
+          <input type="text" name="_token" id="regisServerInput" placeholder="Server Name (e.g. STYLOPS)" />
+          <div class="error-message" id="regisServerError"></div>
+        </div>
 
         <div class="input-group">
           <i class='bx bxs-user'></i>
-          <input type="text" name="growId" id="regisGrowId" placeholder="GrowID / Username" />
+          <input type="text" name="growId" id="regisGrowId" placeholder="GrowID" />
           <div class="error-message" id="regisUsernameError"></div>
-        </div>
-
-        <div class="input-group">
-          <i class='bx bxs-envelope'></i>
-          <input type="email" name="email" id="regisEmail" placeholder="Email" />
-          <div class="error-message" id="regisEmailError"></div>
         </div>
 
         <div class="input-group">
@@ -395,23 +305,28 @@
           <div class="error-message" id="regisPasswordError"></div>
         </div>
 
+        <div class="input-group">
+            <i class='bx bxs-lock-open-alt'></i>
+            <input type="password" name="confirmPassword" id="regisConfirmPassword" placeholder="Confirm Password" />
+            <div class="error-message" id="regisConfirmError"></div>
+          </div>
+
         <button type="submit" id="regisButton">Sign Up</button>
-        <div class="mobile-toggle" id="mobileToLogin">Already have account? Sign In</div>
+        <div class="mobile-toggle" id="mobileToLogin">Already have an account? Sign In</div>
       </form>
     </div>
 
     <div class="form-container sign-in-container">
-      <form method="post" action="/player/growid/login/validate" id="loginForm">
+      <form method="post" action="/player/growid/login/validate" id="loginForm" autocomplete="off">
         <h1>Sign in</h1>
-        <div class="social-container">
-          <a href="#" class="social"><i class='bx bxl-facebook'></i></a>
-          <a href="#" class="social"><i class='bx bxl-discord'></i></a>
-          <a href="#" class="social"><i class='bx bxl-telegram'></i></a>
-        </div>
-        <span>or use your account</span>
+        <span>Masuk menggunakan akun kamu</span>
 
         <input name="type" value="log" type="hidden" />
-        <input name="_token" value="<%= JSON.stringify(data) %>" type="hidden" />
+        <div class="input-group">
+            <i class='bx bxs-server'></i>
+            <input type="text" name="_token" id="loginServerInput" placeholder="Server Name" />
+            <div class="error-message" id="loginServerError"></div>
+        </div>
 
         <div class="input-group">
           <i class='bx bxs-user'></i>
@@ -425,10 +340,10 @@
           <div class="error-message" id="loginPasswordError"></div>
         </div>
 
-        <a href="https://eternityps.site/" style="color: #333; font-size: 12px; margin: 15px 0; text-decoration: none;">Forgot your password?</a>
+        <a href="https://eternityps.site/" style="color: #666; font-size: 12px; margin: 15px 0; text-decoration: none;">Forgot your password?</a>
         
         <button type="submit" id="loginButton">Sign In</button>
-        <div class="mobile-toggle" id="mobileToRegister">Don't have account? Sign Up</div>
+        <div class="mobile-toggle" id="mobileToRegister">Don't have an account? Sign Up</div>
       </form>
     </div>
 
@@ -436,12 +351,12 @@
       <div class="overlay">
         <div class="overlay-panel overlay-left">
           <h1>Welcome Back!</h1>
-          <p>To keep connected with us please login with your personal info</p>
+          <p>Jika sudah memiliki akun, silakan login di sini untuk melanjutkan permainan.</p>
           <button class="ghost" id="signIn">Sign In</button>
         </div>
         <div class="overlay-panel overlay-right">
-          <h1>Hello, Friend!</h1>
-          <p>Enter your personal details and start journey with us</p>
+          <h1>Hello, Player!</h1>
+          <p>Belum punya akun? Daftar sekarang dan mulai petualangan di dunia GTPS.</p>
           <button class="ghost" id="signUp">Sign Up</button>
         </div>
       </div>
@@ -450,129 +365,156 @@
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      /* ========== TOGGLE SLIDER LOGIC ========== */
-      const signUpButton = document.getElementById('signUp');
-      const signInButton = document.getElementById('signIn');
-      const container = document.getElementById('container');
-      
-      // Mobile Toggles
-      const mobileToRegister = document.getElementById('mobileToRegister');
-      const mobileToLogin = document.getElementById('mobileToLogin');
+    // DATA SERVER (Bisa kamu tambah/kurang)
+    const servers = ["STYLOPS", "CHINAPS", "COASTPS", "SLOWLYPS", "NEXPS", "TESPS", "IDLEPS", "ETERNITYPS"];
 
-      // Geser ke Kanan (Mode Register)
-      const activateRegister = () => {
+    document.addEventListener('DOMContentLoaded', () => {
+      /* --- 1. SLIDING ANIMATION --- */
+      const container = document.getElementById('container');
+      const signUpBtn = document.getElementById('signUp');
+      const signInBtn = document.getElementById('signIn');
+      const mobileToReg = document.getElementById('mobileToRegister');
+      const mobileToLog = document.getElementById('mobileToLogin');
+
+      const goToRegister = () => {
         container.classList.add("right-panel-active");
         resetErrors('loginForm');
       };
 
-      // Geser ke Kiri (Mode Login)
-      const activateLogin = () => {
+      const goToLogin = () => {
         container.classList.remove("right-panel-active");
         resetErrors('regisForm');
       };
 
-      signUpButton.addEventListener('click', activateRegister);
-      signInButton.addEventListener('click', activateLogin);
-      
-      // Mobile listeners
-      mobileToRegister.addEventListener('click', activateRegister);
-      mobileToLogin.addEventListener('click', activateLogin);
+      signUpBtn.addEventListener('click', goToRegister);
+      signInBtn.addEventListener('click', goToLogin);
+      mobileToReg.addEventListener('click', goToRegister);
+      mobileToLog.addEventListener('click', goToLogin);
 
-      /* ========== LOCAL STORAGE LOGIC ========== */
+      /* --- 2. LOCAL STORAGE (Save Last Login) --- */
       if (localStorage.getItem('growId')) {
-        const loginGrowId = document.getElementById('loginGrowId');
-        if (loginGrowId) loginGrowId.value = localStorage.getItem('growId');
+        const savedId = localStorage.getItem('growId');
+        document.getElementById('loginGrowId').value = savedId;
+        document.getElementById('regisGrowId').value = savedId;
+      }
+      if (localStorage.getItem('lastServer')) {
+        const savedServer = localStorage.getItem('lastServer');
+        document.getElementById('loginServerInput').value = savedServer;
+        document.getElementById('regisServerInput').value = savedServer;
       }
 
-      /* ========== VALIDATION LOGIC (SAMA SEPERTI YANG KAMU BERIKAN) ========== */
-      const validateUsername = (username, errorElement) => {
-        if (!username) return showValidationError(errorElement, 'Please enter username');
-        if (username.length < 4) return showValidationError(errorElement, 'Min 4 characters');
-        if (!/^[a-zA-Z0-9]+$/.test(username)) return showValidationError(errorElement, 'Alphanumeric only');
-        if (username.length > 20) return showValidationError(errorElement, 'Max 20 characters');
-        return true;
-      };
+      /* --- 3. AUTOCOMPLETE SERVER --- */
+      function setupAutocomplete(inputId) {
+        const input = document.getElementById(inputId);
+        let list = null;
 
-      const validatePassword = (password, errorElement) => {
-        if (!password) return showValidationError(errorElement, 'Please enter password');
-        if (password.length < 6) return showValidationError(errorElement, 'Min 6 characters');
-        return true;
-      };
+        input.addEventListener('input', function() {
+            if(list) list.remove();
+            const val = this.value.toUpperCase();
+            if(!val) return;
 
-      const validateEmail = (email, errorElement) => {
-        if (!email) return showValidationError(errorElement, 'Please enter email');
-        if (!/^\S+@\S+\.\S+$/.test(email)) return showValidationError(errorElement, 'Invalid email format');
-        return true;
-      };
+            const matches = servers.filter(s => s.startsWith(val));
+            if(!matches.length) return;
 
-      const showValidationError = (el, msg) => {
-        if (el) {
-          el.innerHTML = msg;
-          el.classList.add('show');
-        }
+            list = document.createElement('ul');
+            list.className = 'autocomplete-list';
+            
+            matches.forEach(m => {
+                const item = document.createElement('li');
+                item.textContent = m;
+                item.onclick = () => {
+                    input.value = m;
+                    list.remove();
+                    list = null;
+                };
+                list.appendChild(item);
+            });
+            input.parentNode.appendChild(list);
+        });
+
+        document.addEventListener('click', (e) => {
+            if(list && !input.contains(e.target)) {
+                list.remove(); list = null;
+            }
+        });
+      }
+
+      setupAutocomplete('loginServerInput');
+      setupAutocomplete('regisServerInput');
+
+      /* --- 4. VALIDATION FUNCTIONS --- */
+      const showError = (el, msg) => {
+        if(el) { el.textContent = msg; el.classList.add('show'); }
         return false;
       };
 
-      function resetErrors(formId) {
-        const form = document.getElementById(formId);
-        const errs = form.querySelectorAll('.error-message');
-        errs.forEach(e => e.classList.remove('show'));
-      }
+      const resetErrors = (formId) => {
+        document.getElementById(formId).querySelectorAll('.error-message').forEach(e => e.classList.remove('show'));
+      };
 
-      /* ========== FORM HANDLERS ========== */
-      
+      // Clear error saat mengetik
+      document.querySelectorAll('input').forEach(inp => {
+        inp.addEventListener('input', function() {
+            const err = this.parentNode.querySelector('.error-message');
+            if(err) err.classList.remove('show');
+        });
+      });
+
+      /* --- 5. FORM SUBMISSION --- */
       // LOGIN
-      const form_login = document.getElementById('loginForm');
-      form_login.addEventListener('submit', (e) => {
+      const loginForm = document.getElementById('loginForm');
+      loginForm.addEventListener('submit', (e) => {
         e.preventDefault();
+        resetErrors('loginForm');
+
+        const server = document.getElementById('loginServerInput').value.trim();
         const growId = document.getElementById('loginGrowId').value.trim();
         const pass = document.getElementById('loginPassword').value.trim();
         
-        resetErrors('loginForm');
-        
-        if (validateUsername(growId, document.getElementById('loginUsernameError')) && 
-            validatePassword(pass, document.getElementById('loginPasswordError'))) {
-              
-          const btn = document.getElementById("loginButton");
-          btn.textContent = "Logging in...";
-          
-          setTimeout(() => {
-             localStorage.setItem('growId', growId);
-             form_login.submit();
-          }, 1500);
+        let valid = true;
+        if(!server) valid = showError(document.getElementById('loginServerError'), 'Server name required');
+        if(!growId) valid = showError(document.getElementById('loginUsernameError'), 'GrowID required');
+        if(!pass) valid = showError(document.getElementById('loginPasswordError'), 'Password required');
+
+        if(valid) {
+            const btn = document.getElementById('loginButton');
+            btn.textContent = "Logging In...";
+            localStorage.setItem('growId', growId);
+            localStorage.setItem('lastServer', server);
+            
+            setTimeout(() => loginForm.submit(), 1000);
         }
       });
 
       // REGISTER
-      const form_regis = document.getElementById('regisForm');
-      form_regis.addEventListener('submit', (e) => {
+      const regisForm = document.getElementById('regisForm');
+      regisForm.addEventListener('submit', (e) => {
         e.preventDefault();
-        const growId = document.getElementById('regisGrowId').value.trim();
-        const email = document.getElementById('regisEmail').value.trim();
-        const pass = document.getElementById('regisPassword').value.trim();
-
         resetErrors('regisForm');
 
-        if (validateUsername(growId, document.getElementById('regisUsernameError')) && 
-            validateEmail(email, document.getElementById('regisEmailError')) &&
-            validatePassword(pass, document.getElementById('regisPasswordError'))) {
-              
-          const btn = document.getElementById("regisButton");
-          btn.textContent = "Registering...";
-          
-          setTimeout(() => {
-             form_regis.submit();
-          }, 1500);
-        }
-      });
+        const server = document.getElementById('regisServerInput').value.trim();
+        const growId = document.getElementById('regisGrowId').value.trim();
+        const pass = document.getElementById('regisPassword').value.trim();
+        const confirm = document.getElementById('regisConfirmPassword').value.trim();
 
-      // Clear errors on typing
-      document.querySelectorAll('input').forEach(input => {
-        input.addEventListener('input', function() {
-          const err = this.parentElement.querySelector('.error-message');
-          if(err) err.classList.remove('show');
-        });
+        let valid = true;
+        if(!server) valid = showError(document.getElementById('regisServerError'), 'Server name required');
+        if(!growId) valid = showError(document.getElementById('regisUsernameError'), 'GrowID required');
+        else if(growId.length < 3) valid = showError(document.getElementById('regisUsernameError'), 'GrowID too short');
+
+        if(!pass) valid = showError(document.getElementById('regisPasswordError'), 'Password required');
+        else if(pass.length < 4) valid = showError(document.getElementById('regisPasswordError'), 'Password min 4 chars');
+
+        if(pass !== confirm) valid = showError(document.getElementById('regisConfirmError'), 'Passwords do not match');
+
+        if(valid) {
+            const btn = document.getElementById('regisButton');
+            btn.textContent = "Creating Account...";
+            localStorage.setItem('growId', growId);
+            localStorage.setItem('lastServer', server);
+            
+            setTimeout(() => regisForm.submit(), 1000);
+        }
       });
 
     });

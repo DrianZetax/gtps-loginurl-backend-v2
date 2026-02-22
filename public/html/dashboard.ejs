@@ -257,9 +257,7 @@
                     </div>
                     
                     <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="loginForm">
-                        <div class="input-group">
-    <input type="text" name="_token" id="loginServerInput" placeholder="Server Name" />
-</div>
+                        <div class="input-group"> <input type="text" name="_token" id="loginServerInput" placeholder="Server Name *" required /> </div>
                         <div class="input-group">
                             <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID *" required />
                         </div>
@@ -286,9 +284,9 @@
                     </div>
                     
                     <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="registerForm">
-                        <div class="input-group">
-    <input type="text" name="_token" id="registerServerInput" placeholder="Server Name *" />
-</div>
+                         <div class="input-group">
+                            <input type="text" name="_token" id="registerServerInput" placeholder="Server Name *" required />
+                        </div>
                         <div class="input-group">
                             <input type="text" name="growId" id="registerGrowId" placeholder="Choose GrowID *" required />
                         </div>

@@ -18,6 +18,7 @@ app.use(compression({
 }));
 
 app.set('view engine', 'ejs');
+
 app.set('trust proxy', 1);
 
 app.use(function (req, res, next) {
@@ -31,7 +32,9 @@ app.use(function (req, res, next) {
 });
 
 app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(express.json());
+
 app.use(rateLimiter({ windowMs: 15 * 60 * 1000, max: 10000, headers: true }));
 
 // Helper function untuk check account
@@ -40,121 +43,91 @@ function checkAccountExists(growId) {
     return fs.existsSync(filePath);
 }
 
-// Daftar server yang tersedia
-const availableServers = [
-    "GTZS", "STYLOPS", "CHINAPS", "COASTPS", "SLOWLYPS", "NEXPS", "TESPS", "IDLEPS"
-];
-
 app.all("/player/validate/close", function (req, res) {
-    res.send("<script>window.close();</script>");
+  res.send("<script>window.close();</script>");
 });
 
 app.all('/player/login/dashboard', function (req, res) {
     const tData = {};
     try {
-        const bodyStr = JSON.stringify(req.body);
-        if (bodyStr !== '{}') {
-            const uData = bodyStr.split('"')[1].split('\\n');
-            for (let i = 0; i < uData.length - 1; i++) {
-                const d = uData[i].split('|');
-                if (d.length >= 2) tData[d[0]] = d[1];
-            }
+        const uData = JSON.stringify(req.body).split('"')[1].split('\\n'); 
+        const uName = uData[0].split('|'); 
+        const uPass = uData[1].split('|');
+        for (let i = 0; i < uData.length - 1; i++) { 
+            const d = uData[i].split('|'); 
+            tData[d[0]] = d[1]; 
         }
-    } catch (why) {
-        console.log(`Warning: ${why}`);
+        if (uName[1] && uPass[1]) { 
+            res.redirect('/player/growid/login/validate'); 
+        }
+    } catch (why) { 
+        console.log(`Warning: ${why}`); 
     }
 
-    // Kirim juga daftar server ke template
-    const encodedData = Buffer.from(JSON.stringify(tData)).toString('base64');
-    res.render(__dirname + '/public/html/dashboard.ejs', { 
-        data: encodedData,
-        servers: availableServers 
-    });
+    res.render(__dirname + '/public/html/dashboard.ejs', {data: tData});
 });
 
 app.all('/player/growid/login/validate', (req, res) => {
-    const { _token, growId, password, action, server_name } = req.body;
+    const { _token, growId, password, action } = req.body;
     
     console.log(`Login/Validate Request:`, { 
-        action: action || 'login', 
-        growId: growId || 'guest',
-        server: server_name || 'not specified'
+        action: action, 
+        growId: growId, 
+        server: _token 
     });
 
     let tokenData = {};
     
-    // Validasi server name
-    const selectedServer = server_name ? server_name.toUpperCase() : 'GTZS';
-    
-    if (!availableServers.includes(selectedServer)) {
-        return res.json({
-            status: 'error',
-            message: 'Invalid server name! Available servers: ' + availableServers.join(', '),
-            token: '',
-            url: '',
-            accountType: 'growtopia',
-            accountAge: 2
-        });
-    }
-    
     if (action && action.toLowerCase() === 'register') {
+        // MODE REGISTER
         if (!growId || !password) {
-            return res.json({
-                status: 'error',
-                message: 'GrowID and password required for register',
-                token: '',
-                url: '',
-                accountType: 'growtopia',
-                accountAge: 2
-            });
+            return res.send(
+                `{"status":"error","message":"GrowID and password required for register","token":"","url":"","accountType":"growtopia", "accountAge": 2}`
+            );
         }
         
+        // Cek jika akun sudah ada
         if (checkAccountExists(growId)) {
-            return res.json({
-                status: 'error',
-                message: 'Account already exists',
-                token: '',
-                url: '',
-                accountType: 'growtopia',
-                accountAge: 2
-            });
+            return res.send(
+                `{"status":"error","message":"Account already exists","token":"","url":"","accountType":"growtopia", "accountAge": 2}`
+            );
         }
         
+        // Kirim data register ke C++ handler
         tokenData = { 
-            server_name: selectedServer,
+            server_name: _token.toUpperCase(), 
             growId: growId, 
             password: password,
             isRegister: true 
         };
-    } 
-    else if (growId && password) {
+        
+    } else if (growId && password) {
+        // MODE LOGIN
         tokenData = { 
-            server_name: selectedServer,
+            server_name: _token.toUpperCase(), 
             growId: growId, 
             password: password,
             isRegister: false 
         };
-    } 
-    else {
+    } else {
+        // MODE GUEST
         tokenData = { 
-            server_name: selectedServer,
+            server_name: _token.toUpperCase(), 
             growId: "", 
             password: "",
             isRegister: false 
         };
     }
     
-    const token = Buffer.from(JSON.stringify(tokenData)).toString('base64');
+    const token = JSON.stringify(tokenData);
+    const tokens = Buffer.from(token).toString('base64');
     
-    console.log(`Generated token for server ${selectedServer}: ${token}`);
-    res.json({
-        status: 'success',
-        message: 'Account Validated.',
-        token: token,
-        url: '',
-        accountType: 'growtopia',
-        accountAge: 2
-    });
+    console.log(`Generated token: ${tokens}`);
+    console.log(`Token data:`, tokenData);
+    
+    res.send(
+        `{"status":"success","message":"Account Validated.","token":"${tokens}","url":"","accountType":"growtopia", "accountAge": 2}`
+    );
 });
 
 app.all('/player/growid/checktoken', (req, res) => {
@@ -170,11 +143,10 @@ app.all('/player/growid/checktoken', (req, res) => {
 });
 
 app.get('/', function (req, res) {
-    res.send('Server Running - Growtopia Backend with Nameserver');
+   res.send('Server Running');
 });
 
 app.listen(5000, function () {
     console.log('Listening on port 5000');
-    console.log('Available servers:', availableServers.join(', '));
-    console.log('Backend ready for Login/Register with nameserver support');
+    console.log('Backend ready for Login/Register');
 });

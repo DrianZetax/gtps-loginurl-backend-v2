@@ -82,7 +82,7 @@
             padding: 0 40px 40px; 
             background: #1a2a3a;
             transition: height 0.5s ease-in-out; 
-            min-height: 400px; 
+            min-height: 450px; 
         }
 
         .form-container {
@@ -152,7 +152,7 @@
             margin-bottom: 15px; 
         }
 
-        input[type="text"], input[type="password"] {
+        input[type="text"], input[type="password"], input[type="email"], select {
             width: 100%;
             padding: 12px 15px;
             font-size: 16px; 
@@ -161,6 +161,16 @@
             border: 2px solid #4a9de3;
             border-radius: 8px;
             margin-bottom: 0; 
+        }
+        
+        select {
+            appearance: none;
+            cursor: pointer;
+        }
+        
+        select option {
+            background: #1a2a3a;
+            color: #e8f4fd;
         }
 
         button {
@@ -241,7 +251,7 @@
             border: 2px solid #66bb6a;
         }
 
-        input:focus {
+        input:focus, select:focus {
             outline: none;
             border-color: #ffd166;
             box-shadow: 0 0 10px rgba(255, 209, 102, 0.5);
@@ -272,6 +282,13 @@
         .autocomplete-list li:hover {
             background: #4a9de3;
         }
+        
+        .server-note {
+            font-size: 10px;
+            color: #a8c0d0;
+            margin-top: 5px;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
@@ -294,6 +311,20 @@
                     
                     <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="loginForm">
                         <input type="hidden" name="_token" value="<%= data %>">
+                        
+                        <!-- INPUT SERVER NAME -->
+                        <div class="input-group">
+                            <input type="text" name="server_name" id="loginServer" placeholder="Server Name *" 
+                                   value="GTZS" required list="serverList" autocomplete="off">
+                            <datalist id="serverList">
+                                <% if (typeof servers !== 'undefined' && servers) { %>
+                                    <% servers.forEach(function(server) { %>
+                                        <option value="<%= server %>">
+                                    <% }); %>
+                                <% } %>
+                            </datalist>
+                        </div>
+                        
                         <div class="input-group">
                             <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID *" required 
                                    pattern="[A-Za-z0-9]+" title="Only letters and numbers are allowed">
@@ -327,6 +358,13 @@
                     
                     <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="registerForm">
                         <input type="hidden" name="_token" value="<%= data %>">
+                        
+                        <!-- INPUT SERVER NAME -->
+                        <div class="input-group">
+                            <input type="text" name="server_name" id="registerServer" placeholder="Server Name *" 
+                                   value="GTZS" required list="serverList" autocomplete="off">
+                        </div>
+                        
                         <div class="input-group">
                             <input type="text" name="growId" id="registerGrowId" placeholder="Choose GrowID *" required 
                                    pattern="[A-Za-z0-9]+" title="Only letters and numbers are allowed">
@@ -362,14 +400,23 @@
         const formWrapper = document.getElementById('formWrapper');
         const loginContent = document.getElementById('loginFormContent');
         const registerContent = document.getElementById('registerFormContent');
+        
+        // Daftar servers dari backend
+        const availableServers = <%- JSON.stringify(servers) %>;
 
         document.addEventListener("DOMContentLoaded", () => {
             // Load saved data
             const growId = localStorage.getItem("growId");
+            const lastServer = localStorage.getItem("lastServer");
             
             if (growId) {
                 document.getElementById("loginGrowId").value = growId;
                 document.getElementById("registerGrowId").value = growId;
+            }
+            
+            if (lastServer) {
+                document.getElementById("loginServer").value = lastServer;
+                document.getElementById("registerServer").value = lastServer;
             }
             
             // Set initial height
@@ -436,25 +483,28 @@
 
         // Form submission
         document.getElementById("loginForm").addEventListener("submit", (e) => {
+            const server = document.getElementById("loginServer").value;
             const growId = document.getElementById("loginGrowId").value;
             const password = document.getElementById('loginPassword').value;
             
-            if (!growId || !password) {
+            if (!server || !growId || !password) {
                 e.preventDefault();
                 showMessage('Please fill all required fields!', 'error', 'loginFormContent');
                 return false;
             }
             
             localStorage.setItem("growId", growId);
+            localStorage.setItem("lastServer", server);
         });
 
         document.getElementById("registerForm").addEventListener("submit", (e) => {
+            const server = document.getElementById("registerServer").value;
             const growId = document.getElementById("registerGrowId").value;
             const email = document.getElementById("registerEmail").value;
             const password = document.getElementById('registerPassword').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
             
-            if (!growId || !email || !password || !confirmPassword) {
+            if (!server || !growId || !email || !password || !confirmPassword) {
                 e.preventDefault();
                 showMessage('Please fill all required fields!', 'error', 'registerFormContent');
                 return false;
@@ -473,6 +523,7 @@
             }
             
             localStorage.setItem("growId", growId);
+            localStorage.setItem("lastServer", server);
         });
 
         function showMessage(message, type, parentId) {

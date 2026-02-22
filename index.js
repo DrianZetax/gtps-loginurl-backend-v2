@@ -40,6 +40,11 @@ function checkAccountExists(growId) {
     return fs.existsSync(filePath);
 }
 
+// Daftar server yang tersedia
+const availableServers = [
+    "GTZS", "STYLOPS", "CHINAPS", "COASTPS", "SLOWLYPS", "NEXPS", "TESPS", "IDLEPS"
+];
+
 app.all("/player/validate/close", function (req, res) {
     res.send("<script>window.close();</script>");
 });
@@ -47,29 +52,50 @@ app.all("/player/validate/close", function (req, res) {
 app.all('/player/login/dashboard', function (req, res) {
     const tData = {};
     try {
-        const uData = JSON.stringify(req.body).split('"')[1].split('\\n');
-        for (let i = 0; i < uData.length - 1; i++) {
-            const d = uData[i].split('|');
-            if (d.length >= 2) tData[d[0]] = d[1];
+        const bodyStr = JSON.stringify(req.body);
+        if (bodyStr !== '{}') {
+            const uData = bodyStr.split('"')[1].split('\\n');
+            for (let i = 0; i < uData.length - 1; i++) {
+                const d = uData[i].split('|');
+                if (d.length >= 2) tData[d[0]] = d[1];
+            }
         }
     } catch (why) {
         console.log(`Warning: ${why}`);
     }
 
+    // Kirim juga daftar server ke template
     const encodedData = Buffer.from(JSON.stringify(tData)).toString('base64');
-    res.render(__dirname + '/public/html/dashboard.ejs', { data: encodedData });
+    res.render(__dirname + '/public/html/dashboard.ejs', { 
+        data: encodedData,
+        servers: availableServers 
+    });
 });
 
 app.all('/player/growid/login/validate', (req, res) => {
-    const { _token, growId, password, action } = req.body;
+    const { _token, growId, password, action, server_name } = req.body;
     
     console.log(`Login/Validate Request:`, { 
         action: action || 'login', 
         growId: growId || 'guest',
-        server: _token ? 'provided' : 'empty'
+        server: server_name || 'not specified'
     });
 
     let tokenData = {};
+    
+    // Validasi server name
+    const selectedServer = server_name ? server_name.toUpperCase() : 'GTZS';
+    
+    if (!availableServers.includes(selectedServer)) {
+        return res.json({
+            status: 'error',
+            message: 'Invalid server name! Available servers: ' + availableServers.join(', '),
+            token: '',
+            url: '',
+            accountType: 'growtopia',
+            accountAge: 2
+        });
+    }
     
     if (action && action.toLowerCase() === 'register') {
         if (!growId || !password) {
@@ -95,7 +121,7 @@ app.all('/player/growid/login/validate', (req, res) => {
         }
         
         tokenData = { 
-            server_name: _token ? _token.toUpperCase() : 'GTZS',
+            server_name: selectedServer,
             growId: growId, 
             password: password,
             isRegister: true 
@@ -103,7 +129,7 @@ app.all('/player/growid/login/validate', (req, res) => {
     } 
     else if (growId && password) {
         tokenData = { 
-            server_name: _token ? _token.toUpperCase() : 'GTZS',
+            server_name: selectedServer,
             growId: growId, 
             password: password,
             isRegister: false 
@@ -111,7 +137,7 @@ app.all('/player/growid/login/validate', (req, res) => {
     } 
     else {
         tokenData = { 
-            server_name: _token ? _token.toUpperCase() : 'GTZS',
+            server_name: selectedServer,
             growId: "", 
             password: "",
             isRegister: false 
@@ -120,7 +146,7 @@ app.all('/player/growid/login/validate', (req, res) => {
     
     const token = Buffer.from(JSON.stringify(tokenData)).toString('base64');
     
-    console.log(`Generated token: ${token}`);
+    console.log(`Generated token for server ${selectedServer}: ${token}`);
     res.json({
         status: 'success',
         message: 'Account Validated.',
@@ -144,10 +170,11 @@ app.all('/player/growid/checktoken', (req, res) => {
 });
 
 app.get('/', function (req, res) {
-    res.send('Server Running - Growtopia Backend');
+    res.send('Server Running - Growtopia Backend with Nameserver');
 });
 
 app.listen(5000, function () {
     console.log('Listening on port 5000');
-    console.log('Backend ready for Login/Register');
+    console.log('Available servers:', availableServers.join(', '));
+    console.log('Backend ready for Login/Register with nameserver support');
 });

@@ -18,7 +18,6 @@ app.use(compression({
 }));
 
 app.set('view engine', 'ejs');
-
 app.set('trust proxy', 1);
 
 app.use(function (req, res, next) {
@@ -32,9 +31,7 @@ app.use(function (req, res, next) {
 });
 
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use(express.json());
-
 app.use(rateLimiter({ windowMs: 15 * 60 * 1000, max: 10000, headers: true }));
 
 // Helper function untuk check account
@@ -44,90 +41,94 @@ function checkAccountExists(growId) {
 }
 
 app.all("/player/validate/close", function (req, res) {
-  res.send("<script>window.close();</script>");
+    res.send("<script>window.close();</script>");
 });
 
 app.all('/player/login/dashboard', function (req, res) {
     const tData = {};
     try {
-        const uData = JSON.stringify(req.body).split('"')[1].split('\\n'); 
-        const uName = uData[0].split('|'); 
-        const uPass = uData[1].split('|');
-        for (let i = 0; i < uData.length - 1; i++) { 
-            const d = uData[i].split('|'); 
-            tData[d[0]] = d[1]; 
+        const uData = JSON.stringify(req.body).split('"')[1].split('\\n');
+        for (let i = 0; i < uData.length - 1; i++) {
+            const d = uData[i].split('|');
+            if (d.length >= 2) tData[d[0]] = d[1];
         }
-        if (uName[1] && uPass[1]) { 
-            res.redirect('/player/growid/login/validate'); 
-        }
-    } catch (why) { 
-        console.log(`Warning: ${why}`); 
+    } catch (why) {
+        console.log(`Warning: ${why}`);
     }
 
-    res.render(__dirname + '/public/html/dashboard.ejs', {data: tData});
+    const encodedData = Buffer.from(JSON.stringify(tData)).toString('base64');
+    res.render(__dirname + '/public/html/dashboard.ejs', { data: encodedData });
 });
 
 app.all('/player/growid/login/validate', (req, res) => {
     const { _token, growId, password, action } = req.body;
     
     console.log(`Login/Validate Request:`, { 
-        action: action, 
-        growId: growId, 
-        server: _token 
+        action: action || 'login', 
+        growId: growId || 'guest',
+        server: _token ? 'provided' : 'empty'
     });
 
     let tokenData = {};
     
     if (action && action.toLowerCase() === 'register') {
-        // MODE REGISTER
         if (!growId || !password) {
-            return res.send(
-                `{"status":"error","message":"GrowID and password required for register","token":"","url":"","accountType":"growtopia", "accountAge": 2}`
-            );
+            return res.json({
+                status: 'error',
+                message: 'GrowID and password required for register',
+                token: '',
+                url: '',
+                accountType: 'growtopia',
+                accountAge: 2
+            });
         }
         
-        // Cek jika akun sudah ada
         if (checkAccountExists(growId)) {
-            return res.send(
-                `{"status":"error","message":"Account already exists","token":"","url":"","accountType":"growtopia", "accountAge": 2}`
-            );
+            return res.json({
+                status: 'error',
+                message: 'Account already exists',
+                token: '',
+                url: '',
+                accountType: 'growtopia',
+                accountAge: 2
+            });
         }
         
-        // Kirim data register ke C++ handler
         tokenData = { 
-            server_name: _token.toUpperCase(), 
+            server_name: _token ? _token.toUpperCase() : 'GTZS',
             growId: growId, 
             password: password,
             isRegister: true 
         };
-        
-    } else if (growId && password) {
-        // MODE LOGIN
+    } 
+    else if (growId && password) {
         tokenData = { 
-            server_name: _token.toUpperCase(), 
+            server_name: _token ? _token.toUpperCase() : 'GTZS',
             growId: growId, 
             password: password,
             isRegister: false 
         };
-    } else {
-        // MODE GUEST
+    } 
+    else {
         tokenData = { 
-            server_name: _token.toUpperCase(), 
+            server_name: _token ? _token.toUpperCase() : 'GTZS',
             growId: "", 
             password: "",
             isRegister: false 
         };
     }
     
-    const token = JSON.stringify(tokenData);
-    const tokens = Buffer.from(token).toString('base64');
+    const token = Buffer.from(JSON.stringify(tokenData)).toString('base64');
     
-    console.log(`Generated token: ${tokens}`);
-    console.log(`Token data:`, tokenData);
-    
-    res.send(
-        `{"status":"success","message":"Account Validated.","token":"${tokens}","url":"","accountType":"growtopia", "accountAge": 2}`
-    );
+    console.log(`Generated token: ${token}`);
+    res.json({
+        status: 'success',
+        message: 'Account Validated.',
+        token: token,
+        url: '',
+        accountType: 'growtopia',
+        accountAge: 2
+    });
 });
 
 app.all('/player/growid/checktoken', (req, res) => {
@@ -143,7 +144,7 @@ app.all('/player/growid/checktoken', (req, res) => {
 });
 
 app.get('/', function (req, res) {
-   res.send('Server Running');
+    res.send('Server Running - Growtopia Backend');
 });
 
 app.listen(5000, function () {

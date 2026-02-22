@@ -124,10 +124,7 @@ app.all('/player/growid/login/validate', (req, res) => {
     
     console.log(`Generated token: ${tokens}`);
     console.log(`Token data:`, tokenData);
-    
-    res.send(
-        `{"status":"success","message":"Account Validated.","token":"${tokens}","url":"","accountType":"growtopia", "accountAge": 2}`
-    );
+
 });
 
 app.all('/player/growid/checktoken', (req, res) => {

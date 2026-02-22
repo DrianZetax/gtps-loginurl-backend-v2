@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const path = require('path');
 
+// Middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -17,27 +18,34 @@ app.use((req, res, next) => {
     next();
 });
 
-// Serve static files
-app.use(express.static(path.join(__dirname, '../public')));
+// Set view engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'public'));
 
-// Root route - serve HTML
+// Serve static files
+app.use(express.static(path.join(__dirname, 'public')));
+
+// ==================== ROUTES ====================
+
+// Root route - serve HTML atau handle token
 app.get('/', (req, res) => {
     // Jika ada token, redirect ke checktoken
     if (req.query.token) {
+        console.log('Redirecting to checktoken with token');
         return res.redirect(`/player/growid/checktoken?token=${req.query.token}`);
     }
-    res.sendFile(path.join(__dirname, '../public/index.html'));
+    // Tampilkan halaman login
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Endpoint login/validate
+// Endpoint login/validate - dipanggil oleh form
 app.post('/player/growid/login/validate', (req, res) => {
     const { _token, growId, password, action } = req.body;
     
-    console.log('Login/Validate Request:', { 
-        action: action || 'LOGIN', 
-        growId: growId || 'GUEST', 
-        server: _token 
-    });
+    console.log('=== LOGIN/VALIDATE REQUEST ===');
+    console.log('Action:', action || 'LOGIN');
+    console.log('GrowID:', growId || 'GUEST');
+    console.log('Server:', _token);
 
     // Validasi untuk register
     if (action && action.toLowerCase() === 'register') {
@@ -63,7 +71,7 @@ app.post('/player/growid/login/validate', (req, res) => {
         }
     }
 
-    // Buat token data
+    // Buat token data sesuai format yang diharapkan C++ handler
     const tokenData = {
         server_name: (_token || 'GTPS').toUpperCase(),
         growId: growId || '',
@@ -71,11 +79,12 @@ app.post('/player/growid/login/validate', (req, res) => {
         isRegister: (action && action.toLowerCase() === 'register') ? true : false
     };
     
+    // Encode token ke base64
     const token = Buffer.from(JSON.stringify(tokenData)).toString('base64');
     
     console.log('Generated token:', token.substring(0, 50) + '...');
     
-    // Response JSON - tanpa accountAge
+    // Response sukses - TANPA accountAge
     res.json({
         status: 'success',
         message: 'Account Validated.',
@@ -85,11 +94,12 @@ app.post('/player/growid/login/validate', (req, res) => {
     });
 });
 
-// Endpoint checktoken
+// Endpoint checktoken untuk GET (dengan query parameter)
 app.get('/player/growid/checktoken', (req, res) => {
     const { token } = req.query;
     
-    console.log('CheckToken request:', { token: token ? token.substring(0, 30) + '...' : 'MISSING' });
+    console.log('=== CHECKTOKEN GET REQUEST ===');
+    console.log('Token:', token ? token.substring(0, 30) + '...' : 'MISSING');
     
     if (!token) {
         return res.status(400).json({
@@ -104,8 +114,9 @@ app.get('/player/growid/checktoken', (req, res) => {
         const tokenData = JSON.parse(decoded);
         
         console.log('Token verified for:', tokenData.growId || 'GUEST');
+        console.log('Is Register:', tokenData.isRegister);
         
-        // Response yang benar untuk client Growtopia
+        // Response yang benar untuk client Growtopia - TANPA accountAge
         res.json({
             status: 'success',
             message: 'Account Validated.',
@@ -123,9 +134,12 @@ app.get('/player/growid/checktoken', (req, res) => {
     }
 });
 
-// Endpoint checktoken untuk POST (beberapa client menggunakan POST)
+// Endpoint checktoken untuk POST (dengan body)
 app.post('/player/growid/checktoken', (req, res) => {
     const { refreshToken } = req.body;
+    
+    console.log('=== CHECKTOKEN POST REQUEST ===');
+    console.log('RefreshToken:', refreshToken ? refreshToken.substring(0, 30) + '...' : 'MISSING');
     
     if (!refreshToken) {
         return res.status(400).json({
@@ -134,34 +148,88 @@ app.post('/player/growid/checktoken', (req, res) => {
         });
     }
     
-    res.json({
-        status: 'success',
-        message: 'Account Validated.',
-        token: refreshToken,
-        url: '',
-        accountType: 'growtopia'
-    });
+    try {
+        const decoded = Buffer.from(refreshToken, 'base64').toString();
+        const tokenData = JSON.parse(decoded);
+        
+        console.log('Token verified for:', tokenData.growId || 'GUEST');
+        
+        res.json({
+            status: 'success',
+            message: 'Account Validated.',
+            token: refreshToken,
+            url: '',
+            accountType: 'growtopia'
+        });
+    } catch (error) {
+        console.error('Token decode error:', error.message);
+        res.status(400).json({
+            status: 'error',
+            message: 'Invalid token format'
+        });
+    }
+});
+
+// Endpoint dashboard
+app.all('/player/login/dashboard', (req, res) => {
+    console.log('Dashboard request received');
+    
+    let tData = {};
+    try {
+        // Parse data dari request body
+        const bodyStr = JSON.stringify(req.body);
+        if (bodyStr.includes('|')) {
+            const parts = bodyStr.split('\\n');
+            parts.forEach(part => {
+                const data = part.split('|');
+                if (data.length >= 2) {
+                    tData[data[0]] = data[1];
+                }
+            });
+        }
+    } catch (why) { 
+        console.log(`Dashboard parse warning: ${why}`); 
+    }
+
+    // Render dashboard.ejs
+    res.render('dashboard', { data: tData });
 });
 
 // Endpoint close
-app.get('/player/validate/close', (req, res) => {
+app.all('/player/validate/close', (req, res) => {
+    console.log('Close window request');
     res.send(`
         <!DOCTYPE html>
         <html>
-        <head><title>Closing...</title></head>
+        <head>
+            <title>Closing...</title>
+            <style>
+                body { 
+                    background: #1a2a3a; 
+                    color: white; 
+                    font-family: Arial; 
+                    text-align: center; 
+                    padding: 50px;
+                }
+            </style>
+        </head>
         <body>
+            <h2>Window akan ditutup...</h2>
+            <p>Silakan kembali ke game.</p>
             <script>
-                window.close();
-                setTimeout(() => window.location.href = '/', 1000);
+                setTimeout(() => {
+                    window.close();
+                    window.location.href = '/';
+                }, 2000);
             </script>
-            <p>Window akan ditutup. <a href="/">Klik disini</a> jika tidak tertutup.</p>
         </body>
         </html>
     `);
 });
 
-// Endpoint metadata (required oleh beberapa client)
+// Endpoint metadata (required oleh client)
 app.get('/player/metadata/login', (req, res) => {
+    console.log('Metadata request');
     res.json({
         status: 'success',
         message: 'Metadata retrieved',
@@ -174,7 +242,11 @@ app.get('/player/metadata/login', (req, res) => {
 
 // Handle 404
 app.use((req, res) => {
-    res.status(404).json({ status: 'error', message: 'Endpoint not found' });
+    console.log('404 Not Found:', req.url);
+    res.status(404).json({ 
+        status: 'error', 
+        message: 'Endpoint not found' 
+    });
 });
 
 // Untuk Vercel, export app
@@ -184,7 +256,8 @@ module.exports = app;
 if (require.main === module) {
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, '0.0.0.0', () => {
+        console.log('\n=== GTPSID LOGIN SERVER ===');
         console.log(`Server running on port ${PORT}`);
-        console.log(`Access at: http://localhost:${PORT}`);
+        console.log(`Access at: http://localhost:${PORT}\n`);
     });
 }

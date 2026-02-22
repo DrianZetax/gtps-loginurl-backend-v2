@@ -18,7 +18,6 @@ app.use(compression({
 }));
 
 app.set('view engine', 'ejs');
-
 app.set('trust proxy', 1);
 
 app.use(function (req, res, next) {
@@ -32,9 +31,7 @@ app.use(function (req, res, next) {
 });
 
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use(express.json());
-
 app.use(rateLimiter({ windowMs: 15 * 60 * 1000, max: 10000, headers: true }));
 
 // Helper function untuk check account
@@ -44,7 +41,7 @@ function checkAccountExists(growId) {
 }
 
 app.all("/player/validate/close", function (req, res) {
-  res.send("<script>window.close();</script>");
+    res.send("<script>window.close();</script>");
 });
 
 app.all('/player/login/dashboard', function (req, res) {
@@ -70,16 +67,19 @@ app.all('/player/login/dashboard', function (req, res) {
 app.all('/player/growid/login/validate', (req, res) => {
     const { _token, growId, password, action } = req.body;
     
-    console.log(`Login/Validate Request:`, { 
-        action: action, 
-        growId: growId, 
-        server: _token 
-    });
+    console.log('=== LOGIN/VALIDATE REQUEST ===');
+    console.log('Action:', action);
+    console.log('GrowID:', growId);
+    console.log('Server:', _token);
+    console.log('==============================');
 
     let tokenData = {};
     
-    if (action && action.toLowerCase() === 'register') {
+    // Cek apakah ini register atau login berdasarkan action
+    if (action && (action.toLowerCase() === 'register' || action.toLowerCase() === 'create_account')) {
         // MODE REGISTER
+        console.log('REGISTER MODE DETECTED');
+        
         if (!growId || !password) {
             return res.send(
                 `{"status":"error","message":"GrowID and password required for register","token":"","url":"","accountType":"growtopia", "accountAge": 2}`
@@ -95,35 +95,52 @@ app.all('/player/growid/login/validate', (req, res) => {
         
         // Kirim data register ke C++ handler
         tokenData = { 
-            server_name: _token.toUpperCase(), 
+            server_name: _token ? _token.toUpperCase() : "GTZS", 
             growId: growId, 
             password: password,
-            isRegister: true 
+            isRegister: true,
+            email: "abc@gmail.com",
+            gender: "man"
         };
+        console.log('Register token created');
         
     } else if (growId && password) {
         // MODE LOGIN
+        console.log('LOGIN MODE DETECTED');
+        
+        // Cek apakah akun ada sebelum login
+        if (!checkAccountExists(growId)) {
+            return res.send(
+                `{"status":"error","message":"Account does not exist","token":"","url":"","accountType":"growtopia", "accountAge": 2}`
+            );
+        }
+        
         tokenData = { 
-            server_name: _token.toUpperCase(), 
+            server_name: _token ? _token.toUpperCase() : "GTZS", 
             growId: growId, 
             password: password,
             isRegister: false 
         };
+        console.log('Login token created');
+        
     } else {
         // MODE GUEST
+        console.log('GUEST MODE DETECTED');
         tokenData = { 
-            server_name: _token.toUpperCase(), 
+            server_name: _token ? _token.toUpperCase() : "GTZS", 
             growId: "", 
             password: "",
             isRegister: false 
         };
     }
     
+    // Buat token dalam format base64
     const token = JSON.stringify(tokenData);
     const tokens = Buffer.from(token).toString('base64');
     
-    console.log(`Generated token: ${tokens}`);
-    console.log(`Token data:`, tokenData);
+    console.log('Generated token data:', tokenData);
+    console.log('Base64 token:', tokens);
+    console.log('==============================');
     
     res.send(
         `{"status":"success","message":"Account Validated.","token":"${tokens}","url":"","accountType":"growtopia", "accountAge": 2}`

@@ -75,7 +75,6 @@
         .icon-container { width: 70px; height: 70px; background: #fff; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); border: 3px solid #1a2a3a; }
         .icon-container::before { content: '👾'; font-size: 36px; }
 
-        /* Wrapper untuk Animasi Geser Form */
         .form-wrapper {
             position: relative;
             overflow: hidden;
@@ -86,47 +85,39 @@
             min-height: 400px; 
         }
 
-        /* Form Content (Form yang akan digeser) */
         .form-container {
             width: 100%;
             transition: transform 0.5s ease-in-out, opacity 0.5s, visibility 0.5s;
             display: flex;
             flex-direction: column;
-            justify-content: center; /* Perubahan KUNCI 1: Mengatur konten di tengah vertikal */
-            align-items: center; /* Perubahan KUNCI 2: Mengatur konten di tengah horizontal */
+            justify-content: center;
+            align-items: center;
             position: absolute; 
             top: 0;
             left: 0;
             padding: 40px 0;
         }
 
-        /* Kontainer Utama Form (Judul + Input) */
         .form-main-content {
             width: 100%;
-            max-width: 400px; /* Batasi lebar untuk menengahkan konten input */
-            /* Perubahan KUNCI 3: Agar .form-main-content berada di tengah form-container */
+            max-width: 400px;
             display: flex;
             flex-direction: column;
-            align-items: stretch; /* Agar input mengisi lebar 100% dari max-width 400px */
+            align-items: stretch;
         }
 
-
-        /* Posisi default Register (Tersembunyi di kanan) */
         #registerFormContent {
             transform: translateX(100%);
             visibility: hidden;
             opacity: 0;
         }
 
-        /* Posisi default Login (Terlihat) */
         #loginFormContent {
             transform: translateX(0);
             visibility: visible;
             opacity: 1;
         }
         
-        /* === ANIMASI GESER DAN VISIBILITAS FORM === */
-
         .form-wrapper.slide-to-register #loginFormContent {
             transform: translateX(-100%);
             visibility: hidden;
@@ -149,10 +140,9 @@
             opacity: 0;
         }
         
-        /* [GAYA ELEMEN LAINNYA] */
         .form-title { 
             margin-bottom: 20px; 
-            text-align: center; /* Perubahan KUNCI 4: Menengahkan judul form */
+            text-align: center;
         }
         .form-title h1 { font-size: 18px; color: #a8c0d0; }
         .form-title h2 { font-size: 24px; color: #4a9de3; }
@@ -181,6 +171,7 @@
             margin-top: 10px;
             letter-spacing: 1px;
             text-transform: uppercase;
+            cursor: pointer;
         }
 
         .btn-secondary {
@@ -217,16 +208,16 @@
             padding-top: 20px;
             border-top: 1px solid #4a7ba6;
             width: 100%;
-            max-width: 400px; /* Perubahan KUNCI 5: Batasi lebar agar menengahkan section ini */
+            max-width: 400px;
         }
         .switch-section p {
-            text-align: center; /* Perubahan KUNCI 6: Teks switch section di tengah */
+            text-align: center;
         }
         
         .footer {
             margin-top: 20px;
             font-size: 11px;
-            text-align: center; /* Perubahan KUNCI 7: Footer di tengah */
+            text-align: center;
         }
 
         .message-box { 
@@ -237,10 +228,53 @@
             font-size: 14px; 
             display: none; 
         }
+        
+        .message-error {
+            background: #ffebee;
+            color: #c62828;
+            border: 2px solid #ef5350;
+        }
+        
+        .message-success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            border: 2px solid #66bb6a;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #ffd166;
+            box-shadow: 0 0 10px rgba(255, 209, 102, 0.5);
+        }
+
+        .autocomplete-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #1a2a3a;
+            border: 2px solid #4a9de3;
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .autocomplete-list li {
+            list-style: none;
+            padding: 10px 15px;
+            color: #e8f4fd;
+            cursor: pointer;
+            border-bottom: 1px solid #2a4d6e;
+        }
+
+        .autocomplete-list li:hover {
+            background: #4a9de3;
+        }
     </style>
 </head>
 <body>
-
     <div class="main-container">
         <div class="visual-section">
             <div class="icon-container pixel-font"></div>
@@ -250,26 +284,32 @@
         </div>
 
         <div class="form-wrapper" id="formWrapper">
+            <!-- LOGIN FORM -->
             <div class="form-container" id="loginFormContent">
-                <div class="form-main-content"> <div class="form-title">
+                <div class="form-main-content">
+                    <div class="form-title">
                         <h1>Login to Your</h1>
                         <h2 class="pixel-font">Account</h2>
                     </div>
                     
                     <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="loginForm">
-                        <div class="input-group"> <input type="text" name="_token" id="loginServerInput" placeholder="Server Name *" required /> </div>
+                        <input type="hidden" name="_token" value="<%= data %>">
                         <div class="input-group">
-                            <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID *" required />
+                            <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID *" required 
+                                   pattern="[A-Za-z0-9]+" title="Only letters and numbers are allowed">
                         </div>
                         <div class="input-group">
-                            <input type="password" name="password" id="loginPassword" placeholder="Your Password *" required />
+                            <input type="password" name="password" id="loginPassword" placeholder="Your Password *" required 
+                                   pattern="[A-Za-z0-9@._!\-]+" title="Only letters, numbers, and @ . _ ! - are allowed">
                         </div>
                         
                         <div class="toggle-password" id="toggleLoginPassword">Show Password</div>
                         
                         <button type="submit" name="action" value="Login" class="btn-primary pixel-font">Login</button>
                     </form>
-                </div> <div class="switch-section">
+                </div>
+                
+                <div class="switch-section">
                     <p>Don't have an account?</p>
                     <button type="button" class="btn-secondary pixel-font" onclick="switchForm('register')">Create New Account</button>
                     
@@ -277,31 +317,38 @@
                 </div>
             </div>
 
+            <!-- REGISTER FORM -->
             <div class="form-container" id="registerFormContent">
-                <div class="form-main-content"> <div class="form-title">
+                <div class="form-main-content">
+                    <div class="form-title">
                         <h1>Create New</h1>
                         <h2 class="pixel-font">Account</h2>
                     </div>
                     
                     <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="registerForm">
-                         <div class="input-group">
-                            <input type="text" name="_token" id="registerServerInput" placeholder="Server Name *" required />
+                        <input type="hidden" name="_token" value="<%= data %>">
+                        <div class="input-group">
+                            <input type="text" name="growId" id="registerGrowId" placeholder="Choose GrowID *" required 
+                                   pattern="[A-Za-z0-9]+" title="Only letters and numbers are allowed">
                         </div>
                         <div class="input-group">
-                            <input type="text" name="growId" id="registerGrowId" placeholder="Choose GrowID *" required />
+                            <input type="email" name="email" id="registerEmail" placeholder="Your Email *" required>
                         </div>
                         <div class="input-group">
-                            <input type="password" name="password" id="registerPassword" placeholder="Choose Password *" required />
+                            <input type="password" name="password" id="registerPassword" placeholder="Choose Password *" required 
+                                   pattern="[A-Za-z0-9@._!\-]+" title="Only letters, numbers, and @ . _ ! - are allowed">
                         </div>
                         <div class="input-group">
-                            <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password *" required />
+                            <input type="password" name="password_confirmation" id="confirmPassword" placeholder="Confirm Password *" required>
                         </div>
                         
                         <div class="toggle-password" id="toggleRegisterPassword">Show Password</div>
                         
                         <button type="submit" name="action" value="Register" class="btn-primary pixel-font">Register</button>
                     </form>
-                </div> <div class="switch-section">
+                </div>
+                
+                <div class="switch-section">
                     <p>Already have an account?</p>
                     <button type="button" class="btn-secondary pixel-font" onclick="switchForm('login')">Back to Login</button>
                     
@@ -312,64 +359,39 @@
     </div>
 
     <script>
-        const servers = [
-            "STYLOPS", "CHINAPS", "COASTPS", "SLOWLYPS", "NEXPS", "TESPS", "IDLEPS"
-        ];
-        
         const formWrapper = document.getElementById('formWrapper');
         const loginContent = document.getElementById('loginFormContent');
         const registerContent = document.getElementById('registerFormContent');
 
         document.addEventListener("DOMContentLoaded", () => {
-            // Load data
+            // Load saved data
             const growId = localStorage.getItem("growId");
-            const lastServer = localStorage.getItem("lastServer");
             
             if (growId) {
                 document.getElementById("loginGrowId").value = growId;
                 document.getElementById("registerGrowId").value = growId;
             }
-            if (lastServer) {
-                document.getElementById("loginServerInput").value = lastServer;
-                document.getElementById("registerServerInput").value = lastServer;
-            }
             
-            // Setup autocomplete
-            setupServerAutocomplete('loginServerInput');
-            setupServerAutocomplete('registerServerInput');
-
-            // Atur tinggi awal form wrapper
+            // Set initial height
             setWrapperHeight(loginContent);
         });
         
-        // Fungsi untuk mengatur tinggi wrapper (dengan delay 50ms)
         function setWrapperHeight(activeForm) {
             setTimeout(() => {
-                // Gunakan scrollHeight untuk mendapatkan tinggi penuh jika kontennya panjang
-                const height = activeForm.scrollHeight; 
+                const height = activeForm.scrollHeight + 40;
                 formWrapper.style.height = `${height}px`;
-            }, 50); 
+            }, 50);
         }
 
-        // Logika switchForm
         function switchForm(targetForm) {
             const nextActiveForm = targetForm === 'register' ? registerContent : loginContent;
-            
-            // 1. Atur tinggi wrapper ke tinggi form yang akan datang
             setWrapperHeight(nextActiveForm);
 
-            // Hapus semua class slide
             formWrapper.classList.remove('slide-to-login', 'slide-to-register');
-
-            if (targetForm === 'register') {
-                formWrapper.classList.add('slide-to-register');
-            } else if (targetForm === 'login') {
-                formWrapper.classList.add('slide-to-login');
-            }
+            formWrapper.classList.add(targetForm === 'register' ? 'slide-to-register' : 'slide-to-login');
         }
         
-        // --- Fungsi lainnya (Toggle Password, Validation, Autocomplete, Message) ---
-        
+        // Toggle Password
         document.getElementById("toggleLoginPassword").addEventListener("click", () => {
             togglePassword('loginPassword', 'toggleLoginPassword');
         });
@@ -391,49 +413,66 @@
             }
         }
 
+        // Input validation
+        document.getElementById("loginGrowId").addEventListener("input", function(e) {
+            this.value = this.value.replace(/[^A-Za-z0-9]/g, '');
+        });
+
+        document.getElementById("registerGrowId").addEventListener("input", function(e) {
+            this.value = this.value.replace(/[^A-Za-z0-9]/g, '');
+        });
+
+        document.getElementById("loginPassword").addEventListener("input", function(e) {
+            this.value = this.value.replace(/[^A-Za-z0-9@._!\-]/g, '');
+        });
+
+        document.getElementById("registerPassword").addEventListener("input", function(e) {
+            this.value = this.value.replace(/[^A-Za-z0-9@._!\-]/g, '');
+        });
+
+        document.getElementById("confirmPassword").addEventListener("input", function(e) {
+            this.value = this.value.replace(/[^A-Za-z0-9@._!\-]/g, '');
+        });
+
+        // Form submission
         document.getElementById("loginForm").addEventListener("submit", (e) => {
             const growId = document.getElementById("loginGrowId").value;
-            const server = document.getElementById('loginServerInput').value;
             const password = document.getElementById('loginPassword').value;
             
-            if (!server || !growId || !password) {
+            if (!growId || !password) {
                 e.preventDefault();
                 showMessage('Please fill all required fields!', 'error', 'loginFormContent');
-                return;
+                return false;
             }
             
             localStorage.setItem("growId", growId);
-            localStorage.setItem("lastServer", server);
-            console.log("Login submitted:", { server, growId });
         });
 
         document.getElementById("registerForm").addEventListener("submit", (e) => {
             const growId = document.getElementById("registerGrowId").value;
-            const server = document.getElementById('registerServerInput').value;
+            const email = document.getElementById("registerEmail").value;
             const password = document.getElementById('registerPassword').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
             
-            if (!server || !growId || !password || !confirmPassword) {
+            if (!growId || !email || !password || !confirmPassword) {
                 e.preventDefault();
                 showMessage('Please fill all required fields!', 'error', 'registerFormContent');
-                return;
+                return false;
             }
             
             if (password !== confirmPassword) {
                 e.preventDefault();
                 showMessage('Passwords do not match!', 'error', 'registerFormContent');
-                return;
+                return false;
             }
             
             if (password.length < 4) {
                 e.preventDefault();
                 showMessage('Password must be at least 4 characters!', 'error', 'registerFormContent');
-                return;
+                return false;
             }
             
             localStorage.setItem("growId", growId);
-            localStorage.setItem("lastServer", server);
-            console.log("Register submitted:", { server, growId });
         });
 
         function showMessage(message, type, parentId) {
@@ -458,57 +497,21 @@
 
             setTimeout(() => {
                 messageBox.style.display = 'none';
-                setWrapperHeight(parent); 
-            }, 5000);
+                setWrapperHeight(parent);
+            }, 3000);
         }
 
-        function setupServerAutocomplete(inputId) {
-            const serverInput = document.getElementById(inputId);
-            let autocompleteList = null;
-            
-            serverInput.addEventListener('input', function() {
-                if (autocompleteList) {
-                    autocompleteList.remove();
-                    autocompleteList = null;
-                }
-                
-                const value = this.value.toUpperCase();
-                if (!value) return;
-                
-                const matches = servers.filter(server => 
-                    server.startsWith(value)
-                );
-                
-                if (matches.length === 0) return;
-                
-                autocompleteList = document.createElement('ul');
-                autocompleteList.className = 'autocomplete-list';
-                
-                matches.forEach(match => {
-                    const item = document.createElement('li');
-                    item.textContent = match;
-                    item.addEventListener('click', function() {
-                        serverInput.value = match;
-                        autocompleteList.remove();
-                        autocompleteList = null;
-                    });
-                    autocompleteList.appendChild(item);
-                });
-                
-                const inputParent = serverInput.closest('.input-group'); 
-                if (inputParent) {
-                    inputParent.style.position = 'relative';
-                    inputParent.appendChild(autocompleteList);
-                }
-            });
-            
-            document.addEventListener('click', function(e) {
-                if (autocompleteList && !serverInput.contains(e.target) && !autocompleteList.contains(e.target)) {
-                    autocompleteList.remove();
-                    autocompleteList = null;
-                }
-            });
-        }
+        // Anti-devtools
+        document.onkeydown = (e) => {
+            if (e.key == 'F12' || 
+                (e.ctrlKey && e.shiftKey && e.key == 'I') ||
+                (e.ctrlKey && e.shiftKey && e.key == 'C') ||
+                (e.ctrlKey && e.shiftKey && e.key == 'J') ||
+                (e.ctrlKey && e.key == 'U')) {
+                e.preventDefault();
+                return false;
+            }
+        };
     </script>
 </body>
 </html>

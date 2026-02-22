@@ -92,8 +92,8 @@
             transition: transform 0.5s ease-in-out, opacity 0.5s, visibility 0.5s;
             display: flex;
             flex-direction: column;
-            justify-content: center; /* Perubahan KUNCI 1: Mengatur konten di tengah vertikal */
-            align-items: center; /* Perubahan KUNCI 2: Mengatur konten di tengah horizontal */
+            justify-content: center;
+            align-items: center;
             position: absolute; 
             top: 0;
             left: 0;
@@ -103,13 +103,11 @@
         /* Kontainer Utama Form (Judul + Input) */
         .form-main-content {
             width: 100%;
-            max-width: 400px; /* Batasi lebar untuk menengahkan konten input */
-            /* Perubahan KUNCI 3: Agar .form-main-content berada di tengah form-container */
+            max-width: 400px;
             display: flex;
             flex-direction: column;
-            align-items: stretch; /* Agar input mengisi lebar 100% dari max-width 400px */
+            align-items: stretch;
         }
-
 
         /* Posisi default Register (Tersembunyi di kanan) */
         #registerFormContent {
@@ -126,7 +124,6 @@
         }
         
         /* === ANIMASI GESER DAN VISIBILITAS FORM === */
-
         .form-wrapper.slide-to-register #loginFormContent {
             transform: translateX(-100%);
             visibility: hidden;
@@ -152,7 +149,7 @@
         /* [GAYA ELEMEN LAINNYA] */
         .form-title { 
             margin-bottom: 20px; 
-            text-align: center; /* Perubahan KUNCI 4: Menengahkan judul form */
+            text-align: center;
         }
         .form-title h1 { font-size: 18px; color: #a8c0d0; }
         .form-title h2 { font-size: 24px; color: #4a9de3; }
@@ -173,6 +170,12 @@
             margin-bottom: 0; 
         }
 
+        input:focus {
+            outline: none;
+            border-color: #ffd166;
+            box-shadow: 0 0 10px rgba(255, 209, 102, 0.5);
+        }
+
         button {
             width: 100%;
             padding: 15px;
@@ -181,6 +184,17 @@
             margin-top: 10px;
             letter-spacing: 1px;
             text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
         }
 
         .btn-secondary {
@@ -189,6 +203,10 @@
             border: 2px solid #1a2a3a;
             font-size: 14px;
             padding: 12px;
+        }
+
+        .btn-secondary:hover {
+            background: #3a5d7e;
         }
 
         .btn-primary {
@@ -210,6 +228,12 @@
             cursor: pointer;
             margin-bottom: 15px; 
             display: inline-block;
+            user-select: none;
+        }
+
+        .toggle-password:hover {
+            color: #ffd166;
+            text-decoration: underline;
         }
 
         .switch-section {
@@ -217,16 +241,19 @@
             padding-top: 20px;
             border-top: 1px solid #4a7ba6;
             width: 100%;
-            max-width: 400px; /* Perubahan KUNCI 5: Batasi lebar agar menengahkan section ini */
+            max-width: 400px;
         }
         .switch-section p {
-            text-align: center; /* Perubahan KUNCI 6: Teks switch section di tengah */
+            text-align: center;
+            color: #a8c0d0;
+            margin-bottom: 10px;
         }
         
         .footer {
             margin-top: 20px;
             font-size: 11px;
-            text-align: center; /* Perubahan KUNCI 7: Footer di tengah */
+            text-align: center;
+            color: #4a7ba6;
         }
 
         .message-box { 
@@ -236,11 +263,104 @@
             text-align: center; 
             font-size: 14px; 
             display: none; 
+            font-weight: bold;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message-error {
+            background-color: #ff6b6b;
+            color: white;
+            border: 2px solid #ff0000;
+        }
+
+        .message-success {
+            background-color: #51cf66;
+            color: white;
+            border: 2px solid #2b8e3c;
+        }
+
+        .autocomplete-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: #2a4d6e;
+            border: 2px solid #4a9de3;
+            border-top: none;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            z-index: 1000;
+            max-height: 200px;
+            overflow-y: auto;
+            border-radius: 0 0 8px 8px;
+        }
+
+        .autocomplete-list li {
+            padding: 10px 15px;
+            cursor: pointer;
+            color: #e8f4fd;
+            border-bottom: 1px solid #4a7ba6;
+            transition: background 0.2s ease;
+        }
+
+        .autocomplete-list li:hover {
+            background: #4a9de3;
+        }
+
+        .autocomplete-list li:last-child {
+            border-bottom: none;
+        }
+
+        /* Loading spinner */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #ffd166;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-container {
+                max-width: 100%;
+                margin: 10px;
+            }
+            
+            .visual-section h2 {
+                font-size: 24px;
+            }
+            
+            .form-wrapper {
+                padding: 0 20px 20px;
+            }
+            
+            .form-main-content {
+                max-width: 100%;
+            }
         }
     </style>
 </head>
 <body>
-
     <div class="main-container">
         <div class="visual-section">
             <div class="icon-container pixel-font"></div>
@@ -250,16 +370,18 @@
         </div>
 
         <div class="form-wrapper" id="formWrapper">
+            <!-- LOGIN FORM -->
             <div class="form-container" id="loginFormContent">
-                <div class="form-main-content"> <div class="form-title">
+                <div class="form-main-content">
+                    <div class="form-title">
                         <h1>Login to Your</h1>
                         <h2 class="pixel-font">Account</h2>
                     </div>
                     
                     <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="loginForm">
                         <div class="input-group">
-    <input type="text" name="_token" id="loginServerInput" placeholder="Server Name" />
-</div>
+                            <input type="text" name="_token" id="loginServerInput" placeholder="Server Name (e.g., GTPS)" required />
+                        </div>
                         <div class="input-group">
                             <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID *" required />
                         </div>
@@ -269,9 +391,12 @@
                         
                         <div class="toggle-password" id="toggleLoginPassword">Show Password</div>
                         
-                        <button type="submit" name="action" value="Login" class="btn-primary pixel-font">Login</button>
+                        <button type="submit" name="action" value="Login" class="btn-primary pixel-font" id="loginButton">
+                            <span>Login</span>
+                        </button>
                     </form>
-                </div> <div class="switch-section">
+                </div>
+                <div class="switch-section">
                     <p>Don't have an account?</p>
                     <button type="button" class="btn-secondary pixel-font" onclick="switchForm('register')">Create New Account</button>
                     
@@ -279,21 +404,23 @@
                 </div>
             </div>
 
+            <!-- REGISTER FORM -->
             <div class="form-container" id="registerFormContent">
-                <div class="form-main-content"> <div class="form-title">
+                <div class="form-main-content">
+                    <div class="form-title">
                         <h1>Create New</h1>
                         <h2 class="pixel-font">Account</h2>
                     </div>
                     
                     <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="registerForm">
                         <div class="input-group">
-    <input type="text" name="_token" id="registerServerInput" placeholder="Server Name *" />
-</div>
-                        <div class="input-group">
-                            <input type="text" name="growId" id="registerGrowId" placeholder="Choose GrowID *" required />
+                            <input type="text" name="_token" id="registerServerInput" placeholder="Server Name (e.g., GTPS) *" required />
                         </div>
                         <div class="input-group">
-                            <input type="password" name="password" id="registerPassword" placeholder="Choose Password *" required />
+                            <input type="text" name="growId" id="registerGrowId" placeholder="Choose GrowID (3-18 chars) *" required />
+                        </div>
+                        <div class="input-group">
+                            <input type="password" name="password" id="registerPassword" placeholder="Choose Password (4-18 chars) *" required />
                         </div>
                         <div class="input-group">
                             <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password *" required />
@@ -301,9 +428,12 @@
                         
                         <div class="toggle-password" id="toggleRegisterPassword">Show Password</div>
                         
-                        <button type="submit" name="action" value="Register" class="btn-primary pixel-font">Register</button>
+                        <button type="submit" name="action" value="Register" class="btn-primary pixel-font" id="registerButton">
+                            <span>Register</span>
+                        </button>
                     </form>
-                </div> <div class="switch-section">
+                </div>
+                <div class="switch-section">
                     <p>Already have an account?</p>
                     <button type="button" class="btn-secondary pixel-font" onclick="switchForm('login')">Back to Login</button>
                     
@@ -315,25 +445,31 @@
 
     <script>
         const servers = [
-            "STYLOPS", "CHINAPS", "COASTPS", "SLOWLYPS", "NEXPS", "TESPS", "IDLEPS"
+            "GTPS", "STYLOPS", "CHINAPS", "COASTPS", "SLOWLYPS", "NEXPS", "TESPS", "IDLEPS", "ORIGIN"
         ];
         
         const formWrapper = document.getElementById('formWrapper');
         const loginContent = document.getElementById('loginFormContent');
         const registerContent = document.getElementById('registerFormContent');
+        const loginButton = document.getElementById('loginButton');
+        const registerButton = document.getElementById('registerButton');
 
         document.addEventListener("DOMContentLoaded", () => {
-            // Load data
+            // Load saved data
             const growId = localStorage.getItem("growId");
             const lastServer = localStorage.getItem("lastServer");
             
             if (growId) {
-                document.getElementById("loginGrowId").value = growId;
-                document.getElementById("registerGrowId").value = growId;
+                const loginGrowId = document.getElementById("loginGrowId");
+                const registerGrowId = document.getElementById("registerGrowId");
+                if (loginGrowId) loginGrowId.value = growId;
+                if (registerGrowId) registerGrowId.value = growId;
             }
             if (lastServer) {
-                document.getElementById("loginServerInput").value = lastServer;
-                document.getElementById("registerServerInput").value = lastServer;
+                const loginServer = document.getElementById("loginServerInput");
+                const registerServer = document.getElementById("registerServerInput");
+                if (loginServer) loginServer.value = lastServer;
+                if (registerServer) registerServer.value = lastServer;
             }
             
             // Setup autocomplete
@@ -341,26 +477,22 @@
             setupServerAutocomplete('registerServerInput');
 
             // Atur tinggi awal form wrapper
-            setWrapperHeight(loginContent);
+            setTimeout(() => {
+                setWrapperHeight(loginContent);
+            }, 100);
         });
         
-        // Fungsi untuk mengatur tinggi wrapper (dengan delay 50ms)
+        // Fungsi untuk mengatur tinggi wrapper
         function setWrapperHeight(activeForm) {
-            setTimeout(() => {
-                // Gunakan scrollHeight untuk mendapatkan tinggi penuh jika kontennya panjang
-                const height = activeForm.scrollHeight; 
-                formWrapper.style.height = `${height}px`;
-            }, 50); 
+            if (!activeForm) return;
+            const height = activeForm.scrollHeight + 40;
+            formWrapper.style.height = `${height}px`;
         }
 
         // Logika switchForm
         function switchForm(targetForm) {
             const nextActiveForm = targetForm === 'register' ? registerContent : loginContent;
-            
-            // 1. Atur tinggi wrapper ke tinggi form yang akan datang
             setWrapperHeight(nextActiveForm);
-
-            // Hapus semua class slide
             formWrapper.classList.remove('slide-to-login', 'slide-to-register');
 
             if (targetForm === 'register') {
@@ -370,15 +502,20 @@
             }
         }
         
-        // --- Fungsi lainnya (Toggle Password, Validation, Autocomplete, Message) ---
-        
+        // Toggle Password
         document.getElementById("toggleLoginPassword").addEventListener("click", () => {
             togglePassword('loginPassword', 'toggleLoginPassword');
         });
 
         document.getElementById("toggleRegisterPassword").addEventListener("click", () => {
             togglePassword('registerPassword', 'toggleRegisterPassword');
-            togglePassword('confirmPassword', 'toggleRegisterPassword');
+            const confirmPwd = document.getElementById('confirmPassword');
+            const toggle = document.getElementById('toggleRegisterPassword');
+            if (confirmPwd.type === "password") {
+                confirmPwd.type = "text";
+            } else {
+                confirmPwd.type = "password";
+            }
         });
 
         function togglePassword(passwordId, toggleId) {
@@ -393,79 +530,186 @@
             }
         }
 
-        document.getElementById("loginForm").addEventListener("submit", (e) => {
-            const growId = document.getElementById("loginGrowId").value;
-            const server = document.getElementById('loginServerInput').value;
+        // Show loading state
+        function setLoading(button, isLoading) {
+            const span = button.querySelector('span');
+            if (isLoading) {
+                button.disabled = true;
+                span.innerHTML = '<span class="loading"></span>Processing...';
+            } else {
+                button.disabled = false;
+                span.textContent = button.id === 'loginButton' ? 'Login' : 'Register';
+            }
+        }
+
+        // Login Form Submit
+        document.getElementById("loginForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            
+            const growId = document.getElementById("loginGrowId").value.trim();
+            const server = document.getElementById('loginServerInput').value.trim().toUpperCase();
             const password = document.getElementById('loginPassword').value;
             
-            if (!server || !growId || !password) {
-                e.preventDefault();
-                showMessage('Please fill all required fields!', 'error', 'loginFormContent');
+            // Validasi
+            if (!server) {
+                showMessage('Please enter server name!', 'error', 'loginFormContent');
+                return;
+            }
+            if (!growId) {
+                showMessage('Please enter GrowID!', 'error', 'loginFormContent');
+                return;
+            }
+            if (!password) {
+                showMessage('Please enter password!', 'error', 'loginFormContent');
                 return;
             }
             
-            localStorage.setItem("growId", growId);
-            localStorage.setItem("lastServer", server);
-            console.log("Login submitted:", { server, growId });
+            setLoading(loginButton, true);
+            
+            try {
+                const formData = new FormData();
+                formData.append('_token', server);
+                formData.append('growId', growId);
+                formData.append('password', password);
+                formData.append('action', 'Login');
+                
+                const response = await fetch('/player/growid/login/validate', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                console.log('Server response:', data);
+                
+                if (data.status === 'success' && data.token) {
+                    localStorage.setItem("growId", growId);
+                    localStorage.setItem("lastServer", server);
+                    
+                    showMessage('Login successful! Redirecting...', 'success', 'loginFormContent');
+                    
+                    setTimeout(() => {
+                        window.location.href = `/?token=${data.token}`;
+                    }, 1500);
+                } else {
+                    showMessage(data.message || 'Login failed!', 'error', 'loginFormContent');
+                    setLoading(loginButton, false);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('Connection error! Please try again.', 'error', 'loginFormContent');
+                setLoading(loginButton, false);
+            }
         });
 
-        document.getElementById("registerForm").addEventListener("submit", (e) => {
-            const growId = document.getElementById("registerGrowId").value;
-            const server = document.getElementById('registerServerInput').value;
+        // Register Form Submit
+        document.getElementById("registerForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            
+            const growId = document.getElementById("registerGrowId").value.trim();
+            const server = document.getElementById('registerServerInput').value.trim().toUpperCase();
             const password = document.getElementById('registerPassword').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
             
-            if (!server || !growId || !password || !confirmPassword) {
-                e.preventDefault();
-                showMessage('Please fill all required fields!', 'error', 'registerFormContent');
+            // Validasi
+            if (!server) {
+                showMessage('Please enter server name!', 'error', 'registerFormContent');
                 return;
             }
-            
+            if (!growId) {
+                showMessage('Please enter GrowID!', 'error', 'registerFormContent');
+                return;
+            }
+            if (growId.length < 3 || growId.length > 18) {
+                showMessage('GrowID must be between 3 and 18 characters!', 'error', 'registerFormContent');
+                return;
+            }
+            if (!password) {
+                showMessage('Please enter password!', 'error', 'registerFormContent');
+                return;
+            }
+            if (password.length < 4 || password.length > 18) {
+                showMessage('Password must be between 4 and 18 characters!', 'error', 'registerFormContent');
+                return;
+            }
             if (password !== confirmPassword) {
-                e.preventDefault();
                 showMessage('Passwords do not match!', 'error', 'registerFormContent');
                 return;
             }
             
-            if (password.length < 4) {
-                e.preventDefault();
-                showMessage('Password must be at least 4 characters!', 'error', 'registerFormContent');
-                return;
-            }
+            setLoading(registerButton, true);
             
-            localStorage.setItem("growId", growId);
-            localStorage.setItem("lastServer", server);
-            console.log("Register submitted:", { server, growId });
+            try {
+                const formData = new FormData();
+                formData.append('_token', server);
+                formData.append('growId', growId);
+                formData.append('password', password);
+                formData.append('action', 'Register');
+                
+                const response = await fetch('/player/growid/login/validate', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                console.log('Server response:', data);
+                
+                if (data.status === 'success' && data.token) {
+                    localStorage.setItem("growId", growId);
+                    localStorage.setItem("lastServer", server);
+                    
+                    showMessage('Registration successful! Redirecting...', 'success', 'registerFormContent');
+                    
+                    setTimeout(() => {
+                        window.location.href = `/?token=${data.token}`;
+                    }, 2000);
+                } else {
+                    showMessage(data.message || 'Registration failed!', 'error', 'registerFormContent');
+                    setLoading(registerButton, false);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                showMessage('Connection error! Please try again.', 'error', 'registerFormContent');
+                setLoading(registerButton, false);
+            }
         });
 
         function showMessage(message, type, parentId) {
             const parent = document.getElementById(parentId);
             if (!parent) return;
 
-            const form = parent.querySelector('form');
-            if (!form) return;
+            // Hapus message box lama
+            const oldMessage = parent.querySelector('.message-box');
+            if (oldMessage) oldMessage.remove();
 
-            let messageBox = parent.querySelector('.message-box');
-            if (!messageBox) {
-                messageBox = document.createElement('div');
-                messageBox.className = 'message-box';
+            const messageBox = document.createElement('div');
+            messageBox.className = `message-box message-${type}`;
+            messageBox.textContent = message;
+            messageBox.style.display = 'block';
+            
+            // Insert di awal form
+            const form = parent.querySelector('form');
+            if (form) {
                 form.parentNode.insertBefore(messageBox, form);
             }
             
-            messageBox.textContent = message;
-            messageBox.className = `message-box message-${type}`;
-            messageBox.style.display = 'block';
-            
             setWrapperHeight(parent);
 
+            // Auto hide setelah 5 detik
             setTimeout(() => {
-                messageBox.style.display = 'none';
-                setWrapperHeight(parent); 
+                if (messageBox.parentNode) {
+                    messageBox.style.animation = 'slideIn 0.3s reverse';
+                    setTimeout(() => {
+                        if (messageBox.parentNode) messageBox.remove();
+                        setWrapperHeight(parent);
+                    }, 300);
+                }
             }, 5000);
         }
 
         function setupServerAutocomplete(inputId) {
             const serverInput = document.getElementById(inputId);
+            if (!serverInput) return;
+            
             let autocompleteList = null;
             
             serverInput.addEventListener('input', function() {
@@ -475,7 +719,7 @@
                 }
                 
                 const value = this.value.toUpperCase();
-                if (!value) return;
+                if (!value || value.length < 2) return;
                 
                 const matches = servers.filter(server => 
                     server.startsWith(value)
@@ -491,8 +735,10 @@
                     item.textContent = match;
                     item.addEventListener('click', function() {
                         serverInput.value = match;
-                        autocompleteList.remove();
-                        autocompleteList = null;
+                        if (autocompleteList) {
+                            autocompleteList.remove();
+                            autocompleteList = null;
+                        }
                     });
                     autocompleteList.appendChild(item);
                 });
@@ -510,6 +756,38 @@
                     autocompleteList = null;
                 }
             });
+
+            // Handle keyboard navigation
+            serverInput.addEventListener('keydown', function(e) {
+                if (!autocompleteList) return;
+                
+                const items = autocompleteList.querySelectorAll('li');
+                let index = Array.from(items).findIndex(item => item.classList.contains('selected'));
+                
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    if (index < items.length - 1) {
+                        if (index >= 0) items[index].classList.remove('selected');
+                        items[index + 1].classList.add('selected');
+                    }
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    if (index > 0) {
+                        items[index].classList.remove('selected');
+                        items[index - 1].classList.add('selected');
+                    }
+                } else if (e.key === 'Enter' && index >= 0) {
+                    e.preventDefault();
+                    serverInput.value = items[index].textContent;
+                    autocompleteList.remove();
+                    autocompleteList = null;
+                }
+            });
+        }
+
+        // Prevent form resubmission on page refresh
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
         }
     </script>
 </body>

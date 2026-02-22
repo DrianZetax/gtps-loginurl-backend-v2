@@ -18,7 +18,6 @@ app.use(compression({
 }));
 
 app.set('view engine', 'ejs');
-
 app.set('trust proxy', 1);
 
 app.use(function (req, res, next) {
@@ -32,9 +31,7 @@ app.use(function (req, res, next) {
 });
 
 app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use(express.json());
-
 app.use(rateLimiter({ windowMs: 15 * 60 * 1000, max: 10000, headers: true }));
 
 // Helper function untuk check account
@@ -44,7 +41,7 @@ function checkAccountExists(growId) {
 }
 
 app.all("/player/validate/close", function (req, res) {
-  res.send("<script>window.close();</script>");
+    res.send("<script>window.close();</script>");
 });
 
 app.all('/player/login/dashboard', function (req, res) {
@@ -95,7 +92,7 @@ app.all('/player/growid/login/validate', (req, res) => {
         
         // Kirim data register ke C++ handler
         tokenData = { 
-            server_name: _token.toUpperCase(), 
+            server_name: _token ? _token.toUpperCase() : 'GTZS', 
             growId: growId, 
             password: password,
             isRegister: true 
@@ -104,7 +101,7 @@ app.all('/player/growid/login/validate', (req, res) => {
     } else if (growId && password) {
         // MODE LOGIN
         tokenData = { 
-            server_name: _token.toUpperCase(), 
+            server_name: _token ? _token.toUpperCase() : 'GTZS', 
             growId: growId, 
             password: password,
             isRegister: false 
@@ -112,7 +109,7 @@ app.all('/player/growid/login/validate', (req, res) => {
     } else {
         // MODE GUEST
         tokenData = { 
-            server_name: _token.toUpperCase(), 
+            server_name: _token ? _token.toUpperCase() : 'GTZS', 
             growId: "", 
             password: "",
             isRegister: false 
@@ -130,23 +127,64 @@ app.all('/player/growid/login/validate', (req, res) => {
     );
 });
 
+// 🔴 PERBAIKAN UTAMA: CHECKTOKEN DENGAN REDIRECT 307 DAN RESPON TEXT/HTML
 app.all('/player/growid/checktoken', (req, res) => {
+    console.log('[CHECKTOKEN] Received request, redirecting to validate endpoint');
+    
+    // Forward dengan status code 307 (Temporary Redirect) untuk preserve method dan body
+    res.redirect(307, '/player/growid/validate/checktoken');
+});
+
+// 🔴 ENDPOINT BARU UNTUK VALIDATE CHECKTOKEN
+app.all('/player/growid/validate/checktoken', (req, res) => {
     const { refreshToken } = req.body;
-    res.json({
-        status: 'success',
-        message: 'Account Validated.',
-        token: refreshToken,
-        url: '',
-        accountType: 'growtopia',
-        accountAge: 2
-    });
+    
+    console.log('[VALIDATE CHECKTOKEN] Processing token validation');
+    
+    try {
+        // Decode refreshToken untuk mendapatkan data
+        const decodedToken = Buffer.from(refreshToken, 'base64').toString('utf-8');
+        console.log('[VALIDATE CHECKTOKEN] Decoded token:', decodedToken);
+        
+        // Siapkan response dengan content-type text/html sesuai requirement
+        const response = JSON.stringify({
+            status: 'success',
+            message: 'Account Validated.',
+            token: refreshToken,
+            url: '',
+            accountType: 'growtopia',
+            accountAge: 2
+        });
+        
+        // Set content-type ke text/html
+        res.setHeader('Content-Type', 'text/html');
+        res.send(response);
+        
+    } catch (error) {
+        console.log('[VALIDATE CHECKTOKEN] Error:', error);
+        
+        const errorResponse = JSON.stringify({
+            status: 'error',
+            message: 'Invalid token',
+            token: '',
+            url: '',
+            accountType: 'growtopia',
+            accountAge: 2
+        });
+        
+        res.setHeader('Content-Type', 'text/html');
+        res.status(200).send(errorResponse);
+    }
 });
 
 app.get('/', function (req, res) {
-   res.send('Server Running');
+   res.send('Server Running - Updated for 5.40');
 });
 
 app.listen(5000, function () {
     console.log('Listening on port 5000');
     console.log('Backend ready for Login/Register');
+    console.log('✓ Updated with 5.40 compatibility:');
+    console.log('  - /player/growid/checktoken redirects with 307');
+    console.log('  - /player/growid/validate/checktoken responds with text/html');
 });

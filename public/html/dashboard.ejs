@@ -1,619 +1,515 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GTPSID · modern & bright</title>
+    <title>GTPSID Login - Pixel Style</title>
     <link rel="icon" href="https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/assets/images/growtopia.ico" />
-    <!-- Font modern: Inter + fallback sistem sans -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    
     <style>
-        /* reset & base — clean, light, smooth */
+        /* [GAYA UMUM & LAYOUT] */
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
-        body, html {
+        html, body {
+            height: auto; 
             min-height: 100vh;
-            background: linear-gradient(145deg, #f0f5fe 0%, #e6edf9 100%);
-            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1a2a3a 0%, #0d1b2a 100%);
+            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow-y: auto;
             padding: 20px;
-            color: #1e293b;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* main card — soft, bright, smooth shadow */
+        .pixel-font {
+            font-family: 'Press Start 2P', cursive;
+            text-shadow: 2px 2px #000;
+        }
+
         .main-container {
-            width: 100%;
-            max-width: 700px;
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(4px);
-            background: #ffffff;
-            border-radius: 36px;
-            box-shadow: 0 25px 50px -10px rgba(0, 35, 75, 0.18), 0 0 0 1px rgba(156, 188, 226, 0.3) inset;
-            overflow: hidden;
-            transition: all 0.25s ease;
-        }
-
-        /* header section — fresh gradient, clean typography */
-        .visual-section {
-            background: linear-gradient(125deg, #d4e2fc 0%, #bbd4fb 70%, #a9c7fa 100%);
-            padding: 2.5rem 2rem 2rem;
-            text-align: center;
-            color: #0b2d4b;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.6);
-        }
-
-        .visual-section h1 {
-            font-weight: 500;
-            font-size: 1rem;
-            letter-spacing: 0.03em;
-            text-transform: uppercase;
-            color: #2563eb;
-            background: rgba(255, 255, 255, 0.5);
-            display: inline-block;
-            padding: 0.2rem 1rem;
-            border-radius: 30px;
-            backdrop-filter: blur(2px);
-            margin-bottom: 0.75rem;
-        }
-
-        .visual-section h2 {
-            font-size: 3rem;
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 0.75rem;
-            background: linear-gradient(135deg, #0f2b50, #1d4ed8);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            letter-spacing: -0.02em;
-        }
-
-        .visual-section p {
-            max-width: 460px;
-            margin: 1rem auto 0;
-            font-weight: 400;
-            font-size: 0.95rem;
-            color: #1e3a5f;
-            background: rgba(255, 255, 255, 0.45);
-            padding: 0.8rem 1.2rem;
-            border-radius: 60px;
-            backdrop-filter: blur(3px);
-            line-height: 1.5;
-        }
-
-        .icon-container {
-            width: 64px;
-            height: 64px;
-            background: white;
-            border-radius: 50%;
-            margin: 0 auto 1.5rem;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.2);
-        }
-        .icon-container::before {
-            content: "🌱";
-            font-size: 2.2rem;
-            filter: drop-shadow(0 2px 4px rgba(0,80,120,0.2));
-        }
-
-        /* form wrapper — sliding area dengan transisi halus */
-        .form-wrapper {
-            position: relative;
-            background: #ffffff;
-            padding: 0 2rem 2rem;
-            min-height: 480px;
-            transition: height 0.45s cubic-bezier(0.23, 1, 0.32, 1);
-            overflow: hidden;
-            border-radius: 0 0 36px 36px;
-        }
-
-        /* kedua form sebagai absolute, digeser dengan transform + opacity */
-        .form-container {
+            flex-direction: column;
             width: 100%;
-            padding: 1.8rem 0 1rem;
-            transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.3s ease, visibility 0.3s;
+            max-width: 650px; 
+            min-height: 600px;
+            background: linear-gradient(135deg, #1e3c5a 0%, #2a4d6e 50%, #1a2a3a 100%);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 5px solid #4a9de3;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .visual-section {
+            background: linear-gradient(135deg, #4a9de3 0%, #2a4d6e 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 30px 30px;
+            color: #fff;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+        .visual-section::before {
+            content: '';
             position: absolute;
             top: 0;
             left: 0;
-            will-change: transform, opacity;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05) 5px, transparent 5px, transparent 10px);
+            opacity: 0.5;
+        }
+        .visual-section h1 { font-size: 20px; margin-bottom: 5px; font-weight: 400; color: #e8f4fd; }
+        .visual-section h2 { font-size: 32px; margin-bottom: 20px; font-weight: 700; color: #ffd166; text-shadow: 4px 4px #000; }
+        .visual-section p { font-size: 14px; line-height: 1.6; max-width: 400px; opacity: 0.9; text-shadow: 0 1px 3px rgba(0,0,0,0.2); margin-top: 10px; }
+        .icon-container { width: 70px; height: 70px; background: #fff; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); border: 3px solid #1a2a3a; }
+        .icon-container::before { content: '👾'; font-size: 36px; }
+
+        /* Wrapper untuk Animasi Geser Form */
+        .form-wrapper {
+            position: relative;
+            overflow: hidden;
+            flex-grow: 1;
+            padding: 0 40px 40px; 
+            background: #1a2a3a;
+            transition: height 0.5s ease-in-out; 
+            min-height: 400px; 
+        }
+
+        /* Form Content (Form yang akan digeser) */
+        .form-container {
+            width: 100%;
+            transition: transform 0.5s ease-in-out, opacity 0.5s, visibility 0.5s;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            justify-content: center; /* Perubahan KUNCI 1: Mengatur konten di tengah vertikal */
+            align-items: center; /* Perubahan KUNCI 2: Mengatur konten di tengah horizontal */
+            position: absolute; 
+            top: 0;
+            left: 0;
+            padding: 40px 0;
         }
 
+        /* Kontainer Utama Form (Judul + Input) */
         .form-main-content {
             width: 100%;
-            max-width: 400px;
+            max-width: 400px; /* Batasi lebar untuk menengahkan konten input */
+            /* Perubahan KUNCI 3: Agar .form-main-content berada di tengah form-container */
+            display: flex;
+            flex-direction: column;
+            align-items: stretch; /* Agar input mengisi lebar 100% dari max-width 400px */
         }
 
-        /* default: login terlihat, register di kanan (tersembunyi) */
+
+        /* Posisi default Register (Tersembunyi di kanan) */
         #registerFormContent {
             transform: translateX(100%);
-            opacity: 0;
             visibility: hidden;
-        }
-        #loginFormContent {
-            transform: translateX(0);
-            opacity: 1;
-            visibility: visible;
+            opacity: 0;
         }
 
-        /* saat wrapper punya class slide-to-register: login ke kiri, register masuk */
+        /* Posisi default Login (Terlihat) */
+        #loginFormContent {
+            transform: translateX(0);
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        /* === ANIMASI GESER DAN VISIBILITAS FORM === */
+
         .form-wrapper.slide-to-register #loginFormContent {
             transform: translateX(-100%);
-            opacity: 0;
             visibility: hidden;
+            opacity: 0;
         }
         .form-wrapper.slide-to-register #registerFormContent {
             transform: translateX(0);
-            opacity: 1;
             visibility: visible;
+            opacity: 1;
         }
-
-        /* slide to login (default, tapi untuk toggle balik) */
+        
         .form-wrapper.slide-to-login #loginFormContent {
             transform: translateX(0);
-            opacity: 1;
             visibility: visible;
+            opacity: 1;
         }
         .form-wrapper.slide-to-login #registerFormContent {
             transform: translateX(100%);
-            opacity: 0;
             visibility: hidden;
+            opacity: 0;
         }
+        
+        /* [GAYA ELEMEN LAINNYA] */
+        .form-title { 
+            margin-bottom: 20px; 
+            text-align: center; /* Perubahan KUNCI 4: Menengahkan judul form */
+        }
+        .form-title h1 { font-size: 18px; color: #a8c0d0; }
+        .form-title h2 { font-size: 24px; color: #4a9de3; }
 
-        /* title halus */
-        .form-title {
-            margin-bottom: 1.8rem;
-            text-align: center;
-        }
-        .form-title h1 {
-            font-size: 0.9rem;
-            font-weight: 500;
-            letter-spacing: 0.03em;
-            color: #4b6a9b;
-            text-transform: uppercase;
-        }
-        .form-title h2 {
-            font-size: 2.1rem;
-            font-weight: 700;
-            color: #0b2b50;
-            letter-spacing: -0.02em;
-        }
-
-        /* input grup modern */
         .input-group {
-            margin-bottom: 1.25rem;
-            position: relative;
+            position: relative; 
+            margin-bottom: 15px; 
         }
 
-        input[type="text"],
-        input[type="password"] {
+        input[type="text"], input[type="password"] {
             width: 100%;
-            padding: 0.9rem 1.2rem;
-            font-size: 1rem;
-            background: #f8fafd;
-            border: 1.5px solid #dee9f2;
-            border-radius: 20px;
-            outline: none;
-            transition: all 0.2s;
-            color: #0f2b44;
-            font-weight: 500;
-            box-shadow: 0 2px 6px rgba(0, 27, 55, 0.03);
+            padding: 12px 15px;
+            font-size: 16px; 
+            background: #2a4d6e;
+            color: #e8f4fd;
+            border: 2px solid #4a9de3;
+            border-radius: 8px;
+            margin-bottom: 0; 
         }
 
-        input:focus {
-            border-color: #3b82f6;
-            background: #ffffff;
-            box-shadow: 0 8px 18px -8px rgba(59, 130, 246, 0.25);
-        }
-
-        /* tombol smooth */
         button {
-            font-family: 'Inter', sans-serif;
-            border: none;
-            cursor: pointer;
-            transition: 0.15s ease;
-        }
-
-        .btn-primary {
             width: 100%;
-            padding: 1rem;
-            background: #2266cc;
-            color: white;
-            font-weight: 600;
-            font-size: 1rem;
-            border-radius: 40px;
-            box-shadow: 0 8px 16px -6px #1e4faa70;
-            margin-top: 0.75rem;
-            letter-spacing: 0.01em;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-        .btn-primary:hover {
-            background: #1a55b0;
-            transform: scale(1.01);
-            box-shadow: 0 12px 20px -8px #1e4faa;
-        }
-        .btn-primary:active {
-            transform: scale(0.98);
-            background: #154a99;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-top: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .btn-secondary {
-            background: transparent;
-            border: 1.5px solid #b7cef0;
-            padding: 0.85rem 1.2rem;
-            border-radius: 40px;
-            font-weight: 600;
-            color: #1d4a8b;
-            width: auto;
-            min-width: 200px;
-            margin-top: 0.25rem;
-            transition: background 0.2s, border 0.2s;
+            background: #2a4d6e;
+            color: #e8f4fd;
+            border: 2px solid #1a2a3a;
+            font-size: 14px;
+            padding: 12px;
         }
-        .btn-secondary:hover {
-            background: #e5f0ff;
-            border-color: #3b82f6;
+
+        .btn-primary {
+            background: #ffd166;
+            color: #1a2a3a;
+            border: 2px solid #ffbc3b;
+            font-weight: bold;
+            box-shadow: 0 4px 0 #cc9a2e;
+            transition: all 0.1s ease;
+        }
+        .btn-primary:active {
+            box-shadow: 0 1px 0 #cc9a30;
+            transform: translateY(3px);
         }
 
         .toggle-password {
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: #3b68b0;
+            font-size: 12px;
+            color: #4a9de3;
             cursor: pointer;
-            margin: 0.25rem 0 0.8rem 0.5rem;
+            margin-bottom: 15px; 
             display: inline-block;
-            background: #ecf3fd;
-            padding: 0.3rem 1rem;
-            border-radius: 30px;
-            transition: background 0.2s;
-        }
-        .toggle-password:hover {
-            background: #d5e5ff;
         }
 
-        /* switch section & footer */
         .switch-section {
-            margin-top: 2.2rem;
-            padding-top: 1.2rem;
-            border-top: 2px dashed #cbdff5;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #4a7ba6;
             width: 100%;
-            max-width: 400px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.75rem;
+            max-width: 400px; /* Perubahan KUNCI 5: Batasi lebar agar menengahkan section ini */
         }
         .switch-section p {
-            font-weight: 500;
-            color: #31639c;
+            text-align: center; /* Perubahan KUNCI 6: Teks switch section di tengah */
         }
-
+        
         .footer {
-            font-size: 0.75rem;
-            color: #799ac0;
-            margin-top: 0.5rem;
+            margin-top: 20px;
+            font-size: 11px;
+            text-align: center; /* Perubahan KUNCI 7: Footer di tengah */
         }
 
-        /* message box lembut */
-        .message-box {
-            padding: 0.9rem 1.2rem;
-            border-radius: 60px;
-            margin: 1rem 0 0.5rem;
-            font-weight: 500;
-            font-size: 0.9rem;
-            background: #f0f9ff;
-            border: 1px solid #b9d5fd;
-            color: #0256b2;
-            display: none;
-            text-align: center;
-        }
-        .message-error {
-            background: #fff2f0;
-            border-color: #ffbbb1;
-            color: #b53b2a;
-        }
-
-        /* autocomplete list minimal */
-        .autocomplete-list {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border-radius: 24px;
-            box-shadow: 0 16px 30px -10px rgba(0,50,100,0.2);
-            list-style: none;
-            padding: 0.6rem 0;
-            margin-top: 4px;
-            z-index: 30;
-            border: 1px solid #d7e5fd;
-        }
-        .autocomplete-list li {
-            padding: 0.65rem 1.5rem;
-            cursor: pointer;
-            font-weight: 500;
-            color: #10345e;
-        }
-        .autocomplete-list li:hover {
-            background: #e8f0fe;
-        }
-
-        /* tidak ada efek pixel, semua mulus */
-        .pixel-font {
-            /* fallback dihapus, tidak digunakan */
+        .message-box { 
+            padding: 12px; 
+            border-radius: 6px; 
+            margin-bottom: 15px; 
+            text-align: center; 
+            font-size: 14px; 
+            display: none; 
         }
     </style>
 </head>
 <body>
-<div class="main-container">
-    <div class="visual-section">
-        <div class="icon-container"></div>
-        <h1>Welcome to</h1>
-        <h2>GTPSID</h2>
-        <p>Connect with thousands of players worldwide. Join the adventure in the world of Growtopia and explore endless possibilities!</p>
-    </div>
 
-    <div class="form-wrapper" id="formWrapper">
-        <!-- LOGIN FORM -->
-        <div class="form-container" id="loginFormContent">
-            <div class="form-main-content">
-                <div class="form-title">
-                    <h1>welcome back</h1>
-                    <h2>log in</h2>
-                </div>
-
-                <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="loginForm">
-                    <div class="input-group">
-                        <input type="text" name="_token" id="loginServerInput" placeholder="Server name *" required />
-                    </div>
-                    <div class="input-group">
-                        <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID *" required />
-                    </div>
-                    <div class="input-group">
-                        <input type="password" name="password" id="loginPassword" placeholder="Password *" required />
-                    </div>
-                    <div class="toggle-password" id="toggleLoginPassword">👁️ show password</div>
-                    <button type="submit" name="action" value="Login" class="btn-primary">Log in</button>
-                </form>
-            </div>
-
-            <div class="switch-section">
-                <p>Don't have an account?</p>
-                <button type="button" class="btn-secondary" onclick="switchForm('register')">Create account</button>
-                <div class="footer">© 2025 GTPSID · bright edition</div>
-            </div>
+    <div class="main-container">
+        <div class="visual-section">
+            <div class="icon-container pixel-font"></div>
+            <h1 class="pixel-font">Welcome to</h1>
+            <h2 class="pixel-font">GTPSID</h2>
+            <p>Connect with thousands of players worldwide. Join the adventure in the world of Growtopia and explore endless possibilities!</p>
         </div>
 
-        <!-- REGISTER FORM -->
-        <div class="form-container" id="registerFormContent">
-            <div class="form-main-content">
-                <div class="form-title">
-                    <h1>new here?</h1>
-                    <h2>sign up</h2>
+        <div class="form-wrapper" id="formWrapper">
+            <div class="form-container" id="loginFormContent">
+                <div class="form-main-content"> <div class="form-title">
+                        <h1>Login to Your</h1>
+                        <h2 class="pixel-font">Account</h2>
+                    </div>
+                    
+                    <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="loginForm">
+                        <div class="input-group"> <input type="text" name="_token" id="loginServerInput" placeholder="Server Name *" required /> </div>
+                        <div class="input-group">
+                            <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID *" required />
+                        </div>
+                        <div class="input-group">
+                            <input type="password" name="password" id="loginPassword" placeholder="Your Password *" required />
+                        </div>
+                        
+                        <div class="toggle-password" id="toggleLoginPassword">Show Password</div>
+                        
+                        <button type="submit" name="action" value="Login" class="btn-primary pixel-font">Login</button>
+                    </form>
+                </div> <div class="switch-section">
+                    <p>Don't have an account?</p>
+                    <button type="button" class="btn-secondary pixel-font" onclick="switchForm('register')">Create New Account</button>
+                    
+                    <div class="footer">© 2025 GTPSID. All rights reserved.</div>
                 </div>
-
-                <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="registerForm">
-                    <div class="input-group">
-                        <input type="text" name="_token" id="registerServerInput" placeholder="Server name *" required />
-                    </div>
-                    <div class="input-group">
-                        <input type="text" name="growId" id="registerGrowId" placeholder="Choose GrowID *" required />
-                    </div>
-                    <div class="input-group">
-                        <input type="password" name="password" id="registerPassword" placeholder="Password *" required />
-                    </div>
-                    <div class="input-group">
-                        <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm password *" required />
-                    </div>
-                    <div class="toggle-password" id="toggleRegisterPassword">👁️ show password</div>
-                    <button type="submit" name="action" value="Register" class="btn-primary">Register</button>
-                </form>
             </div>
-            <div class="switch-section">
-                <p>Already have an account?</p>
-                <button type="button" class="btn-secondary" onclick="switchForm('login')">Back to login</button>
-                <div class="footer">© 2025 GTPSID · bright edition</div>
+
+            <div class="form-container" id="registerFormContent">
+                <div class="form-main-content"> <div class="form-title">
+                        <h1>Create New</h1>
+                        <h2 class="pixel-font">Account</h2>
+                    </div>
+                    
+                    <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="registerForm">
+                         <div class="input-group">
+                            <input type="text" name="_token" id="registerServerInput" placeholder="Server Name *" required />
+                        </div>
+                        <div class="input-group">
+                            <input type="text" name="growId" id="registerGrowId" placeholder="Choose GrowID *" required />
+                        </div>
+                        <div class="input-group">
+                            <input type="password" name="password" id="registerPassword" placeholder="Choose Password *" required />
+                        </div>
+                        <div class="input-group">
+                            <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password *" required />
+                        </div>
+                        
+                        <div class="toggle-password" id="toggleRegisterPassword">Show Password</div>
+                        
+                        <button type="submit" name="action" value="Register" class="btn-primary pixel-font">Register</button>
+                    </form>
+                </div> <div class="switch-section">
+                    <p>Already have an account?</p>
+                    <button type="button" class="btn-secondary pixel-font" onclick="switchForm('login')">Back to Login</button>
+                    
+                    <div class="footer">© 2025 GTPSID. All rights reserved.</div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<script>
-    (function() {
-        // daftar server
-        const servers = ["STYLOPS", "CHINAPS", "COASTPS", "SLOWLYPS", "NEXPS", "TESPS", "IDLEPS"];
-
+    <script>
+        const servers = [
+            "STYLOPS", "CHINAPS", "COASTPS", "SLOWLYPS", "NEXPS", "TESPS", "IDLEPS"
+        ];
+        
         const formWrapper = document.getElementById('formWrapper');
         const loginContent = document.getElementById('loginFormContent');
         const registerContent = document.getElementById('registerFormContent');
 
-        // tinggi wrapper dinamis — halus
-        function setWrapperHeight(element) {
-            // gunakan scrollHeight agar akurat meskipun ada margin/padding
+        document.addEventListener("DOMContentLoaded", () => {
+            // Load data
+            const growId = localStorage.getItem("growId");
+            const lastServer = localStorage.getItem("lastServer");
+            
+            if (growId) {
+                document.getElementById("loginGrowId").value = growId;
+                document.getElementById("registerGrowId").value = growId;
+            }
+            if (lastServer) {
+                document.getElementById("loginServerInput").value = lastServer;
+                document.getElementById("registerServerInput").value = lastServer;
+            }
+            
+            // Setup autocomplete
+            setupServerAutocomplete('loginServerInput');
+            setupServerAutocomplete('registerServerInput');
+
+            // Atur tinggi awal form wrapper
+            setWrapperHeight(loginContent);
+        });
+        
+        // Fungsi untuk mengatur tinggi wrapper (dengan delay 50ms)
+        function setWrapperHeight(activeForm) {
             setTimeout(() => {
-                const h = element.scrollHeight;
-                if (h > 50) formWrapper.style.height = h + 'px';
-            }, 10);
+                // Gunakan scrollHeight untuk mendapatkan tinggi penuh jika kontennya panjang
+                const height = activeForm.scrollHeight; 
+                formWrapper.style.height = `${height}px`;
+            }, 50); 
         }
 
-        // fungsi switch dengan transisi
-        window.switchForm = function(target) {
-            const nextActive = target === 'register' ? registerContent : loginContent;
-            setWrapperHeight(nextActive);
+        // Logika switchForm
+        function switchForm(targetForm) {
+            const nextActiveForm = targetForm === 'register' ? registerContent : loginContent;
+            
+            // 1. Atur tinggi wrapper ke tinggi form yang akan datang
+            setWrapperHeight(nextActiveForm);
 
+            // Hapus semua class slide
             formWrapper.classList.remove('slide-to-login', 'slide-to-register');
-            if (target === 'register') {
+
+            if (targetForm === 'register') {
                 formWrapper.classList.add('slide-to-register');
-            } else {
+            } else if (targetForm === 'login') {
                 formWrapper.classList.add('slide-to-login');
             }
-        };
-
-        // inisialisasi tinggi dan local storage
-        document.addEventListener('DOMContentLoaded', function() {
-            // recall growid & server
-            const savedGrowId = localStorage.getItem('growId');
-            const savedServer = localStorage.getItem('lastServer');
-            if (savedGrowId) {
-                document.getElementById('loginGrowId').value = savedGrowId;
-                document.getElementById('registerGrowId').value = savedGrowId;
-            }
-            if (savedServer) {
-                document.getElementById('loginServerInput').value = savedServer;
-                document.getElementById('registerServerInput').value = savedServer;
-            }
-
-            // setup autocomplete kedua input
-            setupAutocomplete('loginServerInput');
-            setupAutocomplete('registerServerInput');
-
-            // tinggi awal
-            setWrapperHeight(loginContent);
-
-            // event listeners toggle password
-            document.getElementById('toggleLoginPassword').addEventListener('click', function() {
-                togglePass('loginPassword', this);
-            });
-            document.getElementById('toggleRegisterPassword').addEventListener('click', function() {
-                togglePass('registerPassword', this);
-                togglePass('confirmPassword', this);  // untuk konfirmasi juga di-toggle (sama)
-            });
+        }
+        
+        // --- Fungsi lainnya (Toggle Password, Validation, Autocomplete, Message) ---
+        
+        document.getElementById("toggleLoginPassword").addEventListener("click", () => {
+            togglePassword('loginPassword', 'toggleLoginPassword');
         });
 
-        // toggle password function
-        function togglePass(fieldId, toggleEl) {
-            const field = document.getElementById(fieldId);
-            if (!field) return;
-            const isPassword = field.type === 'password';
-            field.type = isPassword ? 'text' : 'password';
-            toggleEl.textContent = isPassword ? '👁️ hide password' : '👁️ show password';
+        document.getElementById("toggleRegisterPassword").addEventListener("click", () => {
+            togglePassword('registerPassword', 'toggleRegisterPassword');
+            togglePassword('confirmPassword', 'toggleRegisterPassword');
+        });
+
+        function togglePassword(passwordId, toggleId) {
+            const pwd = document.getElementById(passwordId);
+            const toggle = document.getElementById(toggleId);
+            if (pwd.type === "password") {
+                pwd.type = "text";
+                toggle.textContent = "Hide Password";
+            } else {
+                pwd.type = "password";
+                toggle.textContent = "Show Password";
+            }
         }
 
-        // autocomplete
-        function setupAutocomplete(inputId) {
-            const input = document.getElementById(inputId);
-            let listBox = null;
-
-            input.addEventListener('input', function(e) {
-                const val = this.value.toUpperCase().trim();
-                if (listBox) { listBox.remove(); listBox = null; }
-                if (val === '') return;
-
-                const matches = servers.filter(s => s.startsWith(val));
-                if (matches.length === 0) return;
-
-                listBox = document.createElement('ul');
-                listBox.className = 'autocomplete-list';
-                const parentGroup = this.closest('.input-group');
-                if (!parentGroup) return;
-                parentGroup.style.position = 'relative';
-
-                matches.forEach(m => {
-                    const li = document.createElement('li');
-                    li.textContent = m;
-                    li.onclick = () => {
-                        input.value = m;
-                        if (listBox) { listBox.remove(); listBox = null; }
-                    };
-                    listBox.appendChild(li);
-                });
-                parentGroup.appendChild(listBox);
-            });
-
-            document.addEventListener('click', (e) => {
-                if (listBox && !input.contains(e.target) && !listBox.contains(e.target)) {
-                    listBox.remove();
-                    listBox = null;
-                }
-            });
-        }
-
-        // validasi & submit login
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            const server = document.getElementById('loginServerInput').value.trim();
-            const growId = document.getElementById('loginGrowId').value.trim();
-            const pwd = document.getElementById('loginPassword').value;
-
-            if (!server || !growId || !pwd) {
+        document.getElementById("loginForm").addEventListener("submit", (e) => {
+            const growId = document.getElementById("loginGrowId").value;
+            const server = document.getElementById('loginServerInput').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!server || !growId || !password) {
                 e.preventDefault();
-                showMessage('Please fill all fields', 'error', 'loginFormContent');
+                showMessage('Please fill all required fields!', 'error', 'loginFormContent');
                 return;
             }
-            localStorage.setItem('growId', growId);
-            localStorage.setItem('lastServer', server);
-            console.log('login ok', { server, growId });
-            // e.preventDefault(); // untuk demo, biarkan terkirim (jika perlu)
+            
+            localStorage.setItem("growId", growId);
+            localStorage.setItem("lastServer", server);
+            console.log("Login submitted:", { server, growId });
         });
 
-        document.getElementById('registerForm').addEventListener('submit', function(e) {
-            const server = document.getElementById('registerServerInput').value.trim();
-            const growId = document.getElementById('registerGrowId').value.trim();
-            const pwd = document.getElementById('registerPassword').value;
-            const confirm = document.getElementById('confirmPassword').value;
-
-            if (!server || !growId || !pwd || !confirm) {
+        document.getElementById("registerForm").addEventListener("submit", (e) => {
+            const growId = document.getElementById("registerGrowId").value;
+            const server = document.getElementById('registerServerInput').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (!server || !growId || !password || !confirmPassword) {
                 e.preventDefault();
-                showMessage('All fields required', 'error', 'registerFormContent');
+                showMessage('Please fill all required fields!', 'error', 'registerFormContent');
                 return;
             }
-            if (pwd !== confirm) {
+            
+            if (password !== confirmPassword) {
                 e.preventDefault();
-                showMessage('Passwords do not match', 'error', 'registerFormContent');
+                showMessage('Passwords do not match!', 'error', 'registerFormContent');
                 return;
             }
-            if (pwd.length < 4) {
+            
+            if (password.length < 4) {
                 e.preventDefault();
-                showMessage('Password min 4 characters', 'error', 'registerFormContent');
+                showMessage('Password must be at least 4 characters!', 'error', 'registerFormContent');
                 return;
             }
-            localStorage.setItem('growId', growId);
-            localStorage.setItem('lastServer', server);
-            console.log('register ok', { server, growId });
+            
+            localStorage.setItem("growId", growId);
+            localStorage.setItem("lastServer", server);
+            console.log("Register submitted:", { server, growId });
         });
 
-        function showMessage(msg, type, parentId) {
+        function showMessage(message, type, parentId) {
             const parent = document.getElementById(parentId);
             if (!parent) return;
+
             const form = parent.querySelector('form');
             if (!form) return;
-            let box = parent.querySelector('.message-box');
-            if (!box) {
-                box = document.createElement('div');
-                box.className = 'message-box';
-                form.parentNode.insertBefore(box, form);
-            }
-            box.textContent = msg;
-            box.classList.toggle('message-error', type === 'error');
-            box.style.display = 'block';
 
-            // sesuaikan tinggi setelah message muncul
+            let messageBox = parent.querySelector('.message-box');
+            if (!messageBox) {
+                messageBox = document.createElement('div');
+                messageBox.className = 'message-box';
+                form.parentNode.insertBefore(messageBox, form);
+            }
+            
+            messageBox.textContent = message;
+            messageBox.className = `message-box message-${type}`;
+            messageBox.style.display = 'block';
+            
             setWrapperHeight(parent);
 
             setTimeout(() => {
-                box.style.display = 'none';
-                setWrapperHeight(parent);
-            }, 3500);
+                messageBox.style.display = 'none';
+                setWrapperHeight(parent); 
+            }, 5000);
         }
 
-        // memastikan tinggi pas di resize (opsional)
-        window.addEventListener('resize', () => {
-            const active = formWrapper.classList.contains('slide-to-register') ? registerContent : loginContent;
-            setWrapperHeight(active);
-        });
-    })();
-</script>
+        function setupServerAutocomplete(inputId) {
+            const serverInput = document.getElementById(inputId);
+            let autocompleteList = null;
+            
+            serverInput.addEventListener('input', function() {
+                if (autocompleteList) {
+                    autocompleteList.remove();
+                    autocompleteList = null;
+                }
+                
+                const value = this.value.toUpperCase();
+                if (!value) return;
+                
+                const matches = servers.filter(server => 
+                    server.startsWith(value)
+                );
+                
+                if (matches.length === 0) return;
+                
+                autocompleteList = document.createElement('ul');
+                autocompleteList.className = 'autocomplete-list';
+                
+                matches.forEach(match => {
+                    const item = document.createElement('li');
+                    item.textContent = match;
+                    item.addEventListener('click', function() {
+                        serverInput.value = match;
+                        autocompleteList.remove();
+                        autocompleteList = null;
+                    });
+                    autocompleteList.appendChild(item);
+                });
+                
+                const inputParent = serverInput.closest('.input-group'); 
+                if (inputParent) {
+                    inputParent.style.position = 'relative';
+                    inputParent.appendChild(autocompleteList);
+                }
+            });
+            
+            document.addEventListener('click', function(e) {
+                if (autocompleteList && !serverInput.contains(e.target) && !autocompleteList.contains(e.target)) {
+                    autocompleteList.remove();
+                    autocompleteList = null;
+                }
+            });
+        }
+    </script>
 </body>
 </html>

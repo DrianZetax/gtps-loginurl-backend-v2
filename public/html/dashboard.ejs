@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GTPSID · tropical login</title>
+    <title>GTPSID · fresh green</title>
     <link rel="icon" href="https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/assets/images/growtopia.ico" />
     <!-- clean modern font + pixel accent -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Press+Start+2P&display=swap" rel="stylesheet">
@@ -62,18 +62,20 @@
             pointer-events: none;
         }
 
-        .fruit-icon {
-            font-size: 72px;
-            filter: drop-shadow(6px 10px 0 #0b3323);
-            margin-bottom: 20px;
-            transform: rotate(-4deg);
+        .brand-icon {
+            width: 80px;
+            height: 80px;
+            background: #dcfde7;
+            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; /* organic leaf shape */
+            box-shadow: 0 15px 0 #0b3323, 0 0 0 4px #bcf0cf;
+            margin-bottom: 30px;
         }
 
         .brand-panel h1 {
             font-family: 'Press Start 2P', cursive;
             font-size: 20px;
             line-height: 1.5;
-            color: #fbffb9;
+            color: #fbffd0;
             text-shadow: 0 3px 0 #0f4d2e, 0 5px 10px #1f3b2b;
             margin-bottom: 20px;
         }
@@ -90,12 +92,13 @@
             width: 100%;
         }
 
-        .brand-panel .leaf-badge {
+        .brand-panel .leaf-decoration {
             margin-top: 40px;
             display: flex;
             gap: 16px;
-            font-size: 28px;
-            opacity: 0.8;
+            font-size: 24px;
+            color: #c0f0cf;
+            letter-spacing: 6px;
         }
 
         /* RIGHT PANEL – slider area (fresh white / light green) */
@@ -342,15 +345,15 @@
 </head>
 <body>
     <div class="gt-card">
-        <!-- hijau segar panel kiri -->
+        <!-- hijau segar panel kiri tanpa emoji -->
         <div class="brand-panel">
-            <div class="fruit-icon">🥝🍃</div>
+            <div class="brand-icon"></div>
             <h1>GTPSID</h1>
             <div class="tagline">grow with nature</div>
-            <div class="leaf-badge">
-                <span>🌿</span><span>🍈</span><span>🌱</span>
+            <div class="leaf-decoration">
+                <span>⬩</span> <span>⬩</span> <span>⬩</span>
             </div>
-            <p style="margin-top: 30px; font-size: 15px; max-width: 220px; background: #18593b; padding: 8px 15px; border-radius: 60px; border: 1px solid #b2f0c2;">〝 100% organic growtopia 〞</p>
+            <p style="margin-top: 30px; font-size: 15px; max-width: 220px; background: #18593b; padding: 8px 15px; border-radius: 60px; border: 1px solid #b2f0c2;">organic growtopia</p>
         </div>
 
         <!-- form panel geser kanan -->
@@ -363,20 +366,20 @@
                         <h2>LOG IN</h2>
                         <form method="POST" action="/player/growid/login/validate" id="loginForm">
                             <div class="input-group">
-                                <input type="text" name="_token" id="loginServerInput" placeholder="🌿 server name *" required autocomplete="off">
+                                <input type="text" name="_token" id="loginServerInput" placeholder="server name *" required autocomplete="off">
                             </div>
                             <div class="input-group">
-                                <input type="text" name="growId" id="loginGrowId" placeholder="🐾 your GrowID *" required>
+                                <input type="text" name="growId" id="loginGrowId" placeholder="your GrowID *" required>
                             </div>
                             <div class="input-group">
-                                <input type="password" name="password" id="loginPassword" placeholder="🔒 password *" required>
+                                <input type="password" name="password" id="loginPassword" placeholder="password *" required>
                             </div>
-                            <span class="toggle-pwd" id="toggleLoginPassword">👁️ show password</span>
+                            <span class="toggle-pwd" id="toggleLoginPassword">show password</span>
                             <button type="submit" class="btn-primary">login</button>
                         </form>
                         <!-- switch & footer inside inner -->
                         <div class="switch-section">
-                            <p>🌱 new here?</p>
+                            <p>new here?</p>
                             <button type="button" class="btn-secondary" onclick="switchForm('register')">create account</button>
                             <div class="footer-note">© 2025 GTPSID · greenverse</div>
                         </div>
@@ -390,22 +393,22 @@
                         <h2>REGISTER</h2>
                         <form method="POST" action="/player/growid/login/validate" id="registerForm">
                             <div class="input-group">
-                                <input type="text" name="_token" id="registerServerInput" placeholder="🌿 server name *" required autocomplete="off">
+                                <input type="text" name="_token" id="registerServerInput" placeholder="server name *" required autocomplete="off">
                             </div>
                             <div class="input-group">
-                                <input type="text" name="growId" id="registerGrowId" placeholder="🐾 choose GrowID *" required>
+                                <input type="text" name="growId" id="registerGrowId" placeholder="choose GrowID *" required>
                             </div>
                             <div class="input-group">
-                                <input type="password" name="password" id="registerPassword" placeholder="🔒 password *" required>
+                                <input type="password" name="password" id="registerPassword" placeholder="password *" required>
                             </div>
                             <div class="input-group">
-                                <input type="password" name="confirmPassword" id="confirmPassword" placeholder="🔒 confirm *" required>
+                                <input type="password" name="confirmPassword" id="confirmPassword" placeholder="confirm password *" required>
                             </div>
-                            <span class="toggle-pwd" id="toggleRegisterPassword">👁️ show password</span>
+                            <span class="toggle-pwd" id="toggleRegisterPassword">show password</span>
                             <button type="submit" class="btn-primary">register</button>
                         </form>
                         <div class="switch-section">
-                            <p>🍃 already have account?</p>
+                            <p>already have account?</p>
                             <button type="button" class="btn-secondary" onclick="switchForm('login')">back to login</button>
                             <div class="footer-note">© 2025 GTPSID · greenverse</div>
                         </div>
@@ -455,8 +458,7 @@
             });
             document.getElementById('toggleRegisterPassword').addEventListener('click', function() {
                 toggleField('registerPassword', this);
-                toggleField('confirmPassword', this);  // also affects confirm, but same toggle text? keep simple: both changed together.
-                // improve: only toggle the two register fields
+                toggleField('confirmPassword', this);  // also affects confirm
             });
 
             function toggleField(fieldId, btn) {
@@ -464,10 +466,10 @@
                 if (!pwd) return;
                 if (pwd.type === 'password') {
                     pwd.type = 'text';
-                    btn.innerHTML = '🔒 hide password';
+                    btn.innerHTML = 'hide password';
                 } else {
                     pwd.type = 'password';
-                    btn.innerHTML = '👁️ show password';
+                    btn.innerHTML = 'show password';
                 }
             }
 
@@ -564,13 +566,12 @@
 
                 if (!server || !growId || !pwd) {
                     e.preventDefault();
-                    showMessage('🌱 all fields required!', 'error', 'loginCard');
+                    showMessage('all fields required!', 'error', 'loginCard');
                     return;
                 }
                 localStorage.setItem('growId', growId);
                 localStorage.setItem('lastServer', server);
                 console.log('login attempt', { server, growId });
-                // you can show success simulation if needed
             });
 
             // register submit
@@ -582,12 +583,12 @@
 
                 if (!server || !growId || !pwd || !confirm) {
                     e.preventDefault();
-                    showMessage('🌿 fill everything!', 'error', 'registerCard');
+                    showMessage('fill everything!', 'error', 'registerCard');
                     return;
                 }
                 if (pwd !== confirm) {
                     e.preventDefault();
-                    showMessage('🍃 passwords do not match', 'error', 'registerCard');
+                    showMessage('passwords do not match', 'error', 'registerCard');
                     return;
                 }
                 if (pwd.length < 4) {

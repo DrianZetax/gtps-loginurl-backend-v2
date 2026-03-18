@@ -31,14 +31,14 @@
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
-            background: #e6f0ea;  /* soft mint background */
+            background: #e6f0ea;
             border-radius: 48px 48px 40px 40px;
             box-shadow: 0 30px 40px -20px rgba(0, 40, 20, 0.6), 0 0 0 2px #98c0aa inset, 0 0 0 5px #f5fffa inset;
             overflow: hidden;
             transition: all 0.3s;
         }
 
-        /* LEFT PANEL — JUNGLE VIBE (green dominant) */
+        /* LEFT PANEL — hijau dengan logo growtopia.jpg (pick gitar) */
         .brand-panel {
             flex: 1 1 280px;
             background: linear-gradient(145deg, #1e6b4c, #134532);
@@ -62,13 +62,47 @@
             pointer-events: none;
         }
 
-        .brand-icon {
-            width: 80px;
-            height: 80px;
-            background: #dcfde7;
-            border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; /* organic leaf shape */
-            box-shadow: 0 15px 0 #0b3323, 0 0 0 4px #bcf0cf;
-            margin-bottom: 30px;
+        /* logo growtopia.jpg (pick gitar) - menggunakan image placeholder */
+        .growtopia-logo-img {
+            width: 110px;
+            height: 110px;
+            background: #f4f5f0;
+            border-radius: 20px 40px 20px 40px;  /* kesan pick */
+            transform: rotate(5deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            box-shadow: 0 12px 0 #0b3323, 0 0 0 4px #bef5c1;
+            border: 2px solid #c8f7d5;
+            overflow: hidden; /* supaya gambar tidak keluar */
+        }
+        
+        /* sebagai ganti gambar external, kita buat ilustrasi mirip growtopia pick */
+        .growtopia-logo-img .pick-art {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, #97c8a8, #c0f0cf);
+            clip-path: polygon(25% 0%, 75% 0%, 100% 30%, 50% 100%, 0% 30%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 32px;
+            color: #185f31;
+            text-shadow: 2px 2px 0 #a5e0b5;
+            font-weight: bold;
+            transform: rotate(-5deg);
+        }
+        .pick-art span {
+            font-size: 12px;
+            margin-top: 10px;
+            display: block;
+        }
+        /* teks kecil dalam logo */
+        .pick-art div {
+            text-align: center;
+            line-height: 1.2;
         }
 
         .brand-panel h1 {
@@ -77,23 +111,12 @@
             line-height: 1.5;
             color: #fbffd0;
             text-shadow: 0 3px 0 #0f4d2e, 0 5px 10px #1f3b2b;
-            margin-bottom: 20px;
+            margin-bottom: 5px;
         }
 
-        .brand-panel .tagline {
-            font-size: 18px;
-            font-weight: 500;
-            background: #266e4f;
-            padding: 12px 20px;
-            border-radius: 100px;
-            box-shadow: 0 6px 0 #0b3825;
-            color: #f0ffe6;
-            border: 2px solid #b9f3cf;
-            width: 100%;
-        }
-
-        .brand-panel .leaf-decoration {
-            margin-top: 40px;
+        /* dekorasi minimal */
+        .leaf-decoration {
+            margin-top: 30px;
             display: flex;
             gap: 16px;
             font-size: 24px;
@@ -345,15 +368,18 @@
 </head>
 <body>
     <div class="gt-card">
-        <!-- hijau segar panel kiri tanpa emoji -->
+        <!-- panel kiri dengan logo growtopia.jpg (gambar pick gitar) di atas GTPSID -->
         <div class="brand-panel">
-            <div class="brand-icon"></div>
+            <div class="growtopia-logo-img">
+                <div class="pick-art">
+                    <div>G<br><span>pick</span></div>
+                </div>
+            </div>
             <h1>GTPSID</h1>
-            <div class="tagline">grow with nature</div>
+            <!-- tidak ada teks tambahan -->
             <div class="leaf-decoration">
                 <span>⬩</span> <span>⬩</span> <span>⬩</span>
             </div>
-            <p style="margin-top: 30px; font-size: 15px; max-width: 220px; background: #18593b; padding: 8px 15px; border-radius: 60px; border: 1px solid #b2f0c2;">organic growtopia</p>
         </div>
 
         <!-- form panel geser kanan -->
@@ -381,7 +407,7 @@
                         <div class="switch-section">
                             <p>new here?</p>
                             <button type="button" class="btn-secondary" onclick="switchForm('register')">create account</button>
-                            <div class="footer-note">© 2025 GTPSID · greenverse</div>
+                            <div class="footer-note">© 2025 GTPSID</div>
                         </div>
                     </div>
                 </div>
@@ -410,7 +436,7 @@
                         <div class="switch-section">
                             <p>already have account?</p>
                             <button type="button" class="btn-secondary" onclick="switchForm('login')">back to login</button>
-                            <div class="footer-note">© 2025 GTPSID · greenverse</div>
+                            <div class="footer-note">© 2025 GTPSID</div>
                         </div>
                     </div>
                 </div>

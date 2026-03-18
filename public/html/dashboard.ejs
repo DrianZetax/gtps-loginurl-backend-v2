@@ -3,404 +3,353 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>GTPSID · fresh green</title>
+    <title>GTPSID Login - Pixel Style</title>
     <link rel="icon" href="https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/assets/images/growtopia.ico" />
-    <!-- clean modern font + pixel accent -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    
     <style>
-        /* ... (CSS Anda tetap sama persis, tidak ada perubahan) ... */
+        /* [GAYA UMUM & LAYOUT] */
         * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
         }
 
-        body {
+        html, body {
+            height: auto; 
             min-height: 100vh;
-            background: radial-gradient(circle at 10% 30%, #1b4d3d, #0f2f24);
-            font-family: 'Inter', system-ui, sans-serif;
+            background: linear-gradient(135deg, #1a2a3a 0%, #0d1b2a 100%);
+            color: #333;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 24px;
+            overflow-y: auto;
+            padding: 20px;
         }
 
-        /* main card – fresh green gradients */
-        .gt-card {
-            max-width: 1000px;
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            background: #e6f0ea;
-            border-radius: 48px 48px 40px 40px;
-            box-shadow: 0 30px 40px -20px rgba(0, 40, 20, 0.6), 0 0 0 2px #98c0aa inset, 0 0 0 5px #f5fffa inset;
-            overflow: hidden;
-            transition: all 0.3s;
-        }
-
-        /* LEFT PANEL — hijau dengan LOGO GROWTOPIA DARI URL */
-        .brand-panel {
-            flex: 1 1 280px;
-            background: linear-gradient(145deg, #1e6b4c, #134532);
-            padding: 3rem 2rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: #f1fff0;
-            position: relative;
-            border-right: 4px solid #b3e6c9;
-            box-shadow: inset 0 0 30px #b7eeca40;
-        }
-
-        .brand-panel::after {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: repeating-linear-gradient(45deg, #fff1ba0a 0px, #fff1ba0a 12px, transparent 12px, transparent 24px);
-            pointer-events: none;
-        }
-
-        .growtopia-logo-img {
-            width: 140px;
-            height: 140px;
-            margin-bottom: 25px;
-            background: transparent;
-            border: none;
-            box-shadow: none;
-            overflow: hidden;
-            transition: transform 0.2s ease;
-        }
-        .growtopia-logo-img:hover {
-            transform: scale(1.03);
-        }
-
-        .growtopia-logo-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            display: block;
-        }
-
-        .brand-panel h1 {
+        .pixel-font {
             font-family: 'Press Start 2P', cursive;
-            font-size: 20px;
-            line-height: 1.5;
-            color: #fbffd0;
-            text-shadow: 0 3px 0 #0f4d2e, 0 5px 10px #1f3b2b;
-            margin-bottom: 5px;
+            text-shadow: 2px 2px #000;
         }
 
-        .leaf-decoration {
-            margin-top: 30px;
-            display: flex;
-            gap: 16px;
-            font-size: 24px;
-            color: #c0f0cf;
-            letter-spacing: 6px;
-        }
-
-        /* RIGHT PANEL – slider area */
-        .form-panel {
-            flex: 2 1 400px;
-            background: #effbf3;
-            backdrop-filter: blur(2px);
-            padding: 2.8rem 2.5rem;
-            position: relative;
-            overflow: hidden;
-            box-shadow: inset 0 0 0 2px #d1f0dd;
-        }
-
-        .form-slider {
-            position: relative;
-            min-height: 480px;
-            transition: height 0.45s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        .form-card {
-            position: absolute;
-            width: 100%;
-            left: 0;
-            top: 0;
-            transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.3s, visibility 0.3s;
-            background: transparent;
+        .main-container {
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding: 0.8rem 0 2rem 0;
+            width: 100%;
+            max-width: 650px; 
+            min-height: 600px;
+            background: linear-gradient(135deg, #1e3c5a 0%, #2a4d6e 50%, #1a2a3a 100%);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 5px solid #4a9de3;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
         }
 
-        .form-inner {
+        .visual-section {
+            background: linear-gradient(135deg, #4a9de3 0%, #2a4d6e 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 30px 30px;
+            color: #fff;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+        .visual-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05) 5px, transparent 5px, transparent 10px);
+            opacity: 0.5;
+        }
+        .visual-section h1 { font-size: 20px; margin-bottom: 5px; font-weight: 400; color: #e8f4fd; }
+        .visual-section h2 { font-size: 32px; margin-bottom: 20px; font-weight: 700; color: #ffd166; text-shadow: 4px 4px #000; }
+        .visual-section p { font-size: 14px; line-height: 1.6; max-width: 400px; opacity: 0.9; text-shadow: 0 1px 3px rgba(0,0,0,0.2); margin-top: 10px; }
+        .icon-container { width: 70px; height: 70px; background: #fff; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); border: 3px solid #1a2a3a; }
+        .icon-container::before { content: '👾'; font-size: 36px; }
+
+        /* Wrapper untuk Animasi Geser Form */
+        .form-wrapper {
+            position: relative;
+            overflow: hidden;
+            flex-grow: 1;
+            padding: 0 40px 40px; 
+            background: #1a2a3a;
+            transition: height 0.5s ease-in-out; 
+            min-height: 400px; 
+        }
+
+        /* Form Content (Form yang akan digeser) */
+        .form-container {
             width: 100%;
-            max-width: 360px;
+            transition: transform 0.5s ease-in-out, opacity 0.5s, visibility 0.5s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: absolute; 
+            top: 0;
+            left: 0;
+            padding: 40px 0;
+        }
+
+        /* Kontainer Utama Form (Judul + Input) */
+        .form-main-content {
+            width: 100%;
+            max-width: 400px;
             display: flex;
             flex-direction: column;
             align-items: stretch;
         }
 
-        #loginCard {
-            transform: translateX(0);
-            opacity: 1;
-            visibility: visible;
-        }
-        #registerCard {
-            transform: translateX(110%);
-            opacity: 0;
+        /* Posisi default Register (Tersembunyi di kanan) */
+        #registerFormContent {
+            transform: translateX(100%);
             visibility: hidden;
+            opacity: 0;
         }
 
-        .form-slider.show-register #loginCard {
-            transform: translateX(-110%);
-            opacity: 0;
-            visibility: hidden;
-        }
-        .form-slider.show-register #registerCard {
+        /* Posisi default Login (Terlihat) */
+        #loginFormContent {
             transform: translateX(0);
-            opacity: 1;
             visibility: visible;
+            opacity: 1;
         }
-
-        .form-inner h3 {
-            font-size: 14px;
-            letter-spacing: 1.5px;
-            color: #1f704c;
-            margin-bottom: 5px;
-            text-transform: uppercase;
+        
+        /* === ANIMASI GESER DAN VISIBILITAS FORM === */
+        .form-wrapper.slide-to-register #loginFormContent {
+            transform: translateX(-100%);
+            visibility: hidden;
+            opacity: 0;
         }
-        .form-inner h2 {
-            font-family: 'Press Start 2P', cursive;
-            font-size: 22px;
-            color: #1e4f36;
-            margin-bottom: 28px;
-            text-shadow: 3px 3px 0 #b5e3c4;
-            word-break: break-word;
+        .form-wrapper.slide-to-register #registerFormContent {
+            transform: translateX(0);
+            visibility: visible;
+            opacity: 1;
         }
+        
+        .form-wrapper.slide-to-login #loginFormContent {
+            transform: translateX(0);
+            visibility: visible;
+            opacity: 1;
+        }
+        .form-wrapper.slide-to-login #registerFormContent {
+            transform: translateX(100%);
+            visibility: hidden;
+            opacity: 0;
+        }
+        
+        /* [GAYA ELEMEN LAINNYA] */
+        .form-title { 
+            margin-bottom: 20px; 
+            text-align: center;
+        }
+        .form-title h1 { font-size: 18px; color: #a8c0d0; }
+        .form-title h2 { font-size: 24px; color: #4a9de3; }
 
         .input-group {
-            margin-bottom: 16px;
-            position: relative;
-        }
-        .input-group input {
-            width: 100%;
-            background: #ffffff;
-            border: 2.5px solid #9ac7b0;
-            border-radius: 30px;
-            padding: 14px 20px;
-            font-size: 16px;
-            font-weight: 500;
-            color: #114d31;
-            outline: none;
-            transition: all 0.2s;
-            box-shadow: 0 5px 0 #c0e0cd;
-        }
-        .input-group input:focus {
-            border-color: #1d8e5a;
-            box-shadow: 0 5px 0 #469e70, 0 0 0 4px #dcfce8;
-        }
-        .input-group input::placeholder {
-            color: #719b82;
-            font-weight: 400;
-            opacity: 0.8;
+            position: relative; 
+            margin-bottom: 15px; 
         }
 
-        .toggle-pwd {
-            font-size: 14px;
-            font-weight: 600;
-            color: #267a50;
-            margin: 8px 0 14px 10px;
-            display: inline-block;
-            cursor: pointer;
-            background: #dcf5e6;
-            padding: 5px 15px;
-            border-radius: 50px;
-            border: 1.5px solid #7ebe9a;
-            transition: 0.15s;
-        }
-        .toggle-pwd:hover {
-            background: #bef5d8;
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 16px; 
+            background: #2a4d6e;
+            color: #e8f4fd;
+            border: 2px solid #4a9de3;
+            border-radius: 8px;
+            margin-bottom: 0; 
         }
 
-        .btn-primary {
+        button {
             width: 100%;
-            background: #269961;
-            border: none;
-            border-radius: 40px;
-            padding: 16px 20px;
-            font-family: 'Press Start 2P', cursive;
+            padding: 15px;
+            border-radius: 8px;
             font-size: 16px;
-            color: #f2ffe6;
-            text-transform: uppercase;
+            margin-top: 10px;
             letter-spacing: 1px;
-            box-shadow: 0 7px 0 #115e38, 0 10px 15px rgba(0, 30, 10, 0.3);
-            cursor: pointer;
-            transition: all 0.1s ease;
-            border: 2px solid #bef5c1;
-            margin-top: 8px;
-        }
-        .btn-primary:active {
-            transform: translateY(5px);
-            box-shadow: 0 2px 0 #115e38, 0 8px 15px rgba(0, 30, 10, 0.2);
+            text-transform: uppercase;
         }
 
         .btn-secondary {
-            background: transparent;
-            border: 3px solid #278f5a;
-            border-radius: 40px;
-            padding: 12px 24px;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 13px;
-            color: #1d7548;
-            box-shadow: 0 4px 0 #a5d6b8;
-            cursor: pointer;
-            transition: 0.1s;
-            width: 100%;
-            margin-top: 8px;
-            background: #e6ffe6;
+            background: #2a4d6e;
+            color: #e8f4fd;
+            border: 2px solid #1a2a3a;
+            font-size: 14px;
+            padding: 12px;
         }
-        .btn-secondary:active {
-            transform: translateY(4px);
-            box-shadow: none;
+
+        .btn-primary {
+            background: #ffd166;
+            color: #1a2a3a;
+            border: 2px solid #ffbc3b;
+            font-weight: bold;
+            box-shadow: 0 4px 0 #cc9a2e;
+            transition: all 0.1s ease;
+        }
+        .btn-primary:active {
+            box-shadow: 0 1px 0 #cc9a30;
+            transform: translateY(3px);
+        }
+
+        .toggle-password {
+            font-size: 12px;
+            color: #4a9de3;
+            cursor: pointer;
+            margin-bottom: 15px; 
+            display: inline-block;
         }
 
         .switch-section {
-            margin-top: 35px;
-            text-align: center;
-            border-top: 2px dashed #9fcbb2;
-            padding-top: 25px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #4a7ba6;
+            width: 100%;
+            max-width: 400px;
         }
         .switch-section p {
-            color: #0f412c;
-            font-weight: 600;
-            font-size: 15px;
-            margin-bottom: 8px;
-        }
-        .footer-note {
-            margin-top: 30px;
-            font-size: 12px;
-            color: #47755b;
-            font-weight: 500;
-        }
-
-        .message-box {
-            background: #f1fff0;
-            border-radius: 50px;
-            padding: 12px 18px;
-            margin-bottom: 20px;
             text-align: center;
-            font-weight: 600;
-            border-left: 6px solid #1f8f5a;
-            color: #185f3a;
-            display: none;
-            border: 2px solid #b1e6c0;
         }
-        .message-error {
-            border-left-color: #c73b3b;
-            background: #ffe9e9;
-            color: #a12424;
+        
+        .footer {
+            margin-top: 20px;
+            font-size: 11px;
+            text-align: center;
         }
 
+        /* Style untuk message box - DIPERBAIKI */
+        .message-box { 
+            padding: 12px; 
+            border-radius: 6px; 
+            margin-bottom: 15px; 
+            text-align: center; 
+            font-size: 14px; 
+            display: none; 
+            background-color: #ffd166;
+            color: #1a2a3a;
+            border: 2px solid #ffbc3b;
+        }
+        
+        .message-error {
+            background-color: #ff6b6b;
+            color: white;
+            border-color: #ff3b3b;
+        }
+        
+        /* Style untuk autocomplete */
         .autocomplete-list {
             position: absolute;
-            background: white;
-            border: 2px solid #7ebc99;
-            border-radius: 24px;
-            list-style: none;
-            width: 100%;
-            z-index: 99;
-            top: calc(100% + 4px);
+            top: 100%;
             left: 0;
-            overflow: hidden;
-            box-shadow: 0 15px 25px -12px #1e4d33;
+            right: 0;
+            background: #2a4d6e;
+            border: 2px solid #4a9de3;
+            border-radius: 0 0 8px 8px;
+            list-style: none;
+            z-index: 1000;
+            max-height: 200px;
+            overflow-y: auto;
         }
+        
         .autocomplete-list li {
-            padding: 12px 22px;
+            padding: 10px 15px;
+            color: #e8f4fd;
             cursor: pointer;
-            font-weight: 600;
-            color: #154d30;
-            background: #effff0;
-            border-bottom: 1px solid #b3e3c2;
-            transition: 0.1s;
+            border-bottom: 1px solid #4a9de3;
         }
+        
         .autocomplete-list li:hover {
-            background: #b7f2cf;
+            background: #4a9de3;
         }
-
-        @media (max-width: 700px) {
-            .gt-card { flex-direction: column; border-radius: 36px; }
-            .brand-panel { border-right: none; border-bottom: 4px solid #a5e0bd; }
+        
+        .autocomplete-list li:last-child {
+            border-bottom: none;
         }
     </style>
 </head>
 <body>
-    <div class="gt-card">
-        <!-- panel kiri (logo) -->
-        <div class="brand-panel">
-            <div class="growtopia-logo-img">
-                <img src="https://euphonious-squirrel-375e9c.netlify.app/grotopia.jpg" alt="Growtopia Logo" onerror="this.style.display='none'; this.parentElement.style.background='#d1f7d9'; this.parentElement.innerHTML='<span style=\'display: flex; align-items: center; justify-content: center; height: 100%; font-family: Press Start 2P; font-size: 24px; color: #1e4f36;\'>GT</span>';">
-            </div>
-            <h1>GTPSID</h1>
-            <div class="leaf-decoration">
-                <span>⬩</span> <span>⬩</span> <span>⬩</span>
-            </div>
+
+    <div class="main-container">
+        <div class="visual-section">
+            <div class="icon-container pixel-font"></div>
+            <h1 class="pixel-font">Welcome to</h1>
+            <h2 class="pixel-font">GTPSID</h2>
+            <p>Connect with thousands of players worldwide. Join the adventure in the world of Growtopia and explore endless possibilities!</p>
         </div>
 
-        <!-- form panel kanan -->
-        <div class="form-panel">
-            <div class="form-slider" id="formSlider">
-                <!-- LOGIN CARD -->
-                <div class="form-card" id="loginCard">
-                    <div class="form-inner">
-                        <h3>welcome back</h3>
-                        <h2>LOG IN</h2>
-                        <form method="POST" action="/player/growid/login/validate" id="loginForm">
-                            <div class="input-group">
-                                <input type="text" name="_token" id="loginServerInput" placeholder="server name *" required autocomplete="off">
-                            </div>
-                            <div class="input-group">
-                                <input type="text" name="growId" id="loginGrowId" placeholder="your GrowID *" required>
-                            </div>
-                            <div class="input-group">
-                                <input type="password" name="password" id="loginPassword" placeholder="password *" required>
-                            </div>
-                            <span class="toggle-pwd" id="toggleLoginPassword">show password</span>
-                            <button type="submit" class="btn-primary">login</button>
-                        </form>
-                        <div class="switch-section">
-                            <p>new here?</p>
-                            <button type="button" class="btn-secondary" onclick="switchForm('register')">create account</button>
-                            <div class="footer-note">© 2025 GTPSID</div>
+        <div class="form-wrapper" id="formWrapper">
+            <!-- LOGIN FORM -->
+            <div class="form-container" id="loginFormContent">
+                <div class="form-main-content">
+                    <div class="form-title">
+                        <h1>Login to Your</h1>
+                        <h2 class="pixel-font">Account</h2>
+                    </div>
+                    
+                    <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="loginForm">
+                        <div class="input-group">
+                            <input type="text" name="_token" id="loginServerInput" placeholder="Server Name *" required />
                         </div>
+                        <div class="input-group">
+                            <input type="text" name="growId" id="loginGrowId" placeholder="Your GrowID *" required />
+                        </div>
+                        <div class="input-group">
+                            <input type="password" name="password" id="loginPassword" placeholder="Your Password *" required />
+                        </div>
+                        
+                        <div class="toggle-password" id="toggleLoginPassword">Show Password</div>
+                        
+                        <button type="submit" name="action" value="Login" class="btn-primary pixel-font">Login</button>
+                    </form>
+                    
+                    <div class="switch-section">
+                        <p>Don't have an account?</p>
+                        <button type="button" class="btn-secondary pixel-font" onclick="switchForm('register')">Create New Account</button>
+                        <div class="footer">© 2025 GTPSID. All rights reserved.</div>
                     </div>
                 </div>
+            </div>
 
-                <!-- REGISTER CARD -->
-                <div class="form-card" id="registerCard">
-                    <div class="form-inner">
-                        <h3>join the jungle</h3>
-                        <h2>REGISTER</h2>
-                        <form method="POST" action="/player/growid/login/validate" id="registerForm">
-                            <div class="input-group">
-                                <input type="text" name="_token" id="registerServerInput" placeholder="server name *" required autocomplete="off">
-                            </div>
-                            <div class="input-group">
-                                <input type="text" name="growId" id="registerGrowId" placeholder="choose GrowID *" required>
-                            </div>
-                            <div class="input-group">
-                                <input type="password" name="password" id="registerPassword" placeholder="password *" required>
-                            </div>
-                            <div class="input-group">
-                                <input type="password" name="confirmPassword" id="confirmPassword" placeholder="confirm password *" required>
-                            </div>
-                            <span class="toggle-pwd" id="toggleRegisterPassword">show password</span>
-                            <button type="submit" class="btn-primary">register</button>
-                        </form>
-                        <div class="switch-section">
-                            <p>already have account?</p>
-                            <button type="button" class="btn-secondary" onclick="switchForm('login')">back to login</button>
-                            <div class="footer-note">© 2025 GTPSID</div>
+            <!-- REGISTER FORM -->
+            <div class="form-container" id="registerFormContent">
+                <div class="form-main-content">
+                    <div class="form-title">
+                        <h1>Create New</h1>
+                        <h2 class="pixel-font">Account</h2>
+                    </div>
+                    
+                    <form method="POST" action="/player/growid/login/validate" autocomplete="off" id="registerForm">
+                        <div class="input-group">
+                            <input type="text" name="_token" id="registerServerInput" placeholder="Server Name *" required />
                         </div>
+                        <div class="input-group">
+                            <input type="text" name="growId" id="registerGrowId" placeholder="Choose GrowID *" required />
+                        </div>
+                        <div class="input-group">
+                            <input type="password" name="password" id="registerPassword" placeholder="Choose Password *" required />
+                        </div>
+                        <div class="input-group">
+                            <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password *" required />
+                        </div>
+                        
+                        <div class="toggle-password" id="toggleRegisterPassword">Show Password</div>
+                        
+                        <button type="submit" name="action" value="Register" class="btn-primary pixel-font">Register</button>
+                    </form>
+                    
+                    <div class="switch-section">
+                        <p>Already have an account?</p>
+                        <button type="button" class="btn-secondary pixel-font" onclick="switchForm('login')">Back to Login</button>
+                        <div class="footer">© 2025 GTPSID. All rights reserved.</div>
                     </div>
                 </div>
             </div>
@@ -408,199 +357,224 @@
     </div>
 
     <script>
-        // === DEFINISIKAN FUNGSI GLOBAL DI SINI, SEBELUM EVENT LISTENER ===
-        function showMessage(msg, type, parentId) {
-            const parent = document.getElementById(parentId);
-            if (!parent) return;
-            const form = parent.querySelector('form');
-            if (!form) return;
-            let box = parent.querySelector('.message-box');
-            if (!box) {
-                box = document.createElement('div');
-                box.className = 'message-box';
-                form.parentNode.insertBefore(box, form);
-            }
-            box.textContent = msg;
-            box.className = `message-box ${type === 'error' ? 'message-error' : ''}`;
-            box.style.display = 'block';
+        // DAFTAR SERVER
+        const servers = [
+            "STYLOPS", "CHINAPS", "COASTPS", "SLOWLYPS", "NEXPS", "TESPS", "IDLEPS"
+        ];
+        
+        // ELEMEN DOM
+        const formWrapper = document.getElementById('formWrapper');
+        const loginContent = document.getElementById('loginFormContent');
+        const registerContent = document.getElementById('registerFormContent');
 
-            // setSliderHeight perlu diakses, pastikan slider dan setSliderHeight tersedia nanti
-            if (window.setSliderHeight) {
-                window.setSliderHeight(parent.closest('.form-card'));
+        // ==================== FUNGSI-FUNGSI ====================
+        
+        // Fungsi showMessage - DIPINDAHKAN KE ATAS
+        function showMessage(message, type, parentId) {
+            console.log('showMessage dipanggil:', message, type, parentId); // Untuk debugging
+            
+            const parent = document.getElementById(parentId);
+            if (!parent) {
+                console.error('Parent tidak ditemukan:', parentId);
+                return;
             }
+
+            const form = parent.querySelector('form');
+            if (!form) {
+                console.error('Form tidak ditemukan di parent:', parentId);
+                return;
+            }
+
+            let messageBox = parent.querySelector('.message-box');
+            if (!messageBox) {
+                messageBox = document.createElement('div');
+                messageBox.className = 'message-box';
+                form.parentNode.insertBefore(messageBox, form);
+            }
+            
+            messageBox.textContent = message;
+            messageBox.className = `message-box ${type === 'error' ? 'message-error' : ''}`;
+            messageBox.style.display = 'block';
+            
+            setWrapperHeight(parent);
 
             setTimeout(() => {
-                box.style.display = 'none';
-                if (window.setSliderHeight) {
-                    window.setSliderHeight(parent.closest('.form-card'));
+                messageBox.style.display = 'none';
+                setWrapperHeight(parent); 
+            }, 5000);
+        }
+        
+        // Fungsi untuk mengatur tinggi wrapper
+        function setWrapperHeight(activeForm) {
+            setTimeout(() => {
+                if (activeForm) {
+                    const height = activeForm.scrollHeight; 
+                    formWrapper.style.height = `${height}px`;
                 }
-            }, 4000);
+            }, 50); 
         }
 
-        (function() {
-            // Server list
-            const servers = ["STYLOPS", "CHINAPS", "COASTPS", "SLOWLYPS", "NEXPS", "TESPS", "IDLEPS"];
+        // Fungsi switch form
+        function switchForm(targetForm) {
+            const nextActiveForm = targetForm === 'register' ? registerContent : loginContent;
+            
+            setWrapperHeight(nextActiveForm);
+            formWrapper.classList.remove('slide-to-login', 'slide-to-register');
 
-            const slider = document.getElementById('formSlider');
-            const loginCard = document.getElementById('loginCard');
-            const registerCard = document.getElementById('registerCard');
-
-            // ——— Helper: adjust slider height to active card (dijadikan global)
-            function setSliderHeight(activeCard) {
-                setTimeout(() => {
-                    if (activeCard) {
-                        const h = activeCard.scrollHeight;
-                        slider.style.height = h + 'px';
-                    }
-                }, 20);
+            if (targetForm === 'register') {
+                formWrapper.classList.add('slide-to-register');
+            } else if (targetForm === 'login') {
+                formWrapper.classList.add('slide-to-login');
             }
-            // Simpan fungsi ke window agar bisa dipakai oleh showMessage
-            window.setSliderHeight = setSliderHeight;
-
-            // initial height (login)
-            setSliderHeight(loginCard);
-
-            // switch function (global)
-            window.switchForm = function(target) {
-                if (target === 'register') {
-                    slider.classList.add('show-register');
-                    slider.classList.remove('show-login');
-                    setSliderHeight(registerCard);
-                } else {
-                    slider.classList.remove('show-register');
-                    setSliderHeight(loginCard);
-                }
-            };
-
-            // toggle password
-            document.getElementById('toggleLoginPassword').addEventListener('click', function() {
-                toggleField('loginPassword', this);
-            });
-            document.getElementById('toggleRegisterPassword').addEventListener('click', function() {
-                toggleField('registerPassword', this);
-                toggleField('confirmPassword', this);
-            });
-
-            function toggleField(fieldId, btn) {
-                const pwd = document.getElementById(fieldId);
-                if (!pwd) return;
-                if (pwd.type === 'password') {
-                    pwd.type = 'text';
-                    btn.innerHTML = 'hide password';
-                } else {
-                    pwd.type = 'password';
-                    btn.innerHTML = 'show password';
-                }
+        }
+        
+        // Fungsi toggle password
+        function togglePassword(passwordId, toggleId) {
+            const pwd = document.getElementById(passwordId);
+            const toggle = document.getElementById(toggleId);
+            if (pwd.type === "password") {
+                pwd.type = "text";
+                toggle.textContent = "Hide Password";
+            } else {
+                pwd.type = "password";
+                toggle.textContent = "Show Password";
             }
+        }
 
-            // autocomplete server
-            function setupAutoComplete(inputId) {
-                const input = document.getElementById(inputId);
-                if (!input) return;
-                let listBox = null;
-
-                input.addEventListener('input', function() {
-                    if (listBox) { listBox.remove(); listBox = null; }
-                    const val = this.value.toUpperCase();
-                    if (!val) return;
-
-                    const matches = servers.filter(s => s.startsWith(val));
-                    if (matches.length === 0) return;
-
-                    listBox = document.createElement('ul');
-                    listBox.className = 'autocomplete-list';
-                    matches.forEach(m => {
-                        const li = document.createElement('li');
-                        li.textContent = m;
-                        li.onclick = () => {
-                            input.value = m;
-                            listBox?.remove();
-                            listBox = null;
-                        };
-                        listBox.appendChild(li);
+        // Fungsi setup autocomplete
+        function setupServerAutocomplete(inputId) {
+            const serverInput = document.getElementById(inputId);
+            let autocompleteList = null;
+            
+            serverInput.addEventListener('input', function() {
+                if (autocompleteList) {
+                    autocompleteList.remove();
+                    autocompleteList = null;
+                }
+                
+                const value = this.value.toUpperCase();
+                if (!value) return;
+                
+                const matches = servers.filter(server => server.startsWith(value));
+                
+                if (matches.length === 0) return;
+                
+                autocompleteList = document.createElement('ul');
+                autocompleteList.className = 'autocomplete-list';
+                
+                matches.forEach(match => {
+                    const item = document.createElement('li');
+                    item.textContent = match;
+                    item.addEventListener('click', function() {
+                        serverInput.value = match;
+                        autocompleteList.remove();
+                        autocompleteList = null;
                     });
-
-                    const parent = input.closest('.input-group');
-                    if (parent) {
-                        parent.style.position = 'relative';
-                        parent.appendChild(listBox);
-                    }
+                    autocompleteList.appendChild(item);
                 });
+                
+                const inputParent = serverInput.closest('.input-group'); 
+                if (inputParent) {
+                    inputParent.style.position = 'relative';
+                    inputParent.appendChild(autocompleteList);
+                }
+            });
+            
+            document.addEventListener('click', function(e) {
+                if (autocompleteList && !serverInput.contains(e.target) && !autocompleteList.contains(e.target)) {
+                    autocompleteList.remove();
+                    autocompleteList = null;
+                }
+            });
+        }
 
-                document.addEventListener('click', (e) => {
-                    if (listBox && !input.contains(e.target) && !listBox.contains(e.target)) {
-                        listBox.remove();
-                        listBox = null;
-                    }
-                });
+        // ==================== EVENT LISTENERS ====================
+        
+        // DOM Content Loaded
+        document.addEventListener("DOMContentLoaded", () => {
+            console.log("DOM Content Loaded - Memulai inisialisasi");
+            
+            // Load data dari localStorage
+            const growId = localStorage.getItem("growId");
+            const lastServer = localStorage.getItem("lastServer");
+            
+            if (growId) {
+                document.getElementById("loginGrowId").value = growId;
+                document.getElementById("registerGrowId").value = growId;
             }
+            if (lastServer) {
+                document.getElementById("loginServerInput").value = lastServer;
+                document.getElementById("registerServerInput").value = lastServer;
+            }
+            
+            // Setup autocomplete
+            setupServerAutocomplete('loginServerInput');
+            setupServerAutocomplete('registerServerInput');
 
-            // localStorage prefill & events
-            document.addEventListener('DOMContentLoaded', function() {
-                const savedGrowId = localStorage.getItem('growId');
-                const savedServer = localStorage.getItem('lastServer');
+            // Atur tinggi awal form wrapper
+            setWrapperHeight(loginContent);
+        });
+        
+        // Toggle Password Listeners
+        document.getElementById("toggleLoginPassword").addEventListener("click", () => {
+            togglePassword('loginPassword', 'toggleLoginPassword');
+        });
 
-                if (savedGrowId) {
-                    document.getElementById('loginGrowId').value = savedGrowId;
-                    document.getElementById('registerGrowId').value = savedGrowId;
-                }
-                if (savedServer) {
-                    document.getElementById('loginServerInput').value = savedServer;
-                    document.getElementById('registerServerInput').value = savedServer;
-                }
+        document.getElementById("toggleRegisterPassword").addEventListener("click", () => {
+            togglePassword('registerPassword', 'toggleRegisterPassword');
+            togglePassword('confirmPassword', 'toggleRegisterPassword');
+        });
 
-                setupAutoComplete('loginServerInput');
-                setupAutoComplete('registerServerInput');
-            });
+        // Login Form Submit Handler
+        document.getElementById("loginForm").addEventListener("submit", (e) => {
+            console.log("Login form submitted"); // Untuk debugging
+            
+            const growId = document.getElementById("loginGrowId").value;
+            const server = document.getElementById('loginServerInput').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!server || !growId || !password) {
+                e.preventDefault();
+                showMessage('Please fill all required fields!', 'error', 'loginFormContent');
+                return;
+            }
+            
+            localStorage.setItem("growId", growId);
+            localStorage.setItem("lastServer", server);
+            console.log("Login submitted:", { server, growId });
+        });
 
-            // login submit (showMessage sudah global)
-            document.getElementById('loginForm')?.addEventListener('submit', function(e) {
-                const server = document.getElementById('loginServerInput').value.trim();
-                const growId = document.getElementById('loginGrowId').value.trim();
-                const pwd = document.getElementById('loginPassword').value;
-
-                if (!server || !growId || !pwd) {
-                    e.preventDefault();
-                    showMessage('all fields required!', 'error', 'loginCard');
-                    return;
-                }
-                localStorage.setItem('growId', growId);
-                localStorage.setItem('lastServer', server);
-                console.log('login attempt', { server, growId });
-            });
-
-            // register submit
-            document.getElementById('registerForm')?.addEventListener('submit', function(e) {
-                const server = document.getElementById('registerServerInput').value.trim();
-                const growId = document.getElementById('registerGrowId').value.trim();
-                const pwd = document.getElementById('registerPassword').value;
-                const confirm = document.getElementById('confirmPassword').value;
-
-                if (!server || !growId || !pwd || !confirm) {
-                    e.preventDefault();
-                    showMessage('fill everything!', 'error', 'registerCard');
-                    return;
-                }
-                if (pwd !== confirm) {
-                    e.preventDefault();
-                    showMessage('passwords do not match', 'error', 'registerCard');
-                    return;
-                }
-                if (pwd.length < 4) {
-                    e.preventDefault();
-                    showMessage('password min 4 characters', 'error', 'registerCard');
-                    return;
-                }
-                localStorage.setItem('growId', growId);
-                localStorage.setItem('lastServer', server);
-                console.log('register', { server, growId });
-            });
-
-            window.addEventListener('resize', function() {
-                const active = slider.classList.contains('show-register') ? registerCard : loginCard;
-                setSliderHeight(active);
-            });
-        })();
+        // Register Form Submit Handler
+        document.getElementById("registerForm").addEventListener("submit", (e) => {
+            console.log("Register form submitted"); // Untuk debugging
+            
+            const growId = document.getElementById("registerGrowId").value;
+            const server = document.getElementById('registerServerInput').value;
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (!server || !growId || !password || !confirmPassword) {
+                e.preventDefault();
+                showMessage('Please fill all required fields!', 'error', 'registerFormContent');
+                return;
+            }
+            
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                showMessage('Passwords do not match!', 'error', 'registerFormContent');
+                return;
+            }
+            
+            if (password.length < 4) {
+                e.preventDefault();
+                showMessage('Password must be at least 4 characters!', 'error', 'registerFormContent');
+                return;
+            }
+            
+            localStorage.setItem("growId", growId);
+            localStorage.setItem("lastServer", server);
+            console.log("Register submitted:", { server, growId });
+        });
     </script>
 </body>
 </html>

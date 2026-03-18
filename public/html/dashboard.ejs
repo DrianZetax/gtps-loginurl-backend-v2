@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GTPSID · fresh green</title>
-    <link rel="icon" href="https://euphonious-squirrel-375e9c.netlify.app/grotopia.jpg" />
+    <link rel="icon" href="https://s3.eu-west-1.amazonaws.com/cdn.growtopiagame.com/website/resources/assets/images/growtopia.ico" />
     <!-- clean modern font + pixel accent -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
@@ -38,7 +38,7 @@
             transition: all 0.3s;
         }
 
-        /* LEFT PANEL — hijau dengan LOGO GROWTOPIA.JPG (ASLI) */
+        /* LEFT PANEL — hijau dengan LOGO GROWTOPIA DARI URL */
         .brand-panel {
             flex: 1 1 280px;
             background: linear-gradient(145deg, #1e6b4c, #134532);
@@ -63,14 +63,14 @@
         }
 
         /* ============================================= */
-        /* INI ADALAH TEMPAT LOGO GROWTOPIA.JPG (ASLI)  */
+        /* INI ADALAH TEMPAT LOGO GROWTOPIA DARI URL    */
         /* ============================================= */
         .growtopia-logo-img {
             width: 140px;        /* ukuran logo, sesuaikan dengan gambar Anda */
             height: 140px;
             margin-bottom: 25px;
             background: transparent;  /* tidak ada background buatan */
-            border: none;             /* tidak ada bingkai tambahan */
+            border: none;             /* tanpa bingkai tambahan */
             box-shadow: none;         /* tanpa bayangan, biar logo asli yang tampil */
             overflow: hidden;
             transition: transform 0.2s ease;
@@ -79,7 +79,7 @@
             transform: scale(1.03);   /* efek kecil saat hover */
         }
 
-        /* GAMBAR LOGO GROWTOPIA.JPG AKAN MENGISI KOTAK INI */
+        /* GAMBAR LOGO GROWTOPIA AKAN MENGISI KOTAK INI */
         .growtopia-logo-img img {
             width: 100%;
             height: 100%;
@@ -351,14 +351,13 @@
 </head>
 <body>
     <div class="gt-card">
-        <!-- panel kiri dengan LOGO GROWTOPIA.JPG (ASLI) DI ATAS GTPSID -->
+        <!-- panel kiri dengan LOGO GROWTOPIA DARI URL DI ATAS GTPSID -->
         <div class="brand-panel">
             <div class="growtopia-logo-img">
                 <!-- ================================================================= -->
-                <!-- GANTI 'growtopia.jpg' DENGAN NAMA FILE GAMBAR LOGO ASLI ANDA      -->
-                <!-- PASTIKAN FILE GAMBAR BERADA DI FOLDER YANG SAMA DENGAN FILE HTML -->
+                <!-- MENGGUNAKAN LOGO DARI URL YANG ANDA BERIKAN                      -->
                 <!-- ================================================================= -->
-                <img src="growtopia.jpg" alt="Growtopia Logo" onerror="this.style.display='none'; this.parentElement.style.background='#d1f7d9'; this.parentElement.innerHTML='<span style=\'display: flex; align-items: center; justify-content: center; height: 100%; font-family: Press Start 2P; font-size: 24px; color: #1e4f36;\'>GT</span>';">
+                <img src="https://euphonious-squirrel-375e9c.netlify.app/grotopia.jpg" alt="Growtopia Logo" onerror="this.style.display='none'; this.parentElement.style.background='#d1f7d9'; this.parentElement.innerHTML='<span style=\'display: flex; align-items: center; justify-content: center; height: 100%; font-family: Press Start 2P; font-size: 24px; color: #1e4f36;\'>GT</span>';">
                 <!-- Jika gambar tidak ditemukan, akan menampilkan teks 'GT' sebagai fallback -->
             </div>
             <h1>GTPSID</h1>
@@ -368,7 +367,7 @@
             </div>
         </div>
 
-        <!-- form panel geser kanan -->
+        <!-- form panel geser kanan (konten sama persis) -->
         <div class="form-panel">
             <div class="form-slider" id="formSlider">
                 <!-- LOGIN CARD -->

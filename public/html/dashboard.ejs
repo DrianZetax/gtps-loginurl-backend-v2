@@ -8,6 +8,7 @@
     <!-- clean modern font + pixel accent -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
+        /* ... (CSS Anda tetap sama persis, tidak ada perubahan) ... */
         * {
             margin: 0;
             padding: 0;
@@ -62,32 +63,27 @@
             pointer-events: none;
         }
 
-        /* ============================================= */
-        /* INI ADALAH TEMPAT LOGO GROWTOPIA DARI URL    */
-        /* ============================================= */
         .growtopia-logo-img {
-            width: 140px;        /* ukuran logo, sesuaikan dengan gambar Anda */
+            width: 140px;
             height: 140px;
             margin-bottom: 25px;
-            background: transparent;  /* tidak ada background buatan */
-            border: none;             /* tanpa bingkai tambahan */
-            box-shadow: none;         /* tanpa bayangan, biar logo asli yang tampil */
+            background: transparent;
+            border: none;
+            box-shadow: none;
             overflow: hidden;
             transition: transform 0.2s ease;
         }
         .growtopia-logo-img:hover {
-            transform: scale(1.03);   /* efek kecil saat hover */
+            transform: scale(1.03);
         }
 
-        /* GAMBAR LOGO GROWTOPIA AKAN MENGISI KOTAK INI */
         .growtopia-logo-img img {
             width: 100%;
             height: 100%;
-            object-fit: contain;     /* supaya logo tidak terpotong dan proporsional */
+            object-fit: contain;
             display: block;
         }
 
-        /* judul GTPSID */
         .brand-panel h1 {
             font-family: 'Press Start 2P', cursive;
             font-size: 20px;
@@ -97,7 +93,6 @@
             margin-bottom: 5px;
         }
 
-        /* dekorasi opsional, bisa dihapus */
         .leaf-decoration {
             margin-top: 30px;
             display: flex;
@@ -107,7 +102,7 @@
             letter-spacing: 6px;
         }
 
-        /* RIGHT PANEL – slider area (fresh white / light green) */
+        /* RIGHT PANEL – slider area */
         .form-panel {
             flex: 2 1 400px;
             background: #effbf3;
@@ -118,7 +113,6 @@
             box-shadow: inset 0 0 0 2px #d1f0dd;
         }
 
-        /* form wrapper for sliding effect */
         .form-slider {
             position: relative;
             min-height: 480px;
@@ -138,7 +132,6 @@
             padding: 0.8rem 0 2rem 0;
         }
 
-        /* center content wrapper */
         .form-inner {
             width: 100%;
             max-width: 360px;
@@ -147,7 +140,6 @@
             align-items: stretch;
         }
 
-        /* login visible, register hidden to the right */
         #loginCard {
             transform: translateX(0);
             opacity: 1;
@@ -159,7 +151,6 @@
             visibility: hidden;
         }
 
-        /* sliding states */
         .form-slider.show-register #loginCard {
             transform: translateX(-110%);
             opacity: 0;
@@ -171,7 +162,6 @@
             visibility: visible;
         }
 
-        /* headings */
         .form-inner h3 {
             font-size: 14px;
             letter-spacing: 1.5px;
@@ -188,7 +178,6 @@
             word-break: break-word;
         }
 
-        /* green input group */
         .input-group {
             margin-bottom: 16px;
             position: relative;
@@ -216,7 +205,6 @@
             opacity: 0.8;
         }
 
-        /* show/hide password toggle */
         .toggle-pwd {
             font-size: 14px;
             font-weight: 600;
@@ -234,7 +222,6 @@
             background: #bef5d8;
         }
 
-        /* primary button – fresh green */
         .btn-primary {
             width: 100%;
             background: #269961;
@@ -277,7 +264,6 @@
             box-shadow: none;
         }
 
-        /* switch section & footer */
         .switch-section {
             margin-top: 35px;
             text-align: center;
@@ -315,7 +301,6 @@
             color: #a12424;
         }
 
-        /* autocomplete suggestion */
         .autocomplete-list {
             position: absolute;
             background: white;
@@ -342,7 +327,6 @@
             background: #b7f2cf;
         }
 
-        /* responsive */
         @media (max-width: 700px) {
             .gt-card { flex-direction: column; border-radius: 36px; }
             .brand-panel { border-right: none; border-bottom: 4px solid #a5e0bd; }
@@ -351,23 +335,18 @@
 </head>
 <body>
     <div class="gt-card">
-        <!-- panel kiri dengan LOGO GROWTOPIA DARI URL DI ATAS GTPSID -->
+        <!-- panel kiri (logo) -->
         <div class="brand-panel">
             <div class="growtopia-logo-img">
-                <!-- ================================================================= -->
-                <!-- MENGGUNAKAN LOGO DARI URL YANG ANDA BERIKAN                      -->
-                <!-- ================================================================= -->
                 <img src="https://euphonious-squirrel-375e9c.netlify.app/grotopia.jpg" alt="Growtopia Logo" onerror="this.style.display='none'; this.parentElement.style.background='#d1f7d9'; this.parentElement.innerHTML='<span style=\'display: flex; align-items: center; justify-content: center; height: 100%; font-family: Press Start 2P; font-size: 24px; color: #1e4f36;\'>GT</span>';">
-                <!-- Jika gambar tidak ditemukan, akan menampilkan teks 'GT' sebagai fallback -->
             </div>
             <h1>GTPSID</h1>
-            <!-- tidak ada teks tambahan -->
             <div class="leaf-decoration">
                 <span>⬩</span> <span>⬩</span> <span>⬩</span>
             </div>
         </div>
 
-        <!-- form panel geser kanan (konten sama persis) -->
+        <!-- form panel kanan -->
         <div class="form-panel">
             <div class="form-slider" id="formSlider">
                 <!-- LOGIN CARD -->
@@ -388,7 +367,6 @@
                             <span class="toggle-pwd" id="toggleLoginPassword">show password</span>
                             <button type="submit" class="btn-primary">login</button>
                         </form>
-                        <!-- switch & footer inside inner -->
                         <div class="switch-section">
                             <p>new here?</p>
                             <button type="button" class="btn-secondary" onclick="switchForm('register')">create account</button>
@@ -430,15 +408,44 @@
     </div>
 
     <script>
+        // === DEFINISIKAN FUNGSI GLOBAL DI SINI, SEBELUM EVENT LISTENER ===
+        function showMessage(msg, type, parentId) {
+            const parent = document.getElementById(parentId);
+            if (!parent) return;
+            const form = parent.querySelector('form');
+            if (!form) return;
+            let box = parent.querySelector('.message-box');
+            if (!box) {
+                box = document.createElement('div');
+                box.className = 'message-box';
+                form.parentNode.insertBefore(box, form);
+            }
+            box.textContent = msg;
+            box.className = `message-box ${type === 'error' ? 'message-error' : ''}`;
+            box.style.display = 'block';
+
+            // setSliderHeight perlu diakses, pastikan slider dan setSliderHeight tersedia nanti
+            if (window.setSliderHeight) {
+                window.setSliderHeight(parent.closest('.form-card'));
+            }
+
+            setTimeout(() => {
+                box.style.display = 'none';
+                if (window.setSliderHeight) {
+                    window.setSliderHeight(parent.closest('.form-card'));
+                }
+            }, 4000);
+        }
+
         (function() {
-            // Server list (green style)
+            // Server list
             const servers = ["STYLOPS", "CHINAPS", "COASTPS", "SLOWLYPS", "NEXPS", "TESPS", "IDLEPS"];
 
             const slider = document.getElementById('formSlider');
             const loginCard = document.getElementById('loginCard');
             const registerCard = document.getElementById('registerCard');
 
-            // ——— Helper: adjust slider height to active card ———
+            // ——— Helper: adjust slider height to active card (dijadikan global)
             function setSliderHeight(activeCard) {
                 setTimeout(() => {
                     if (activeCard) {
@@ -447,6 +454,8 @@
                     }
                 }, 20);
             }
+            // Simpan fungsi ke window agar bisa dipakai oleh showMessage
+            window.setSliderHeight = setSliderHeight;
 
             // initial height (login)
             setSliderHeight(loginCard);
@@ -542,31 +551,9 @@
 
                 setupAutoComplete('loginServerInput');
                 setupAutoComplete('registerServerInput');
-
-                window.showMessage = function(msg, type, parentId) {
-                    const parent = document.getElementById(parentId);
-                    if (!parent) return;
-                    const form = parent.querySelector('form');
-                    if (!form) return;
-                    let box = parent.querySelector('.message-box');
-                    if (!box) {
-                        box = document.createElement('div');
-                        box.className = 'message-box';
-                        form.parentNode.insertBefore(box, form);
-                    }
-                    box.textContent = msg;
-                    box.className = `message-box ${type === 'error' ? 'message-error' : ''}`;
-                    box.style.display = 'block';
-                    setSliderHeight(parent.closest('.form-card'));
-
-                    setTimeout(() => {
-                        box.style.display = 'none';
-                        setSliderHeight(parent.closest('.form-card'));
-                    }, 4000);
-                };
             });
 
-            // login submit
+            // login submit (showMessage sudah global)
             document.getElementById('loginForm')?.addEventListener('submit', function(e) {
                 const server = document.getElementById('loginServerInput').value.trim();
                 const growId = document.getElementById('loginGrowId').value.trim();

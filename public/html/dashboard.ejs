@@ -38,7 +38,7 @@
             transition: all 0.3s;
         }
 
-        /* LEFT PANEL — hijau dengan logo growtopia.jpg (pick gitar) */
+        /* LEFT PANEL — hijau dengan LOGO GROWTOPIA.JPG (ASLI) */
         .brand-panel {
             flex: 1 1 280px;
             background: linear-gradient(145deg, #1e6b4c, #134532);
@@ -62,49 +62,32 @@
             pointer-events: none;
         }
 
-        /* logo growtopia.jpg (pick gitar) - menggunakan image placeholder */
+        /* ============================================= */
+        /* INI ADALAH TEMPAT LOGO GROWTOPIA.JPG (ASLI)  */
+        /* ============================================= */
         .growtopia-logo-img {
-            width: 110px;
-            height: 110px;
-            background: #f4f5f0;
-            border-radius: 20px 40px 20px 40px;  /* kesan pick */
-            transform: rotate(5deg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-            box-shadow: 0 12px 0 #0b3323, 0 0 0 4px #bef5c1;
-            border: 2px solid #c8f7d5;
-            overflow: hidden; /* supaya gambar tidak keluar */
+            width: 140px;        /* ukuran logo, sesuaikan dengan gambar Anda */
+            height: 140px;
+            margin-bottom: 25px;
+            background: transparent;  /* tidak ada background buatan */
+            border: none;             /* tidak ada bingkai tambahan */
+            box-shadow: none;         /* tanpa bayangan, biar logo asli yang tampil */
+            overflow: hidden;
+            transition: transform 0.2s ease;
         }
-        
-        /* sebagai ganti gambar external, kita buat ilustrasi mirip growtopia pick */
-        .growtopia-logo-img .pick-art {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(145deg, #97c8a8, #c0f0cf);
-            clip-path: polygon(25% 0%, 75% 0%, 100% 30%, 50% 100%, 0% 30%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Press Start 2P', cursive;
-            font-size: 32px;
-            color: #185f31;
-            text-shadow: 2px 2px 0 #a5e0b5;
-            font-weight: bold;
-            transform: rotate(-5deg);
-        }
-        .pick-art span {
-            font-size: 12px;
-            margin-top: 10px;
-            display: block;
-        }
-        /* teks kecil dalam logo */
-        .pick-art div {
-            text-align: center;
-            line-height: 1.2;
+        .growtopia-logo-img:hover {
+            transform: scale(1.03);   /* efek kecil saat hover */
         }
 
+        /* GAMBAR LOGO GROWTOPIA.JPG AKAN MENGISI KOTAK INI */
+        .growtopia-logo-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;     /* supaya logo tidak terpotong dan proporsional */
+            display: block;
+        }
+
+        /* judul GTPSID */
         .brand-panel h1 {
             font-family: 'Press Start 2P', cursive;
             font-size: 20px;
@@ -114,7 +97,7 @@
             margin-bottom: 5px;
         }
 
-        /* dekorasi minimal */
+        /* dekorasi opsional, bisa dihapus */
         .leaf-decoration {
             margin-top: 30px;
             display: flex;
@@ -368,12 +351,15 @@
 </head>
 <body>
     <div class="gt-card">
-        <!-- panel kiri dengan logo growtopia.jpg (gambar pick gitar) di atas GTPSID -->
+        <!-- panel kiri dengan LOGO GROWTOPIA.JPG (ASLI) DI ATAS GTPSID -->
         <div class="brand-panel">
             <div class="growtopia-logo-img">
-                <div class="pick-art">
-                    <div>G<br><span>pick</span></div>
-                </div>
+                <!-- ================================================================= -->
+                <!-- GANTI 'growtopia.jpg' DENGAN NAMA FILE GAMBAR LOGO ASLI ANDA      -->
+                <!-- PASTIKAN FILE GAMBAR BERADA DI FOLDER YANG SAMA DENGAN FILE HTML -->
+                <!-- ================================================================= -->
+                <img src="growtopia.jpg" alt="Growtopia Logo" onerror="this.style.display='none'; this.parentElement.style.background='#d1f7d9'; this.parentElement.innerHTML='<span style=\'display: flex; align-items: center; justify-content: center; height: 100%; font-family: Press Start 2P; font-size: 24px; color: #1e4f36;\'>GT</span>';">
+                <!-- Jika gambar tidak ditemukan, akan menampilkan teks 'GT' sebagai fallback -->
             </div>
             <h1>GTPSID</h1>
             <!-- tidak ada teks tambahan -->
@@ -470,7 +456,7 @@
             window.switchForm = function(target) {
                 if (target === 'register') {
                     slider.classList.add('show-register');
-                    slider.classList.remove('show-login');   // optional
+                    slider.classList.remove('show-login');
                     setSliderHeight(registerCard);
                 } else {
                     slider.classList.remove('show-register');
@@ -478,13 +464,13 @@
                 }
             };
 
-            // ---- toggle password ----
+            // toggle password
             document.getElementById('toggleLoginPassword').addEventListener('click', function() {
                 toggleField('loginPassword', this);
             });
             document.getElementById('toggleRegisterPassword').addEventListener('click', function() {
                 toggleField('registerPassword', this);
-                toggleField('confirmPassword', this);  // also affects confirm
+                toggleField('confirmPassword', this);
             });
 
             function toggleField(fieldId, btn) {
@@ -499,7 +485,7 @@
                 }
             }
 
-            // ——— autocomplete server ———
+            // autocomplete server
             function setupAutoComplete(inputId) {
                 const input = document.getElementById(inputId);
                 if (!input) return;
@@ -558,7 +544,6 @@
                 setupAutoComplete('loginServerInput');
                 setupAutoComplete('registerServerInput');
 
-                // message helper
                 window.showMessage = function(msg, type, parentId) {
                     const parent = document.getElementById(parentId);
                     if (!parent) return;
@@ -573,8 +558,6 @@
                     box.textContent = msg;
                     box.className = `message-box ${type === 'error' ? 'message-error' : ''}`;
                     box.style.display = 'block';
-
-                    // adjust height after message
                     setSliderHeight(parent.closest('.form-card'));
 
                     setTimeout(() => {
@@ -627,7 +610,6 @@
                 console.log('register', { server, growId });
             });
 
-            // adjust height on window resize (optional)
             window.addEventListener('resize', function() {
                 const active = slider.classList.contains('show-register') ? registerCard : loginCard;
                 setSliderHeight(active);

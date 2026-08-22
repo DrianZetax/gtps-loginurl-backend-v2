@@ -32,20 +32,13 @@ app.use(rateLimiter({ windowMs: 5 * 60 * 1000, max: 800, headers: true }));
 
 /**
  * Buat token format JSON base64 untuk TokenHandler C++.
- *
- * TokenHandler di World.h melakukan:
- *   decoded     = base64_decode(ltoken)
- *   token_data  = json::parse(decoded)          ← harus JSON valid
- *   growId      = token_data.value("growId", "")
- *   password    = token_data.value("password", "")
- *   server_name = token_data.value("server_name", "")  ← wajib ada & tidak kosong
- *   isRegister  = token_data.value("isRegister", false)
+ * Format: base64({"growId":"...","password":"...","server_name":"...","isRegister":false})
  */
 function createToken(growId, password, serverName, isRegister = false) {
   const tokenObj = {
-    growId:      growId      || '',
-    password:    password    || '',
-    server_name: serverName  || '',
+    growId:      growId     || '',
+    password:    password   || '',
+    server_name: serverName || '',
     isRegister:  isRegister === true || isRegister === 1,
   };
   return Buffer.from(JSON.stringify(tokenObj)).toString('base64');
@@ -53,19 +46,21 @@ function createToken(growId, password, serverName, isRegister = false) {
 
 /**
  * Decode refreshToken dari client.
- * Support format baru (JSON base64) dan format lama (query string base64).
+ * Support JSON base64 (format baru) dan query string base64 (format lama).
  * Returns { growId, password, server_name, isRegister } atau null jika gagal.
  */
 function decodeToken(token) {
   try {
     if (!token || typeof token !== 'string') return null;
 
-    const decoded = Buffer.from(token, 'base64').toString('utf-8');
+    // Bersihkan trailing whitespace/newline yang bisa merusak base64
+    const cleanToken = token.trim();
+    const decoded = Buffer.from(cleanToken, 'base64').toString('utf-8');
 
     // Format baru: JSON
     try {
       const obj = JSON.parse(decoded);
-      if (obj && typeof obj === 'object' && obj.growId !== undefined) {
+      if (obj && typeof obj === 'object') {
         return {
           growId:      obj.growId      || '',
           password:    obj.password    || '',
@@ -73,9 +68,9 @@ function decodeToken(token) {
           isRegister:  obj.isRegister === true || obj.isRegister === 1,
         };
       }
-    } catch (_) { /* bukan JSON, coba format lama */ }
+    } catch (_) { /* bukan JSON, coba query string */ }
 
-    // Format lama: query string (growId=...&password=...&server_name=...)
+    // Format lama: query string
     const params = {};
     decoded.split('&').forEach(part => {
       const eqIdx = part.indexOf('=');
@@ -103,11 +98,17 @@ function decodeToken(token) {
 
 // ==================== ENDPOINTS ====================
 
-app.all('/favicon.ico', (req, res) => res.status(204).end());
+app.all('/favicon.ico', function(req, res) {
+  res.status(204).end();
+});
 
-app.all('/player/register', (req, res) => res.send('Coming soon...'));
+app.all('/player/register', function(req, res) {
+  res.send('Coming soon...');
+});
 
-// ── Dashboard ─────────────────────────────────────────────────────────────────
+/**
+ * Dashboard login — ditampilkan ke user sebagai form login web
+ */
 app.all('/player/login/dashboard', function(req, res) {
   const tData = {};
   try {
@@ -124,14 +125,16 @@ app.all('/player/login/dashboard', function(req, res) {
         return res.redirect('/player/growid/login/validate');
       }
     }
-  } catch (e) {
-    console.log('[DASHBOARD] Warning:', e.message);
+  } catch (why) {
+    console.log(`[DASHBOARD] Warning: ${why}`);
   }
   res.render(__dirname + '/public/html/dashboard.ejs', { data: tData });
 });
 
-// ── Validate login / register ─────────────────────────────────────────────────
-// Form dashboard mengirim: growId, password, server_name (dari input player), action
+/**
+ * Endpoint validasi login/register.
+ * Form dashboard mengirim: growId, password, server_name, action
+ */
 app.all('/player/growid/login/validate', (req, res) => {
   const growId     = (req.body.growId      || '').trim();
   const password   = (req.body.password    || '').trim();
@@ -140,7 +143,6 @@ app.all('/player/growid/login/validate', (req, res) => {
 
   console.log(`[LOGIN/VALIDATE] action=${action} growId=${growId} server=${serverName}`);
 
-  // Validasi field wajib
   if (!growId || !password) {
     return res.send(JSON.stringify({
       status: 'error',
@@ -156,8 +158,6 @@ app.all('/player/growid/login/validate', (req, res) => {
   }
 
   const isRegister = action === 'register';
-
-  // Token = base64(JSON) — format yang diharapkan TokenHandler C++
   const token = createToken(growId, password, serverName, isRegister);
 
   console.log(`[LOGIN/VALIDATE] Token OK → growId=${growId} server=${serverName}`);
@@ -172,15 +172,30 @@ app.all('/player/growid/login/validate', (req, res) => {
   }));
 });
 
-// ── checktoken — 307 redirect (jaga POST body) ───────────────────────────────
+/**
+ * Endpoint checktoken — 307 redirect mempertahankan POST body.
+ */
 app.all('/player/growid/checktoken', (req, res) => {
   console.log('[CHECKTOKEN] 307 → /player/growid/validate/checktoken');
   res.redirect(307, '/player/growid/validate/checktoken');
 });
 
-// ── validate/checktoken ───────────────────────────────────────────────────────
-// Growtopia 5.40 kirim refreshToken saat reconnect/resume session.
-// Response wajib Content-Type: text/html.
+/**
+ * Endpoint validate/checktoken — dipanggil Growtopia saat reconnect/resume.
+ *
+ * Ada 2 skenario dari log:
+ *
+ * SKENARIO 1 — Token lengkap (growId + password + server_name):
+ *   Client punya token valid → kita kembalikan token yang sama → C++ proses login
+ *
+ * SKENARIO 2 — Token dengan growId & password KOSONG:
+ *   {"server_name":"GTZS","growId":"","password":"","isRegister":false}
+ *   Ini adalah "ping" dari Growtopia untuk cek apakah server masih hidup.
+ *   C++ akan masuk GUEST MODE jika kita balas success → stuck loading.
+ *   Solusi: balas dengan dashboard HTML → client tampilkan form login lagi.
+ *
+ * Response HARUS Content-Type: text/html (syarat Growtopia 5.40).
+ */
 app.all('/player/growid/validate/checktoken', (req, res) => {
   const { refreshToken } = req.body;
 
@@ -189,33 +204,32 @@ app.all('/player/growid/validate/checktoken', (req, res) => {
   // Tidak ada token → tampilkan dashboard
   if (!refreshToken) {
     console.log('[VALIDATE CHECKTOKEN] No refreshToken → dashboard');
-    try {
-      return res.render(__dirname + '/public/html/dashboard.ejs', { data: {} });
-    } catch (_) {
-      return res.status(200).setHeader('Content-Type', 'text/html').send('');
-    }
+    return sendDashboard(res);
   }
 
-  // Decode & validasi
+  // Decode token
   const td = decodeToken(refreshToken);
 
-  if (!td || !td.growId || !td.server_name) {
-    // Token tidak valid atau server_name kosong → dashboard
-    // (TokenHandler C++ akan error jika server_name kosong)
-    console.log('[VALIDATE CHECKTOKEN] Invalid token or missing server_name → dashboard');
-    try {
-      return res.render(__dirname + '/public/html/dashboard.ejs', { data: {} });
-    } catch (_) {
-      return res.status(200).setHeader('Content-Type', 'text/html').send('');
-    }
+  if (!td) {
+    console.log('[VALIDATE CHECKTOKEN] Decode failed → dashboard');
+    return sendDashboard(res);
   }
+
+  console.log(`[VALIDATE CHECKTOKEN] Decoded → growId="${td.growId}" server="${td.server_name}"`);
+
+  // SKENARIO 2: growId atau password kosong = Growtopia ping / session expired
+  // Harus balas dashboard supaya client tampilkan form login lagi
+  if (!td.growId || !td.password || !td.server_name) {
+    console.log('[VALIDATE CHECKTOKEN] Empty growId/password/server → dashboard (force re-login)');
+    return sendDashboard(res);
+  }
+
+  // SKENARIO 1: token valid lengkap → kembalikan token untuk login
+  const newToken = createToken(td.growId, td.password, td.server_name, td.isRegister);
 
   console.log(`[VALIDATE CHECKTOKEN] OK → growId=${td.growId} server=${td.server_name}`);
 
-  // Rebuild token JSON base64 (pastikan format selalu terbaru)
-  const newToken = createToken(td.growId, td.password, td.server_name, td.isRegister);
-
-  // Content-Type: text/html wajib untuk Growtopia 5.40
+  // Content-Type: text/html WAJIB untuk Growtopia 5.40
   res.setHeader('Content-Type', 'text/html');
   res.send(JSON.stringify({
     status:      'success',
@@ -227,21 +241,46 @@ app.all('/player/growid/validate/checktoken', (req, res) => {
   }));
 });
 
-// ── Root ──────────────────────────────────────────────────────────────────────
+/**
+ * Helper: kirim dashboard HTML sebagai response text/html.
+ * Growtopia akan menampilkan form login ketika menerima response ini.
+ */
+function sendDashboard(res) {
+  res.setHeader('Content-Type', 'text/html');
+  try {
+    res.render(__dirname + '/public/html/dashboard.ejs', { data: {} });
+  } catch (_) {
+    // Fallback jika EJS tidak ada — kirim HTML minimal yang trigger form login
+    res.send(`
+<!DOCTYPE html>
+<html>
+<head><title>Login</title></head>
+<body>
+<form method="POST" action="/player/growid/login/validate">
+  <input type="text"     name="growId"      placeholder="GrowID" />
+  <input type="password" name="password"    placeholder="Password" />
+  <input type="text"     name="server_name" placeholder="Server Name" />
+  <input type="hidden"   name="action"      value="login" />
+  <button type="submit">Login</button>
+</form>
+</body>
+</html>`);
+  }
+}
+
 app.get('/', (req, res) => res.send('Growtopia Backend Server'));
 
-// ==================== START SERVER ====================
 app.listen(5000, function() {
   console.log('='.repeat(55));
   console.log('  SERVER RUNNING ON PORT 5000');
   console.log('='.repeat(55));
   console.log('  POST /player/growid/login/validate');
-  console.log('       fields: growId, password, server_name, action');
+  console.log('       fields : growId, password, server_name, action');
   console.log('  POST /player/growid/checktoken  (307 redirect)');
   console.log('  POST /player/growid/validate/checktoken');
-  console.log('       fields: refreshToken');
+  console.log('       fields : refreshToken');
   console.log('='.repeat(55));
-  console.log('  Token format: base64(JSON)');
-  console.log('  JSON fields : growId, password, server_name, isRegister');
+  console.log('  Token format : base64(JSON)');
+  console.log('  JSON fields  : growId, password, server_name, isRegister');
   console.log('='.repeat(55));
 });

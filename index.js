@@ -3,8 +3,6 @@ const app = express();
 const bodyParser = require('body-parser');
 const rateLimiter = require('express-rate-limit');
 const compression = require('compression');
-const fs = require('fs');
-const path = require('path');
 
 app.use(compression({
     level: 5,
@@ -32,121 +30,99 @@ app.use(function (req, res, next) {
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
-app.use(rateLimiter({ windowMs: 15 * 60 * 1000, max: 10000, headers: true }));
+app.use(rateLimiter({ windowMs: 5 * 60 * 1000, max: 800, headers: true }));
 
-// Helper function untuk check account
-function checkAccountExists(growId) {
-    const filePath = path.join(__dirname, 'database', 'players', `${growId}_.json`);
-    return fs.existsSync(filePath);
+// ==================== HELPER FUNCTIONS ====================
+function validateTokenFormat(token) {
+    try {
+        const decoded = Buffer.from(token, 'base64').toString('utf-8');
+        return decoded.includes('growId=') && (decoded.includes('password=') || decoded.includes('passwords='));
+    } catch {
+        return false;
+    }
 }
 
-app.all("/player/validate/close", function (req, res) {
-    res.send("<script>window.close();</script>");
+// ==================== ENDPOINTS ====================
+app.all('/favicon.ico', function(req, res) {
+    res.status(204).end();
+});
+
+app.all('/player/register', function(req, res) {
+    res.send("Coming soon...");
 });
 
 app.all('/player/login/dashboard', function (req, res) {
     const tData = {};
     try {
-        const uData = JSON.stringify(req.body).split('"')[1].split('\\n'); 
-        const uName = uData[0].split('|'); 
-        const uPass = uData[1].split('|');
-        for (let i = 0; i < uData.length - 1; i++) { 
-            const d = uData[i].split('|'); 
-            tData[d[0]] = d[1]; 
+        const bodyStr = JSON.stringify(req.body);
+        if (bodyStr !== '{}') {
+            const uData = bodyStr.split('"')[1].split('\\n');
+            for (let i = 0; i < uData.length - 1; i++) {
+                const d = uData[i].split('|');
+                if (d.length >= 2) tData[d[0]] = d[1];
+            }
+            const uName = uData[0]?.split('|');
+            const uPass = uData[1]?.split('|');
+            if (uName?.[1] && uPass?.[1]) {
+                return res.redirect('/player/growid/login/validate');
+            }
         }
-        if (uName[1] && uPass[1]) { 
-            res.redirect('/player/growid/login/validate'); 
-        }
-    } catch (why) { 
-        console.log(`Warning: ${why}`); 
+    } catch (why) {
+        console.log(`Warning: ${why}`);
     }
 
     res.render(__dirname + '/public/html/dashboard.ejs', {data: tData});
 });
 
+// 🔴 ENDPOINT VALIDASI LOGIN/REGISTER
 app.all('/player/growid/login/validate', (req, res) => {
-    const { _token, growId, password, action } = req.body;
-    
-    console.log(`Login/Validate Request:`, { 
-        action: action, 
-        growId: growId, 
-        server: _token 
-    });
+    const _token = req.body._token || '';
+    const growId = req.body.growId || '';
+    const password = req.body.password || '';
+    const action = req.body.action || 'login';
 
-    let tokenData = {};
-    
-    if (action && action.toLowerCase() === 'register') {
-        // MODE REGISTER
-        if (!growId || !password) {
-            return res.send(
-                `{"status":"error","message":"GrowID and password required for register","token":"","url":"","accountType":"growtopia", "accountAge": 2}`
-            );
-        }
-        
-        // Cek jika akun sudah ada
-        if (checkAccountExists(growId)) {
-            return res.send(
-                `{"status":"error","message":"Account already exists","token":"","url":"","accountType":"growtopia", "accountAge": 2}`
-            );
-        }
-        
-        // Kirim data register ke C++ handler
-        tokenData = { 
-            server_name: _token ? _token.toUpperCase() : 'GTZS', 
-            growId: growId, 
-            password: password,
-            isRegister: true 
-        };
-        
-    } else if (growId && password) {
-        // MODE LOGIN
-        tokenData = { 
-            server_name: _token ? _token.toUpperCase() : 'GTZS', 
-            growId: growId, 
-            password: password,
-            isRegister: false 
-        };
-    } else {
-        // MODE GUEST
-        tokenData = { 
-            server_name: _token ? _token.toUpperCase() : 'GTZS', 
-            growId: "", 
-            password: "",
-            isRegister: false 
-        };
-    }
-    
-    const token = JSON.stringify(tokenData);
-    const tokens = Buffer.from(token).toString('base64');
-    
-    console.log(`Generated token: ${tokens}`);
-    console.log(`Token data:`, tokenData);
-    
+    console.log(`[LOGIN/VALIDATE] ${action} - ${growId}`);
+
+    // Format token sesuai standar dengan parameter reg
+    const regFlag = (action.toLowerCase() === 'register') ? '1' : '0';
+    const tokenString = `_token=${_token}&growId=${growId}&password=${password}&reg=${regFlag}`;
+    const token = Buffer.from(tokenString).toString('base64');
+   
     res.send(
-        `{"status":"success","message":"Account Validated.","token":"${tokens}","url":"","accountType":"growtopia", "accountAge": 2}`
+        `{"status":"success","message":"Account Validated.","token":"${token}","url":"","accountType":"growtopia","accountAge":2}`
     );
 });
 
-// 🔴 PERBAIKAN UTAMA: CHECKTOKEN DENGAN REDIRECT 307 DAN RESPON TEXT/HTML
+// 🔴 ENDPOINT CHECKTOKEN - REDIRECT 307 (PENTING!)
 app.all('/player/growid/checktoken', (req, res) => {
-    console.log('[CHECKTOKEN] Received request, redirecting to validate endpoint');
-    
-    // Forward dengan status code 307 (Temporary Redirect) untuk preserve method dan body
+    console.log('[CHECKTOKEN] Redirecting to validate endpoint (307)');
+    // 307 Temporary Redirect mempertahankan POST method dan body
     res.redirect(307, '/player/growid/validate/checktoken');
 });
 
-// 🔴 ENDPOINT BARU UNTUK VALIDATE CHECKTOKEN
+// 🔴 ENDPOINT VALIDATE CHECKTOKEN - RESPON TEXT/HTML
 app.all('/player/growid/validate/checktoken', (req, res) => {
     const { refreshToken } = req.body;
     
     console.log('[VALIDATE CHECKTOKEN] Processing token validation');
     
     try {
-        // Decode refreshToken untuk mendapatkan data
-        const decodedToken = Buffer.from(refreshToken, 'base64').toString('utf-8');
-        console.log('[VALIDATE CHECKTOKEN] Decoded token:', decodedToken);
+        if (!refreshToken) {
+            console.log('[VALIDATE CHECKTOKEN] No token provided');
+            return res.render(__dirname + '/public/html/dashboard.ejs');
+        }
+
+        // Decode token untuk validasi
+        const decoded = Buffer.from(refreshToken, 'base64').toString('utf-8');
+        console.log('[VALIDATE CHECKTOKEN] Decoded:', decoded);
         
-        // Siapkan response dengan content-type text/html sesuai requirement
+        // Validasi format token
+        if (!decoded.includes('growId=') || (!decoded.includes('password=') && !decoded.includes('passwords='))) {
+            console.log('[VALIDATE CHECKTOKEN] Invalid token format');
+            return res.render(__dirname + '/public/html/dashboard.ejs');
+        }
+
+        // Response dengan Content-Type text/html (wajib untuk 5.40)
         const response = JSON.stringify({
             status: 'success',
             message: 'Account Validated.',
@@ -156,35 +132,26 @@ app.all('/player/growid/validate/checktoken', (req, res) => {
             accountAge: 2
         });
         
-        // Set content-type ke text/html
         res.setHeader('Content-Type', 'text/html');
         res.send(response);
         
     } catch (error) {
-        console.log('[VALIDATE CHECKTOKEN] Error:', error);
-        
-        const errorResponse = JSON.stringify({
-            status: 'error',
-            message: 'Invalid token',
-            token: '',
-            url: '',
-            accountType: 'growtopia',
-            accountAge: 2
-        });
-        
-        res.setHeader('Content-Type', 'text/html');
-        res.status(200).send(errorResponse);
+        console.log('[VALIDATE CHECKTOKEN] Error:', error.message);
+        res.render(__dirname + '/public/html/dashboard.ejs');
     }
 });
 
 app.get('/', function (req, res) {
-   res.send('Server Running - Updated for 5.40');
+    res.send('Growtopia Backend Server - Updated for 5.40');
 });
 
 app.listen(5000, function () {
-    console.log('Listening on port 5000');
-    console.log('Backend ready for Login/Register');
-    console.log('✓ Updated with 5.40 compatibility:');
-    console.log('  - /player/growid/checktoken redirects with 307');
-    console.log('  - /player/growid/validate/checktoken responds with text/html');
+    console.log('=' .repeat(50));
+    console.log('🚀 SERVER RUNNING ON PORT 5000');
+    console.log('=' .repeat(50));
+    console.log('✅ Updated for Growtopia 5.40:');
+    console.log('   • /player/growid/checktoken → 307 redirect');
+    console.log('   • /player/growid/validate/checktoken → text/html response');
+    console.log('   • Token format includes reg parameter');
+    console.log('=' .repeat(50));
 });

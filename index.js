@@ -3,6 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const rateLimiter = require('express-rate-limit');
 const compression = require('compression');
+const path = require('path');
 
 // ==================== MIDDLEWARE ====================
 app.use(compression({
@@ -70,7 +71,7 @@ function decodeToken(token) {
       }
     } catch (_) { /* bukan JSON, coba query string */ }
 
-    // Format lama: query string
+    // Format lama: query string fallback
     const params = {};
     decoded.split('&').forEach(part => {
       const eqIdx = part.indexOf('=');
@@ -96,15 +97,38 @@ function decodeToken(token) {
   }
 }
 
+/**
+ * Helper: kirim dashboard HTML sebagai response text/html.
+ * Growtopia akan menampilkan form login ketika menerima response ini.
+ */
+function sendDashboard(res) {
+  res.setHeader('Content-Type', 'text/html');
+  try {
+    res.render(path.join(__dirname, 'public/html/dashboard.ejs'), { data: {} });
+  } catch (_) {
+    // Fallback jika EJS tidak ada — kirim HTML form login
+    res.send(`
+<!DOCTYPE html>
+<html>
+<head><title>Login</title></head>
+<body>
+<form method="POST" action="/player/growid/login/validate">
+  <input type="text"     name="growId"      placeholder="GrowID" required />
+  <input type="password" name="password"    placeholder="Password" required />
+  <input type="text"     name="server_name" placeholder="Server Name" required />
+  <input type="hidden"   name="action"      value="login" />
+  <button type="submit">Login</button>
+</form>
+</body>
+</html>`);
+  }
+}
+
 // ==================== ENDPOINTS ====================
 
-app.all('/favicon.ico', function(req, res) {
-  res.status(204).end();
-});
+app.all('/favicon.ico', (req, res) => res.status(204).end());
 
-app.all('/player/register', function(req, res) {
-  res.send('Coming soon...');
-});
+app.all('/player/register', (req, res) => res.send('Coming soon...'));
 
 /**
  * Dashboard login — ditampilkan ke user sebagai form login web
@@ -128,7 +152,13 @@ app.all('/player/login/dashboard', function(req, res) {
   } catch (why) {
     console.log(`[DASHBOARD] Warning: ${why}`);
   }
-  res.render(__dirname + '/public/html/dashboard.ejs', { data: tData });
+  
+  res.setHeader('Content-Type', 'text/html');
+  try {
+    res.render(path.join(__dirname, 'public/html/dashboard.ejs'), { data: tData });
+  } catch (_) {
+    sendDashboard(res);
+  }
 });
 
 /**
@@ -142,6 +172,8 @@ app.all('/player/growid/login/validate', (req, res) => {
   const action     = (req.body.action      || 'login').toLowerCase();
 
   console.log(`[LOGIN/VALIDATE] action=${action} growId=${growId} server=${serverName}`);
+
+  res.setHeader('Content-Type', 'text/html');
 
   if (!growId || !password) {
     return res.send(JSON.stringify({
@@ -160,7 +192,7 @@ app.all('/player/growid/login/validate', (req, res) => {
   const isRegister = action === 'register';
   const token = createToken(growId, password, serverName, isRegister);
 
-  console.log(`[LOGIN/VALIDATE] Token OK → growId=${growId} server=${serverName}`);
+  console.log(`[LOGIN/VALIDATE] Token OK -> growId=${growId} server=${serverName}`);
 
   res.send(JSON.stringify({
     status:      'success',
@@ -173,63 +205,46 @@ app.all('/player/growid/login/validate', (req, res) => {
 });
 
 /**
- * Endpoint checktoken — 307 redirect mempertahankan POST body.
+ * Endpoint checktoken — 307 redirect mempertahankan HTTP POST body.
  */
 app.all('/player/growid/checktoken', (req, res) => {
-  console.log('[CHECKTOKEN] 307 → /player/growid/validate/checktoken');
+  console.log('[CHECKTOKEN] 307 -> /player/growid/validate/checktoken');
   res.redirect(307, '/player/growid/validate/checktoken');
 });
 
 /**
  * Endpoint validate/checktoken — dipanggil Growtopia saat reconnect/resume.
- *
- * Ada 2 skenario dari log:
- *
- * SKENARIO 1 — Token lengkap (growId + password + server_name):
- *   Client punya token valid → kita kembalikan token yang sama → C++ proses login
- *
- * SKENARIO 2 — Token dengan growId & password KOSONG:
- *   {"server_name":"GTZS","growId":"","password":"","isRegister":false}
- *   Ini adalah "ping" dari Growtopia untuk cek apakah server masih hidup.
- *   C++ akan masuk GUEST MODE jika kita balas success → stuck loading.
- *   Solusi: balas dengan dashboard HTML → client tampilkan form login lagi.
- *
- * Response HARUS Content-Type: text/html (syarat Growtopia 5.40).
  */
 app.all('/player/growid/validate/checktoken', (req, res) => {
   const { refreshToken } = req.body;
 
   console.log('[VALIDATE CHECKTOKEN] Request received');
 
-  // Tidak ada token → tampilkan dashboard
   if (!refreshToken) {
-    console.log('[VALIDATE CHECKTOKEN] No refreshToken → dashboard');
+    console.log('[VALIDATE CHECKTOKEN] No refreshToken -> dashboard');
     return sendDashboard(res);
   }
 
-  // Decode token
   const td = decodeToken(refreshToken);
 
   if (!td) {
-    console.log('[VALIDATE CHECKTOKEN] Decode failed → dashboard');
+    console.log('[VALIDATE CHECKTOKEN] Decode failed -> dashboard');
     return sendDashboard(res);
   }
 
-  console.log(`[VALIDATE CHECKTOKEN] Decoded → growId="${td.growId}" server="${td.server_name}"`);
+  console.log(`[VALIDATE CHECKTOKEN] Decoded -> growId="${td.growId}" server="${td.server_name}"`);
 
-  // SKENARIO 2: growId atau password kosong = Growtopia ping / session expired
-  // Harus balas dashboard supaya client tampilkan form login lagi
+  // SKENARIO 2: growId / password / server_name kosong -> paksa re-login
   if (!td.growId || !td.password || !td.server_name) {
-    console.log('[VALIDATE CHECKTOKEN] Empty growId/password/server → dashboard (force re-login)');
+    console.log('[VALIDATE CHECKTOKEN] Empty fields -> dashboard (force re-login)');
     return sendDashboard(res);
   }
 
-  // SKENARIO 1: token valid lengkap → kembalikan token untuk login
+  // SKENARIO 1: Token valid & lengkap -> buatkan token validasi baru
   const newToken = createToken(td.growId, td.password, td.server_name, td.isRegister);
 
-  console.log(`[VALIDATE CHECKTOKEN] OK → growId=${td.growId} server=${td.server_name}`);
+  console.log(`[VALIDATE CHECKTOKEN] OK -> growId=${td.growId} server=${td.server_name}`);
 
-  // Content-Type: text/html WAJIB untuk Growtopia 5.40
   res.setHeader('Content-Type', 'text/html');
   res.send(JSON.stringify({
     status:      'success',
@@ -241,46 +256,14 @@ app.all('/player/growid/validate/checktoken', (req, res) => {
   }));
 });
 
-/**
- * Helper: kirim dashboard HTML sebagai response text/html.
- * Growtopia akan menampilkan form login ketika menerima response ini.
- */
-function sendDashboard(res) {
-  res.setHeader('Content-Type', 'text/html');
-  try {
-    res.render(__dirname + '/public/html/dashboard.ejs', { data: {} });
-  } catch (_) {
-    // Fallback jika EJS tidak ada — kirim HTML minimal yang trigger form login
-    res.send(`
-<!DOCTYPE html>
-<html>
-<head><title>Login</title></head>
-<body>
-<form method="POST" action="/player/growid/login/validate">
-  <input type="text"     name="growId"      placeholder="GrowID" />
-  <input type="password" name="password"    placeholder="Password" />
-  <input type="text"     name="server_name" placeholder="Server Name" />
-  <input type="hidden"   name="action"      value="login" />
-  <button type="submit">Login</button>
-</form>
-</body>
-</html>`);
-  }
-}
-
-app.get('/', (req, res) => res.send('Growtopia Backend Server'));
+app.get('/', (req, res) => res.send('Growtopia Backend Server Running'));
 
 app.listen(5000, function() {
   console.log('='.repeat(55));
   console.log('  SERVER RUNNING ON PORT 5000');
   console.log('='.repeat(55));
   console.log('  POST /player/growid/login/validate');
-  console.log('       fields : growId, password, server_name, action');
   console.log('  POST /player/growid/checktoken  (307 redirect)');
   console.log('  POST /player/growid/validate/checktoken');
-  console.log('       fields : refreshToken');
-  console.log('='.repeat(55));
-  console.log('  Token format : base64(JSON)');
-  console.log('  JSON fields  : growId, password, server_name, isRegister');
   console.log('='.repeat(55));
 });
